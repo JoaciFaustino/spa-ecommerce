@@ -1,0 +1,123 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+:root {
+  --primary-color: #f53e81;
+  --secondary-color: #ffaa01;
+  --tertiary-color: #2b2843;
+
+  --gray-1: #dfdfdf;
+  --gray-2: #bdbdbd;
+  --gray-3: #aaaaaa;
+
+  --padding-1: 0.25rem;
+  --padding-2: 0.5rem;
+  --padding-3: 0.75rem;
+  --padding-4: 1rem;
+  --padding-5: 1.25rem;
+  --padding-6: 1.5rem;
+  --padding-7: 1.75rem;
+  --padding-8: 2rem;
+
+  --primary-color-hover: #f56499;
+  --secondary-color-hover: #f5bd4d;
+  --tertiary-color-hover: #3b375c;
+
+  --color-text-title: #181717; //A DEFINIR
+  --color-text-paragraph: #2b2b2b;
+  --color-text-placeholder: #2b2b2b;
+
+  // responsivity
+  --xsm: 320px;
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+}
+
+body {
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 77.5rem;
+  width: 98%;
+}
+
+h1 {
+  font-size: 4.5rem;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h5 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.textBig {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-paragraph);
+}
+
+.textSmall {
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  @extend .text;
+  padding: var(--padding-2) var(--padding-4);
+  cursor: pointer;
+  outline: none;
+  border-radius: 3px;
+  transition: 0.3s;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
