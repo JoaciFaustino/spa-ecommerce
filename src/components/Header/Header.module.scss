@@ -1,0 +1,167 @@
+@import "../../styles/variables.scss";
+
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-4) 0;
+  background-color: white;
+  transition: all 0.3s;
+  z-index: 1;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.noTopScreen {
+  padding: var(--padding-1) 0;
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  background-color: rgba(#fff, 0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-4);
+}
+
+.divLogo {
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.header nav {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: var(--padding-4);
+    list-style: none;
+
+    li {
+      cursor: pointer;
+      transition: all 0.5s;
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.divUser {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-1);
+
+  button {
+    border: none;
+  }
+}
+
+.userIcon svg:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.divCart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: var(--padding-2);
+  transition: all 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+.qntItemsCart {
+  top: 0;
+  right: 0;
+  position: absolute;
+  display: flex;
+  flex: 0;
+  align-items: center;
+  justify-content: center;
+  height: 1rem;
+  padding: 2px;
+  aspect-ratio: 1 / 1;
+  text-align: center;
+  background-color: var(--primary-color);
+  font-size: 0.625rem;
+  color: white;
+  border-radius: 500px;
+}
+
+.btnLogin {
+  background-color: none;
+
+  &:hover {
+    background-color: var(--gray-2);
+  }
+}
+
+.btnSignup {
+  background-color: var(--secondary-color);
+  color: white;
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+.btnHamburguer {
+  padding: var(--padding-1);
+  border-radius: 500px;
+  aspect-ratio: 1 / 1;
+  background-color: var(--primary-color);
+  display: none;
+  border: none;
+}
+
+@media (max-width: $md) {
+  .btnSignup {
+    display: none;
+  }
+
+  .btnLogin {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+
+  .btnLogin:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+@media (max-width: $sm) {
+  .wrapper {
+    justify-content: space-between;
+  }
+
+  .btnHamburguer {
+    display: inline-block;
+  }
+
+  .header nav {
+    display: none;
+  }
+}

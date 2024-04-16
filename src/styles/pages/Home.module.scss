@@ -1,0 +1,315 @@
+@import "../variables.scss";
+
+.main section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: var(--padding-8);
+}
+
+.initialSection .wrapper {
+  .left {
+    margin-top: var(--padding-8);
+    grid-column: span 6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: var(--padding-4);
+
+    h2 {
+      width: 100%;
+      max-width: 30rem;
+      color: var(--color-text-title);
+      text-align: left;
+    }
+
+    button {
+      border-radius: 500px;
+      border: none;
+      background-color: var(--color-text-title);
+      color: white;
+
+      &:hover {
+        background-color: var(--secondary-color);
+      }
+    }
+  }
+
+  .right {
+    margin-top: var(--padding-8);
+    grid-column: span 6;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .mainCard {
+      position: relative;
+      padding: var(--padding-4);
+      width: 100%;
+      aspect-ratio: 3/2;
+      border-radius: 20px;
+      background: var(--pastel-blue);
+      display: flex;
+      align-items: flex-end;
+      transition: 0.3s;
+
+      &:hover {
+        transform: scale(1.01);
+      }
+
+      img {
+        pointer-events: none;
+        position: absolute;
+        top: -4rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .divText {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--padding-2);
+
+        h3,
+        h4 {
+          width: 100%;
+          color: white;
+        }
+
+        h4 {
+          display: none;
+        }
+
+        button {
+          padding: var(--padding-4);
+          border-radius: 500px;
+          border: none;
+          background-color: rgba(#fff, 0.3);
+          transition: 0.3s;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          .iconArrow {
+            font-size: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sectionAdvantages .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  h2 {
+    text-align: center;
+  }
+
+  .divSmallCards {
+    width: 100%;
+    padding-top: var(--padding-4);
+    gap: var(--padding-4);
+
+    .smallCard {
+      border-radius: 20px;
+      width: 100%;
+      padding: var(--padding-4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      gap: var(--padding-1);
+      transition: 0.3s;
+
+      &:hover {
+        transform: scale(1.01);
+      }
+
+      .divIcon {
+        padding: var(--padding-4);
+        background-color: rgba(#fff, 0.3);
+        border-radius: 500px;
+        display: flex;
+        align-items: center;
+      }
+
+      .divText {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h3 {
+          text-align: center;
+          color: #fff;
+        }
+      }
+    }
+
+    #cardOne {
+      grid-column: span 4;
+      background-color: var(--pastel-purple-light);
+    }
+
+    #cardTwo {
+      grid-column: span 4;
+      background-color: var(--pastel-pink);
+    }
+
+    #cardThree {
+      grid-column: span 4;
+      background-color: var(--pastel-purple);
+    }
+  }
+}
+
+.sectionTimeLinePayment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--padding-8);
+
+  h2 {
+    text-align: center;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .divTimeLine {
+    width: 100%;
+    overflow: auto;
+    position: relative;
+    padding-top: 10px;
+
+    .divTopics {
+      width: 77.5rem;
+      padding: 0 var(--padding-4);
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+
+      .line {
+        position: absolute;
+        top: 0px;
+        width: calc(((1240px / 4) * 3) - var(--padding-4));
+        transform: translateY(-50%);
+        height: 5px;
+        background-color: var(--secondary-color);
+      }
+
+      .topic {
+        position: relative;
+        padding: var(--padding-4) 0;
+        padding-right: var(--padding-8);
+        flex: 1;
+
+        .dotTopic {
+          width: 20px;
+          position: absolute;
+          height: 20px;
+          background-color: #fff;
+          top: -10px;
+          border: solid 5px var(--secondary-color);
+          border-radius: 500px;
+        }
+      }
+    }
+
+    &::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--gray-3);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--gray-1);
+    }
+  }
+}
+
+.sectionBestSellers {
+  .wrapper {
+    h2 {
+      margin: var(--padding-4);
+      grid-column: span 12;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: $md) {
+  .initialSection .wrapper .left {
+    margin-bottom: var(--padding-8);
+    grid-column: span 12;
+    align-items: center;
+
+    h2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .initialSection .wrapper .right {
+    grid-column: span 12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .mainCard {
+      width: 80%;
+    }
+  }
+
+  .sectionAdvantages .wrapper .divSmallCards #cardOne,
+  .sectionAdvantages .wrapper .divSmallCards #cardTwo {
+    grid-column: span 6;
+  }
+
+  .sectionAdvantages .wrapper .divSmallCards #cardThree {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: $sm) {
+  .initialSection .wrapper .right .mainCard {
+    width: 100%;
+
+    .divText h3 {
+      display: none;
+    }
+
+    .divText h4 {
+      display: block;
+    }
+
+    .divText button .iconArrow {
+      font-size: 1.25rem;
+    }
+  }
+
+  .sectionAdvantages .wrapper .divSmallCards #cardOne,
+  .sectionAdvantages .wrapper .divSmallCards #cardTwo,
+  .sectionAdvantages .wrapper .divSmallCards #cardThree {
+    grid-column: span 12;
+  }
+}

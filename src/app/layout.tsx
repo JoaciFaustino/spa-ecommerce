@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "../styles/globals.scss";
 
-const inter = Inter({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+const nunito = Nunito({
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
-  variable: "--font-inter"
-});
-
-const montserrat = Montserrat({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-montserrat"
+  variable: "--font-nunito"
 });
 
 export const metadata: Metadata = {
@@ -26,9 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${montserrat.className}`}>
-        {children}
-      </body>
+      <body className={`${nunito.className}`}>{children}</body>
     </html>
   );
 }
