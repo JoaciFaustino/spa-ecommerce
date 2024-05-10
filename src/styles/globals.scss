@@ -5,6 +5,12 @@
   outline: none;
 }
 
+html,
+body,
+main {
+  position: relative;
+}
+
 :root {
   --primary-color: #f53e81;
   --primary-color-transp: rgba(245, 62, 129, 0.3);
@@ -30,8 +36,13 @@
   --tertiary-color-hover: #3b375c;
 
   --color-text-title: #181717; //A DEFINIR
-  --color-text-paragraph: #2b2b2b;
+  --color-text-paragraph: #585858;
   --color-text-placeholder: #2b2b2b;
+
+  --color-warning-1: #eb4e4e;
+  --color-warning-2: #ffb7b7;
+
+  --background-gradient: linear-gradient(135deg, #d3a0ed 0%, #f53e81 100%);
 
   --padding-1: 0.25rem;
   --padding-2: 0.5rem;
@@ -100,7 +111,38 @@ label {
   color: var(--color-text-title);
   font-size: 0.875rem;
   font-weight: 700;
-  text-transform: uppercase;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  @extend .text;
+  padding: var(--padding-2) var(--padding-4);
+  cursor: pointer;
+  outline: none;
+  border-radius: 3px;
+  transition: 0.3s;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .textBig {
@@ -134,29 +176,17 @@ label {
   align-content: center;
 }
 
-ul {
-  list-style: none;
+.bgSkeleton {
+  background-color: var(--loading-gray-1);
+  animation: 1s alternate infinite skeletonBgAnimation;
 }
 
-button {
-  @extend .text;
-  padding: var(--padding-2) var(--padding-4);
-  cursor: pointer;
-  outline: none;
-  border-radius: 3px;
-  transition: 0.3s;
-  white-space: nowrap;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@keyframes skeletonBgAnimation {
+  0% {
+    background-color: var(--loading-gray-1);
+  }
 
-input,
-button {
-  font-family: inherit;
-}
-
-a {
-  cursor: pointer;
-  text-decoration: none;
+  100% {
+    background-color: var(--loading-gray-2);
+  }
 }

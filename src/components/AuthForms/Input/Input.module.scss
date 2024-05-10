@@ -1,0 +1,47 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-1);
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: var(--padding-2);
+  border-radius: 5px;
+  border: none;
+  background-color: var(--gray-1);
+}
+
+.inputGroup input:focus {
+  outline: solid var(--primary-color) 2px;
+}
+
+.inputGroup .divInput {
+  position: relative;
+}
+
+.inputGroup .divInput .btnEye {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  padding: 0;
+  top: 50%;
+  right: 0;
+  margin-right: var(--padding-2);
+  transform: translateY(-50%);
+}
+
+.inputGroup .divInput .btnEye:focus {
+  outline: solid 2px var(--primary-color);
+}
+
+.errorMessage {
+  color: var(--color-warning-1);
+}
+.inputGroup .inputInvalid {
+  background-color: var(--color-warning-2);
+}
+
+.inputGroup .inputInvalid:focus {
+  outline: solid 2px var(--color-warning-1);
+}

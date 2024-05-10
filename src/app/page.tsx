@@ -1,10 +1,8 @@
 import styles from "../styles/pages/Home.module.scss";
 import Image from "next/image";
 import { getCakeBestSellers } from "../services/requests";
-import { Cake } from "../@types/Cake";
-import Header from "../components/Header/Header";
-import CakeCard from "../components/CakeCard/CakeCard";
-import Footer from "@/components/Footer/Footer";
+import { Cake } from "@/@types/Cake";
+import CakeCard from "@/components/CakeCard/CakeCard";
 import imgStrawberryCake from "../../public/images/strawberry-cake.png";
 import { CgArrowTopRight } from "react-icons/cg";
 import { BsStars, BsTruck } from "react-icons/bs";
@@ -15,7 +13,6 @@ export default async function Home() {
 
   return (
     <main className={styles.main}>
-      <Header />
       <section className={styles.initialSection}>
         <div className={`${styles.wrapper} wrapper grid`}>
           <div className={styles.left}>
@@ -141,7 +138,6 @@ export default async function Home() {
           ))}
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

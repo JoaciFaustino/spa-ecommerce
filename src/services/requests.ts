@@ -1,4 +1,5 @@
 import { Cake } from "../@types/Cake";
+import { api } from "./api";
 
 export const getCakeBestSellers = async () => {
   const cakes: Cake[] = [];

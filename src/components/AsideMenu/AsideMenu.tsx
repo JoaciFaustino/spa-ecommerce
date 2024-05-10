@@ -1,33 +1,26 @@
 "use client";
 import { usePathname } from "next/navigation";
 import styles from "./AsideMenu.module.scss";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { CgClose, CgShoppingCart } from "react-icons/cg";
 import { BiUserCircle } from "react-icons/bi";
+import Link from "next/link";
+import { AuthContext } from "@/contexts/authProvider";
+import { useAsideMenu } from "./useAsideMenu";
 
 function AsideMenu({
-  isOpen,
   handleCloseAsideMenu
 }: {
-  isOpen: boolean;
   handleCloseAsideMenu: () => void;
 }) {
+  const {
+    backdropRef,
+    asideMenuRef,
+    closeAndInitAnimationClose,
+    qntItemsCart
+  } = useAsideMenu(handleCloseAsideMenu);
   const pathName = usePathname();
-  const [qntItemsCart, setQntItemsCart] = useState(1);
-  const [userLogged, setUserLogged] = useState(false);
-  const asideMenuRef = useRef<HTMLDivElement | null>(null);
-  const backdropRef = useRef<HTMLDivElement | null>(null);
-
-  const closeAndInitAnimationClose = () => {
-    const secondsToEndCloseAnimation = 500;
-
-    asideMenuRef?.current?.classList.add(styles.close);
-    backdropRef?.current?.classList.add(styles.fadeOutBackdrop);
-
-    setTimeout(() => {
-      handleCloseAsideMenu();
-    }, secondsToEndCloseAnimation);
-  };
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <>
@@ -37,12 +30,13 @@ function AsideMenu({
         <header>
           <button
             className={styles.btnClose}
-            onClick={closeAndInitAnimationClose}>
+            onClick={closeAndInitAnimationClose}
+          >
             <CgClose style={{ color: "white", fontSize: "1.5rem" }} />
           </button>
 
           <div className={styles.divUser}>
-            {userLogged && (
+            {isAuthenticated && (
               <>
                 <div className={styles.divCart}>
                   <CgShoppingCart
@@ -64,10 +58,10 @@ function AsideMenu({
               </>
             )}
 
-            {!userLogged && (
-              <>
+            {!isAuthenticated && (
+              <Link href="/signup">
                 <button className={styles.btnSignup}>Cadastrar-se</button>
-              </>
+              </Link>
             )}
           </div>
         </header>
@@ -76,14 +70,16 @@ function AsideMenu({
           <ul>
             <li
               className="textBig"
-              style={pathName === "/" ? { color: "var(--primary-color)" } : {}}>
+              style={pathName === "/" ? { color: "var(--primary-color)" } : {}}
+            >
               Home
             </li>
             <li
               className="textBig"
               style={
                 pathName === "/menu" ? { color: "var(--primary-color)" } : {}
-              }>
+              }
+            >
               menu
             </li>
             <li
@@ -92,7 +88,8 @@ function AsideMenu({
                 pathName === "/personalizados"
                   ? { color: "var(--primary-color)" }
                   : {}
-              }>
+              }
+            >
               Personalizados
             </li>
             <li
@@ -101,7 +98,8 @@ function AsideMenu({
                 pathName === "/contatos"
                   ? { color: "var(--primary-color)" }
                   : {}
-              }>
+              }
+            >
               Contatos
             </li>
           </ul>

@@ -1,0 +1,91 @@
+.divForm {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  padding: var(--padding-8);
+
+  p,
+  h3 {
+    text-align: center;
+  }
+}
+
+.divForm form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: var(--padding-4);
+  gap: var(--padding-4);
+}
+
+.divForm .btnSubmit {
+  border-radius: 5px;
+  width: 100%;
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: var(--padding-4);
+  margin-top: var(--padding-4);
+}
+
+.divForm button:hover {
+  transform: scale(1.01);
+}
+
+.divForm button:disabled {
+  transform: scale(1);
+}
+
+.textSignUp {
+  text-align: center;
+
+  a {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+}
+
+.loader {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+  animation: pulse 1s linear infinite;
+}
+.loader:after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: scaleUp 1s linear infinite;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  60%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes pulse {
+  0%,
+  60%,
+  100% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+}
