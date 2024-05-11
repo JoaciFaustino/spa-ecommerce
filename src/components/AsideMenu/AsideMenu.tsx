@@ -1,18 +1,25 @@
 "use client";
 import { usePathname } from "next/navigation";
 import styles from "./AsideMenu.module.scss";
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import { CgClose, CgShoppingCart } from "react-icons/cg";
 import { BiUserCircle } from "react-icons/bi";
 import Link from "next/link";
-import { AuthContext } from "@/contexts/authProvider";
 import { useAsideMenu } from "./useAsideMenu";
+import { UserContext } from "@/contexts/userProvider";
+import UserInfo from "../UserInfo/UserInfo";
+
+type Props = {
+  reqIsPending: boolean;
+  isAuthenticated: boolean;
+  handleCloseAsideMenu: () => void;
+};
 
 function AsideMenu({
+  reqIsPending,
+  isAuthenticated,
   handleCloseAsideMenu
-}: {
-  handleCloseAsideMenu: () => void;
-}) {
+}: Props) {
   const {
     backdropRef,
     asideMenuRef,
@@ -20,7 +27,6 @@ function AsideMenu({
     qntItemsCart
   } = useAsideMenu(handleCloseAsideMenu);
   const pathName = usePathname();
-  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <>
@@ -36,29 +42,16 @@ function AsideMenu({
           </button>
 
           <div className={styles.divUser}>
-            {isAuthenticated && (
+            {reqIsPending && (
               <>
-                <div className={styles.divCart}>
-                  <CgShoppingCart
-                    style={{
-                      color: "var(--color-text-paragraph)",
-                      fontSize: "1rem"
-                    }}
-                  />
-                  <div className={styles.qntItemsCart}>
-                    {qntItemsCart > 0 && <span>{qntItemsCart}</span>}
-                  </div>
-                </div>
-                <BiUserCircle
-                  style={{
-                    color: "var(--color-text-paragraph)",
-                    fontSize: "1.5rem"
-                  }}
-                />
+                <span className={`${styles.iconSkeleton} loading`}></span>
+                <span className={`${styles.iconSkeleton} loading`}></span>
               </>
             )}
 
-            {!isAuthenticated && (
+            {!reqIsPending && isAuthenticated && <UserInfo />}
+
+            {!reqIsPending && !isAuthenticated && (
               <Link href="/signup">
                 <button className={styles.btnSignup}>Cadastrar-se</button>
               </Link>

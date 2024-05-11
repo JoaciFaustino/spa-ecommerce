@@ -1,6 +1,4 @@
-import { AuthContext } from "@/contexts/authProvider";
-import { usePathname } from "next/navigation";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./AsideMenu.module.scss";
 
 const TIME_TO_END_CLOSE_ANIMATION = 500; // 0.5 seconds

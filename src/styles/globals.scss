@@ -176,7 +176,7 @@ a {
   align-content: center;
 }
 
-.bgSkeleton {
+.loading {
   background-color: var(--loading-gray-1);
   animation: 1s alternate infinite skeletonBgAnimation;
 }

@@ -6,22 +6,32 @@ import AsideMenu from "../AsideMenu/AsideMenu";
 import { CgMenu } from "react-icons/cg";
 import { useHeader } from "./useHeader";
 import { useContext } from "react";
-import { AuthContext } from "@/contexts/authProvider";
-import CartAndAvatarUser from "../UserInfo/UserInfo";
+import UserInfo from "../UserInfo/UserInfo";
 import { usePathname } from "next/navigation";
+import { UserContext } from "@/contexts/userProvider";
 
 function Header() {
   const pathName = usePathname();
-  const { isAuthenticated } = useContext(AuthContext);
-  const { handleOpenAndCloseAsideMenu, headerRef, openAsideMenu } = useHeader();
+  const { user } = useContext(UserContext);
+  const {
+    handleOpenAndCloseAsideMenu,
+    headerRef,
+    openAsideMenu,
+    reqIsPending
+  } = useHeader();
   const pageIsAuth: boolean = pathName === "/login" || pathName === "/signup";
+  const isAuthenticated = !!user;
 
   return (
     <>
       {!pageIsAuth && (
         <header className={styles.header} ref={headerRef}>
           {openAsideMenu && (
-            <AsideMenu handleCloseAsideMenu={handleOpenAndCloseAsideMenu} />
+            <AsideMenu
+              handleCloseAsideMenu={handleOpenAndCloseAsideMenu}
+              reqIsPending={reqIsPending}
+              isAuthenticated={isAuthenticated}
+            />
           )}
 
           <div className={styles.wrapper + " wrapper"}>
@@ -86,9 +96,16 @@ function Header() {
               </ul>
             </nav>
             <div className={styles.divUser}>
-              {isAuthenticated && <CartAndAvatarUser />}
+              {reqIsPending && (
+                <>
+                  <span className={`${styles.iconSkeleton} loading`}></span>
+                  <span className={`${styles.iconSkeleton} loading`}></span>
+                </>
+              )}
 
-              {!isAuthenticated && (
+              {!reqIsPending && isAuthenticated && <UserInfo />}
+
+              {!reqIsPending && !isAuthenticated && (
                 <>
                   <Link href="/login">
                     <button className={styles.btnLogin}>Login</button>

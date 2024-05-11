@@ -1,8 +1,9 @@
-export type AuthServiceResponse = {
-  userId?: string;
+import { User } from "./User";
+
+export type AuthResponse = {
+  user?: User;
   token?: string;
   error?: string;
-  role?: string;
 };
 
 export type Field = {

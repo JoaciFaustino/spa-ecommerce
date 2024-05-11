@@ -3,7 +3,7 @@ import PopUpError from "@/components/PopUpError/PopUpError";
 import styles from "../AuthForms.module.scss";
 import Link from "next/link";
 import Input from "../Input/Input";
-import { AuthServiceResponse, FieldsFormSignUp } from "@/@types/Auth";
+import { AuthResponse, FieldsFormSignUp } from "@/@types/Auth";
 import { useAuthForm } from "@/hooks/useAuthForm";
 
 const DEFAULT_FIELDS: FieldsFormSignUp = {
@@ -15,7 +15,7 @@ const DEFAULT_FIELDS: FieldsFormSignUp = {
 };
 
 type Props = {
-  signUpAction: (fields: FieldsFormSignUp) => Promise<AuthServiceResponse>;
+  signUpAction: (fields: FieldsFormSignUp) => Promise<AuthResponse>;
 };
 
 function SignUpForm({ signUpAction }: Props) {

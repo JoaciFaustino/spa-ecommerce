@@ -2,14 +2,14 @@ import { CgShoppingCart } from "react-icons/cg";
 import styles from "./UserInfo.module.scss";
 import { BiUserCircle } from "react-icons/bi";
 import Link from "next/link";
-import { AuthContext } from "@/contexts/authProvider";
 import { useContext, useEffect, useRef, useState } from "react";
+import { UserContext } from "@/contexts/userProvider";
 
 function UserInfo() {
   const [qntItemsCart, setQntItemsCart] = useState(999);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { handleLogout, role, userId } = useContext(AuthContext);
+  const { handleLogout, user } = useContext(UserContext);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideModal);
@@ -54,12 +54,12 @@ function UserInfo() {
         {modalIsOpen && (
           <div className={styles.userModal} ref={modalRef}>
             <ul>
-              <Link href={`user/${userId}`}>
+              <Link href={`/user/${user?._id}`}>
                 <li className="text">Gerenciar conta</li>
               </Link>
 
-              {role === "admin" && (
-                <Link href={`user/${userId}`}>
+              {user?.role === "admin" && (
+                <Link href={`/admin-dashboard/${user?._id}`}>
                   <li className="text">Admin Dashboard</li>
                 </Link>
               )}

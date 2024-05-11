@@ -1,35 +1,32 @@
 "use server";
 import "server-only";
-import {
-  AuthServiceResponse,
-  FieldsFormLogin,
-  FieldsFormSignUp
-} from "@/@types/Auth";
+import { AuthResponse, FieldsFormLogin, FieldsFormSignUp } from "@/@types/Auth";
 import { api } from "@/services/api";
 import { createSession, deleteSession, getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { User } from "@/@types/User";
 
-export async function login(
-  fields: FieldsFormLogin
-): Promise<AuthServiceResponse> {
+export async function login(fields: FieldsFormLogin): Promise<AuthResponse> {
   try {
     const { email, password } = fields;
 
     const { data } = await api.post<{
+      user: User;
       token: string;
-      userId: string;
-      role: string;
     }>("/auth/login", {
       email: email.value.trim(),
       password: password.value.trim()
     });
 
+    if (!data.token || !data.user) {
+      return { error: "Ocorreu um erro, por favor tente novamente" };
+    }
+
     createSession(data.token);
 
     return {
-      userId: data?.userId,
-      token: data?.token,
-      role: data?.role
+      user: data.user,
+      token: data.token
     };
   } catch (error: any) {
     const { status } = error.response;
@@ -53,16 +50,13 @@ export async function login(
   }
 }
 
-export async function signUp(
-  fields: FieldsFormSignUp
-): Promise<AuthServiceResponse> {
+export async function signUp(fields: FieldsFormSignUp): Promise<AuthResponse> {
   try {
     const { name, confirmPassword, email, password, username } = fields;
 
     const { data } = await api.post<{
+      user: User;
       token: string;
-      userId: string;
-      role: string;
     }>("/auth/signup", {
       name: name.value.trim(),
       username: username.value.trim(),
@@ -71,12 +65,15 @@ export async function signUp(
       confirmPassword: confirmPassword.value.trim()
     });
 
+    if (!data.token || !data.user) {
+      return { error: "Ocorreu um erro, por favor tente novamente" };
+    }
+
     createSession(data.token);
 
     return {
-      userId: data?.userId,
-      token: data?.token,
-      role: data?.role
+      user: data.user,
+      token: data.token
     };
   } catch (error: any) {
     const { status, data } = error.response;
@@ -109,23 +106,23 @@ export async function signUp(
   }
 }
 
-export async function auth(): Promise<{ userId: string; role: string } | void> {
-  const session = await getSession();
-
-  if (!session) return;
-
+export async function auth(): Promise<{ userId?: string; role?: string }> {
   try {
+    const session = await getSession();
+
+    if (!session) return {};
+
     const { data } = await api.get("/auth/", {
       headers: { Authorization: session }
     });
 
     const { userId, role } = data;
 
-    if (!userId || !role) return;
+    if (!userId || !role) return {};
 
     return { userId, role };
   } catch (error) {
-    return;
+    return {};
   }
 }
 

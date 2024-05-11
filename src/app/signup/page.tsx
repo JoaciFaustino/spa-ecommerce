@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 async function SignUp() {
   const decodedToken = await auth();
 
-  if (decodedToken) redirect("/");
+  if (decodedToken?.userId) redirect("/");
 
   return (
     <div className={styles.divAuth}>

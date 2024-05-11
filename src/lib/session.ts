@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 const EXPIRES_AT = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
 export async function createSession(token: string) {
+  cookies().delete("session");
   cookies().set("session", token, {
     httpOnly: true,
     secure: true,

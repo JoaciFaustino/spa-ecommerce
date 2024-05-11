@@ -1,10 +1,10 @@
 import {
-  AuthServiceResponse,
+  AuthResponse,
   Field,
   FieldsFormLogin,
   FieldsFormSignUp
 } from "@/@types/Auth";
-import { AuthContext } from "@/contexts/authProvider";
+import { UserContext } from "@/contexts/userProvider";
 import { validateEmail } from "@/utils/validateEmail";
 import { useRouter } from "next/navigation";
 import {
@@ -20,14 +20,14 @@ const ANIMATION_TIME_ERROR_POPUP = 1000 * 15;
 
 export const useAuthForm = <T>(
   defaultFields: T,
-  serverActionFn: (fields: T) => Promise<AuthServiceResponse>
+  serverActionFn: (fields: T) => Promise<AuthResponse>
 ) => {
   const router = useRouter();
   const [allFieldsIsValid, setAllFieldsIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [reqIsPending, setReqIsPending] = useState(false);
   const [fields, setFields] = useState<T>(defaultFields);
-  const { changeUser } = useContext(AuthContext);
+  const { changeUserLogged } = useContext(UserContext);
 
   useEffect(() => {
     setTimeout(() => setErrorMessage(""), ANIMATION_TIME_ERROR_POPUP);
@@ -47,16 +47,16 @@ export const useAuthForm = <T>(
 
     setReqIsPending(true);
 
-    const { error, userId, role } = await serverActionFn(fields);
+    const { error, user } = await serverActionFn(fields);
 
-    if (error) {
-      setErrorMessage(error);
+    if (error || !user) {
+      setErrorMessage(error || "");
       setReqIsPending(false);
       clearFields(fields);
       return;
     }
-    
-    changeUser(userId as string, role as string);
+
+    changeUserLogged(user);
 
     router.push("/");
   };
