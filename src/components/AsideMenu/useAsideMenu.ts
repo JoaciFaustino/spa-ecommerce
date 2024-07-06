@@ -1,10 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import styles from "./AsideMenu.module.scss";
 
 const TIME_TO_END_CLOSE_ANIMATION = 500; // 0.5 seconds
 
 export const useAsideMenu = (handleCloseAsideMenu: () => void) => {
-  const [qntItemsCart, setQntItemsCart] = useState(1);
   const asideMenuRef = useRef<HTMLDivElement | null>(null);
   const backdropRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,7 +19,6 @@ export const useAsideMenu = (handleCloseAsideMenu: () => void) => {
   return {
     backdropRef,
     asideMenuRef,
-    closeAndInitAnimationClose,
-    qntItemsCart
+    closeAndInitAnimationClose
   };
 };

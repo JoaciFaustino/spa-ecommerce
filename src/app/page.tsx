@@ -1,23 +1,27 @@
 import styles from "../styles/pages/Home.module.scss";
 import Image from "next/image";
 import { getCakeBestSellers } from "../services/requests";
-import { Cake } from "@/@types/Cake";
+import { ICake } from "@/@types/Cake";
 import CakeCard from "@/components/CakeCard/CakeCard";
 import imgStrawberryCake from "../../public/images/strawberry-cake.png";
 import { CgArrowTopRight } from "react-icons/cg";
 import { BsStars, BsTruck } from "react-icons/bs";
 import { GiThreeLeaves } from "react-icons/gi";
+import Link from "next/link";
+import { Suspense } from "react";
+import CakeCardSkeleton from "@/components/CakeCard/loading";
+import { formatPriceNumber } from "@/utils/formatPrice";
 
 export default async function Home() {
-  const cakesBestSellers: Cake[] = await getCakeBestSellers();
-
   return (
-    <main className={styles.main}>
+    <div className={styles.home}>
       <section className={styles.initialSection}>
         <div className={`${styles.wrapper} wrapper grid`}>
           <div className={styles.left}>
             <h2>Delicie-se com os sabores mais irresistíveis da confeitaria</h2>
-            <button className="textBig">ver menu</button>
+            <Link href="/menu">
+              <button className="textBig">ver menu</button>
+            </Link>
           </div>
           <div className={styles.right}>
             <div className={styles.mainCard}>
@@ -30,14 +34,16 @@ export default async function Home() {
               <div className={styles.divText}>
                 <h3>Explore as mais diversas opções de bolos</h3>
                 <h4>Explore as mais diversas opções de bolos</h4>
-                <button>
-                  <CgArrowTopRight
-                    className={styles.iconArrow}
-                    style={{
-                      color: "#fff"
-                    }}
-                  />
-                </button>
+                <Link href="/menu">
+                  <button>
+                    <CgArrowTopRight
+                      className={styles.iconArrow}
+                      style={{
+                        color: "#fff"
+                      }}
+                    />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -128,16 +134,46 @@ export default async function Home() {
       <section className={styles.sectionBestSellers}>
         <div className={`${styles.wrapper} wrapper grid`}>
           <h2>Mais vendidos</h2>
+
+          <Suspense
+            fallback={Array.from({ length: 12 }).map((_, index) => (
+              <CakeCardSkeleton key={index} />
+            ))}
+          >
+            <CakesBestSellers />
+          </Suspense>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+async function CakesBestSellers() {
+  const cakesBestSellers: ICake[] | undefined = await getCakeBestSellers();
+
+  return (
+    <>
+      {!cakesBestSellers && (
+        <h5>Falha ao buscar os bolos! tente novamente mais tarde</h5>
+      )}
+
+      {cakesBestSellers && cakesBestSellers.length === 0 && (
+        <h5>Nenhum bolo foi cadastrado ainda! Volte mais tarde</h5>
+      )}
+
+      {cakesBestSellers && cakesBestSellers.length > 0 && (
+        <>
           {cakesBestSellers.map((cake) => (
             <CakeCard
               key={cake._id}
+              nameCake={cake.name}
               typeCake={cake.type}
               imageCake={cake.imageUrl}
-              priceCake={cake.pricing}
+              priceCake={formatPriceNumber(cake.totalPricing)}
             />
           ))}
-        </div>
-      </section>
-    </main>
+        </>
+      )}
+    </>
   );
 }

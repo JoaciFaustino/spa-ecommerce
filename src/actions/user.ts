@@ -7,7 +7,7 @@ import { User } from "@/@types/User";
 
 export async function getUserLogged(): Promise<User | undefined> {
   try {
-    const [{ userId }, session] = await Promise.all([auth(), getSession()]); //metodo para fazer as requisições ao mesmo tempo ao invés de esperar uma acontecer e depois a outra
+    const [{ userId }, session] = await Promise.all([auth(), getSession()]);
 
     if (!session) return;
 

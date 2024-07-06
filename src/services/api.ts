@@ -1,3 +1,9 @@
 import axios from "axios";
 
-export const api = axios.create({ baseURL: "http://localhost:3001/api" });
+const host: string =
+  process.env.API_HOST +
+  (process.env.API_PORT ? `:${process.env.API_PORT}` : "");
+
+export const api = axios.create({
+  baseURL: `${process.env.API_PROTOCOL}://${host}/api`
+});

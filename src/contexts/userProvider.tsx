@@ -31,6 +31,10 @@ function UserProvider({
 
     setUser(user);
 
+    if (!user) {
+      await logoutAction();
+    }
+
     return user;
   };
 
@@ -39,18 +43,24 @@ function UserProvider({
   const handleLogout = async () => {
     try {
       await logoutAction();
+
       setUser(undefined);
 
       router.push("/login");
     } catch (error) {
-      console.log("deu erro");
+      router.push("/login");
       return;
     }
   };
 
   return (
     <UserContext.Provider
-      value={{ user, getUserLogged, changeUserLogged, handleLogout }}
+      value={{
+        user,
+        getUserLogged,
+        changeUserLogged,
+        handleLogout
+      }}
     >
       {children}
     </UserContext.Provider>

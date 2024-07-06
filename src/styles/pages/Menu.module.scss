@@ -1,0 +1,78 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex: 1;
+  padding: var(--padding-4) 0;
+  gap: var(--padding-4);
+}
+
+.menuCakes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menuCakes .wrapper h5 {
+  text-align: center;
+  grid-column: span 12;
+  height: 100%;
+}
+
+.serverErrorText {
+  color: var(--color-text-paragraph);
+}
+
+.divLoader {
+  grid-column: span 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.loader {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  position: relative;
+  animation: pulse 1s linear infinite;
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: scaleUp 1s linear infinite;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  60%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes pulse {
+  0%,
+  60%,
+  100% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+}

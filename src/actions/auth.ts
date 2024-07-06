@@ -3,7 +3,6 @@ import "server-only";
 import { AuthResponse, FieldsFormLogin, FieldsFormSignUp } from "@/@types/Auth";
 import { api } from "@/services/api";
 import { createSession, deleteSession, getSession } from "@/lib/session";
-import { redirect } from "next/navigation";
 import { User } from "@/@types/User";
 
 export async function login(fields: FieldsFormLogin): Promise<AuthResponse> {
@@ -80,7 +79,7 @@ export async function signUp(fields: FieldsFormSignUp): Promise<AuthResponse> {
 
     switch (status) {
       case 400:
-        return { error: "Por favor, preencha todos os campos" };
+        return { error: "Por favor, preencha todos os campos corretamente" };
 
       case 409:
         if (data?.message.includes(" name")) {
@@ -128,5 +127,4 @@ export async function auth(): Promise<{ userId?: string; role?: string }> {
 
 export async function logout() {
   await deleteSession();
-  redirect("/login");
 }

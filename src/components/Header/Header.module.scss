@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   padding: var(--padding-4) 0;
-  background-color: white;
+  background-color: transparent;
   transition: all 0.3s;
   z-index: 1;
 
@@ -20,8 +20,8 @@
 }
 
 .noTopScreen {
-  padding: var(--padding-1) 0;
-  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  padding: var(--padding-2) 0;
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.1);
   background-color: rgba(#fff, 0.5);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -43,7 +43,7 @@
   }
 }
 
-.header nav {
+.header .navbar {
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -57,44 +57,12 @@
     li {
       cursor: pointer;
       transition: all 0.5s;
+      color: var(--color-text-title);
 
       &:hover {
         color: var(--primary-color);
       }
     }
-  }
-}
-
-.divUser {
-  display: flex;
-  align-items: center;
-  gap: var(--padding-1);
-
-  button {
-    border: none;
-  }
-}
-
-.divUser .iconSkeleton {
-  border-radius: 500px;
-  width: 2rem;
-  height: 2rem;
-}
-
-.btnLogin {
-  background-color: none;
-
-  &:hover {
-    background-color: var(--gray-2);
-  }
-}
-
-.btnSignup {
-  background-color: var(--secondary-color);
-  color: white;
-
-  &:hover {
-    background-color: var(--secondary-color-hover);
   }
 }
 
@@ -107,21 +75,6 @@
   border: none;
 }
 
-@media (max-width: $md) {
-  .btnSignup {
-    display: none;
-  }
-
-  .btnLogin {
-    background-color: var(--secondary-color);
-    color: white;
-  }
-
-  .btnLogin:hover {
-    background-color: var(--secondary-color-hover);
-  }
-}
-
 @media (max-width: $sm) {
   .wrapper {
     justify-content: space-between;
@@ -131,7 +84,7 @@
     display: inline-block;
   }
 
-  .header nav {
+  .header .navbar {
     display: none;
   }
 }

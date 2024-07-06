@@ -1,12 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.scss";
-import { UserContext } from "@/contexts/userProvider";
 
 export const useHeader = () => {
   const [openAsideMenu, setOpenAsideMenu] = useState(false);
   const headerRef = useRef<HTMLDivElement | null>(null);
-  const { getUserLogged } = useContext(UserContext);
-  const [reqIsPending, setReqIsPending] = useState(true);
 
   useEffect(() => {
     if (window.scrollY !== 0) {
@@ -14,10 +11,6 @@ export const useHeader = () => {
     }
 
     window.addEventListener("scroll", modifyHeaderWhenScroll);
-
-    getUserLogged().then(() => {
-      setReqIsPending(false);
-    });
 
     return () => window.removeEventListener("scroll", modifyHeaderWhenScroll);
   }, []);
@@ -35,7 +28,6 @@ export const useHeader = () => {
   return {
     handleOpenAndCloseAsideMenu,
     headerRef,
-    openAsideMenu,
-    reqIsPending
+    openAsideMenu
   };
 };

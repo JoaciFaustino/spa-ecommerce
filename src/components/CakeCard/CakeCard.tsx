@@ -3,18 +3,19 @@ import styles from "./CakeCard.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
 
 type Props = {
+  nameCake: string;
   typeCake: string;
   imageCake: string;
   priceCake: string;
 };
 
-function CakeCard({ typeCake, imageCake, priceCake }: Props) {
+function CakeCard({ nameCake, typeCake, imageCake, priceCake }: Props) {
   return (
     <div className={styles.card}>
       <div className={styles.divImg}>
         <Image
           src={imageCake}
-          alt={typeCake}
+          alt={nameCake}
           sizes="100vw"
           width={1}
           height={1}
@@ -23,14 +24,18 @@ function CakeCard({ typeCake, imageCake, priceCake }: Props) {
             height: "auto",
             objectFit: "contain"
           }}
+          color="var(--primary-color)"
         />
       </div>
       <div className={styles.divText}>
-        <p className="textBig">{typeCake}</p>
+        <div className={styles.divTypeCake}>
+          <p className="textBig">{nameCake}</p>
+        </div>
         <h4 className={styles.price}>{priceCake}</h4>
       </div>
       <div className={styles.hoverInfo}>
-        <h4>{typeCake}</h4>
+        <h4>{nameCake}</h4>
+        <p className="textBig">{nameCake}</p>
         <button className={styles.btnCart}>
           <CgShoppingCart
             style={{

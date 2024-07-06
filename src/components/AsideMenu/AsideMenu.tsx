@@ -1,32 +1,24 @@
 "use client";
-import { usePathname } from "next/navigation";
 import styles from "./AsideMenu.module.scss";
 import { useContext } from "react";
-import { CgClose, CgShoppingCart } from "react-icons/cg";
-import { BiUserCircle } from "react-icons/bi";
+import { CgClose } from "react-icons/cg";
 import Link from "next/link";
 import { useAsideMenu } from "./useAsideMenu";
 import { UserContext } from "@/contexts/userProvider";
+import Profile from "../Profile/Profile";
+import Cart from "../Cart/Cart";
+import Navbar from "../Navbar/Navbar";
 import UserInfo from "../UserInfo/UserInfo";
 
 type Props = {
-  reqIsPending: boolean;
-  isAuthenticated: boolean;
   handleCloseAsideMenu: () => void;
 };
 
-function AsideMenu({
-  reqIsPending,
-  isAuthenticated,
-  handleCloseAsideMenu
-}: Props) {
-  const {
-    backdropRef,
-    asideMenuRef,
-    closeAndInitAnimationClose,
-    qntItemsCart
-  } = useAsideMenu(handleCloseAsideMenu);
-  const pathName = usePathname();
+const STYLE_ROUTE_ACTIVED = { color: "var(--primary-color)" };
+
+function AsideMenu({ handleCloseAsideMenu }: Props) {
+  const { backdropRef, asideMenuRef, closeAndInitAnimationClose } =
+    useAsideMenu(handleCloseAsideMenu);
 
   return (
     <>
@@ -41,62 +33,10 @@ function AsideMenu({
             <CgClose style={{ color: "white", fontSize: "1.5rem" }} />
           </button>
 
-          <div className={styles.divUser}>
-            {reqIsPending && (
-              <>
-                <span className={`${styles.iconSkeleton} loading`}></span>
-                <span className={`${styles.iconSkeleton} loading`}></span>
-              </>
-            )}
-
-            {!reqIsPending && isAuthenticated && <UserInfo />}
-
-            {!reqIsPending && !isAuthenticated && (
-              <Link href="/signup">
-                <button className={styles.btnSignup}>Cadastrar-se</button>
-              </Link>
-            )}
-          </div>
+          <UserInfo />
         </header>
 
-        <div className={styles.asideMenuContent}>
-          <ul>
-            <li
-              className="textBig"
-              style={pathName === "/" ? { color: "var(--primary-color)" } : {}}
-            >
-              Home
-            </li>
-            <li
-              className="textBig"
-              style={
-                pathName === "/menu" ? { color: "var(--primary-color)" } : {}
-              }
-            >
-              menu
-            </li>
-            <li
-              className="textBig"
-              style={
-                pathName === "/personalizados"
-                  ? { color: "var(--primary-color)" }
-                  : {}
-              }
-            >
-              Personalizados
-            </li>
-            <li
-              className="textBig"
-              style={
-                pathName === "/contatos"
-                  ? { color: "var(--primary-color)" }
-                  : {}
-              }
-            >
-              Contatos
-            </li>
-          </ul>
-        </div>
+        <Navbar className={styles.navbar} />
       </div>
     </>
   );

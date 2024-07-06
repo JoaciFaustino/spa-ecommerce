@@ -1,0 +1,30 @@
+.divCart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: var(--padding-2);
+  transition: all 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+}
+
+.qntItemsCart {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  // flex: 0;
+  height: 1rem;
+  padding: 2px;
+  aspect-ratio: 1 / 1;
+  font-size: 0.625rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 500px;
+}

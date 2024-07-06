@@ -27,11 +27,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.className}`}>
-        <UserProvider getUserLoggedAction={getUserLogged} logoutAction={logout}>
-          <Header />
-          {children}
-          <Footer />
-        </UserProvider>
+        <main>
+          <UserProvider
+            getUserLoggedAction={getUserLogged}
+            logoutAction={logout}
+          >
+            <Header />
+            {children}
+            <Footer />
+          </UserProvider>
+        </main>
       </body>
     </html>
   );

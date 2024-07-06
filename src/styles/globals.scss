@@ -5,12 +5,6 @@
   outline: none;
 }
 
-html,
-body,
-main {
-  position: relative;
-}
-
 :root {
   --primary-color: #f53e81;
   --primary-color-transp: rgba(245, 62, 129, 0.3);
@@ -32,12 +26,12 @@ main {
   --pastel-pink-light: #f5bed3;
 
   --primary-color-hover: #f56499;
-  --secondary-color-hover: #f5bd4d;
+  --secondary-color-hover: #ffaa01d9;
   --tertiary-color-hover: #3b375c;
 
-  --color-text-title: #181717; //A DEFINIR
+  --color-text-title: #181717;
   --color-text-paragraph: #585858;
-  --color-text-placeholder: #2b2b2b;
+  --color-text-placeholder: #575757;
 
   --color-warning-1: #eb4e4e;
   --color-warning-2: #ffb7b7;
@@ -69,8 +63,20 @@ main {
   --xl: 1200px;
 }
 
+html,
+body,
+main {
+  position: relative;
+}
+
 body {
   width: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1,
@@ -119,6 +125,7 @@ ul {
 
 button {
   @extend .text;
+  color: var(--color-text-title);
   padding: var(--padding-2) var(--padding-4);
   cursor: pointer;
   outline: none;
@@ -137,7 +144,9 @@ button:disabled {
 
 input,
 button {
+  font-weight: normal;
   font-family: inherit;
+  font-size: 0.875rem;
 }
 
 a {
@@ -178,7 +187,7 @@ a {
 
 .loading {
   background-color: var(--loading-gray-1);
-  animation: 1s alternate infinite skeletonBgAnimation;
+  animation: 0.5s alternate infinite skeletonBgAnimation;
 }
 
 @keyframes skeletonBgAnimation {
