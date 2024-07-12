@@ -28,6 +28,10 @@ function SelectMany({
     clearOptionsSelecteds
   } = useSelectMany(optionsDefault, queryParam);
 
+  if (optionsDefault.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className={styles.select}>
       <div className={styles.divInputSelect}>

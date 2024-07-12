@@ -1,13 +1,19 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { parseAsString, useQueryState } from "nuqs";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export const useSelect = (options: string[], queryParam?: string) => {
   const [optionsIsOpen, setOptionsIsOpen] = useState(false);
   const optionsRef = useRef<HTMLDivElement | null>(null);
   const [optionSelected, setOptionSelected] = useState(options[0]);
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
-  const pathName = usePathname();
+
+  const [queryParamState, setQueryParamState] = useQueryState(
+    queryParam || "",
+    parseAsString.withOptions({
+      clearOnDefault: true,
+      shallow: false
+      // throttleMs: 1000
+    })
+  );
 
   useEffect(() => {
     getDefaultParam(options, queryParam);
@@ -24,31 +30,13 @@ export const useSelect = (options: string[], queryParam?: string) => {
       return;
     }
 
-    const params = new URLSearchParams(searchParams);
+    if (queryParamState && options.includes(queryParamState)) {
+      setOptionSelected(queryParamState);
 
-    const param = params.get(queryParam);
-
-    if (param && options.includes(param)) {
-      setOptionSelected(param);
       return;
     }
 
-    params.set(queryParam, options[0]);
-    setOptionSelected(options[0]);
-
-    replace(`${pathName}?${params.toString()}`);
-  };
-
-  const setQueryParam = (value: string) => {
-    if (!queryParam) {
-      return;
-    }
-
-    const params = new URLSearchParams(searchParams);
-
-    params.set(queryParam, value);
-
-    replace(`${pathName}?${params.toString()}`);
+    setQueryParamState(options[0]);
   };
 
   const handleClickOutsideModal: EventListener = (event) => {
@@ -69,7 +57,11 @@ export const useSelect = (options: string[], queryParam?: string) => {
     setOptionSelected(e.target.value);
     setOptionsIsOpen(false);
 
-    setQueryParam(e.target.value);
+    if (!queryParam) {
+      return;
+    }
+
+    setQueryParamState(e.target.value);
   };
 
   return {

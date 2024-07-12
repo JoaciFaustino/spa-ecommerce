@@ -1,7 +1,6 @@
 "use client";
-import { ChangeEvent } from "react";
 import styles from "../Select.module.scss";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import { useSelect } from "./useSelect";
 
 type Props = {
@@ -20,6 +19,10 @@ function Select({ selectName, label, options, queryParam }: Props) {
     handleChangeInputOption
   } = useSelect(options, queryParam);
 
+  if (options.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className={styles.select}>
       <label htmlFor={selectName}>{label}</label>
@@ -27,17 +30,14 @@ function Select({ selectName, label, options, queryParam }: Props) {
       <button className={styles.btnOpen} onClick={handleClickButton}>
         {optionSelected}
 
-        {optionsIsOpen && (
-          <IoIosArrowUp
-            style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
-          />
-        )}
-
-        {!optionsIsOpen && (
-          <IoIosArrowDown
-            style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
-          />
-        )}
+        <IoIosArrowDown
+          className={
+            optionsIsOpen
+              ? `${styles.rotated} ${styles.icon}`
+              : `${styles.icon}`
+          }
+          style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
+        />
       </button>
 
       {optionsIsOpen && (

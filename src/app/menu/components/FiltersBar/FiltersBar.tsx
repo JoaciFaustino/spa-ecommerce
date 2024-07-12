@@ -14,9 +14,6 @@ import Select from "@/components/Selects/Select/Select";
 import FilterSelects from "../FilterSelects/FilterSelects";
 
 async function FiltersBar() {
-  //
-  //se der erro tem que mostrar uma tela de erro, depois faça
-  //
   const [cakeTypesRes, categoriesRes, fillingsRes, frostingsRes] =
     await Promise.all([
       getAllCakeTypes(),
@@ -24,9 +21,6 @@ async function FiltersBar() {
       getAllFillings(),
       getAllFrostings()
     ]);
-  //
-  //se der erro tem que mostrar uma tela de erro, depois faça
-  //
 
   const sortByOptions: string[] = [
     "popularidade",
@@ -57,7 +51,7 @@ async function FiltersBar() {
             />
           </div>
         </div>
-
+        {}
         <FilterSelects
           cakeTypes={cakeTypes}
           categories={categories}

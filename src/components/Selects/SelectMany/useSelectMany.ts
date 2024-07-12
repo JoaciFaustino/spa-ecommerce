@@ -1,4 +1,4 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export const useSelectMany = (
@@ -11,10 +11,14 @@ export const useSelectMany = (
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<string[]>(optionsDefault);
 
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-  const params = new URLSearchParams(searchParams);
+  const [queryParamState, setQueryParamState] = useQueryState(
+    queryParam || "",
+    parseAsArrayOf(parseAsString).withOptions({
+      clearOnDefault: true,
+      shallow: false
+      // throttleMs: 1000
+    })
+  );
 
   useEffect(() => {
     getDefaultParams(queryParam);
@@ -51,7 +55,7 @@ export const useSelectMany = (
         return [...prev, e.target.value];
       });
 
-      setQueryParamValue(e.target.value, queryParam);
+      setQueryParamStateValue(e.target.value, queryParam);
 
       return;
     }
@@ -101,9 +105,7 @@ export const useSelectMany = (
       return;
     }
 
-    params.delete(queryParam);
-
-    replace(`${pathname}?${params.toString()}`);
+    setQueryParamState(null);
   };
 
   const getDefaultParams = (queryParam?: string) => {
@@ -111,21 +113,20 @@ export const useSelectMany = (
       return;
     }
 
-    const allValues = params.getAll(queryParam);
-
-    setOptionsSelecteds(
-      allValues.filter((value) => optionsDefault.includes(value))
-    );
+    setOptionsSelecteds((prev) => [
+      ...prev,
+      ...(queryParamState || []).filter((value) =>
+        optionsDefault.includes(value)
+      )
+    ]);
   };
 
-  const setQueryParamValue = (value: string, queryParam?: string) => {
+  const setQueryParamStateValue = (value: string, queryParam?: string) => {
     if (!queryParam) {
       return;
     }
 
-    params.append(queryParam, value);
-
-    replace(`${pathname}?${params.toString()}`);
+    setQueryParamState((prev) => [...(prev || []), value]);
   };
 
   const removeQueryParamValue = (value: string, queryParam?: string) => {
@@ -133,9 +134,13 @@ export const useSelectMany = (
       return;
     }
 
-    params.delete(queryParam, value);
+    setQueryParamState((prev) => {
+      const arrayWitValueDeleted = (prev || []).filter(
+        (valuePrev) => valuePrev !== value
+      );
 
-    replace(`${pathname}?${params.toString()}`);
+      return arrayWitValueDeleted.length !== 0 ? arrayWitValueDeleted : null;
+    });
   };
 
   return {
