@@ -59,12 +59,14 @@
         transform: scale(1.01);
       }
 
-      img {
+      .divImg {
         pointer-events: none;
         position: absolute;
         top: -4rem;
         left: 50%;
         transform: translateX(-50%);
+        width: 50%;
+        aspect-ratio: 1 / 1;
       }
 
       .divText {

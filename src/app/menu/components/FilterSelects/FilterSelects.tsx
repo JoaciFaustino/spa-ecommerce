@@ -2,14 +2,15 @@
 import SelectMany from "@/components/Selects/SelectMany/SelectMany";
 import { IoIosArrowDown } from "react-icons/io";
 import styles from "./FilterSelects.module.scss";
-import {  useState } from "react";
+import { useState } from "react";
+import { Option } from "@/@types/SelectsComponents";
 
 type Props = {
-  cakeTypes?: string[];
-  frostings?: string[];
-  fillings?: string[];
-  categories?: string[];
-  sizes?: string[];
+  cakeTypes?: Option[];
+  frostings?: Option[];
+  fillings?: Option[];
+  categories?: Option[];
+  sizes?: Option[];
 };
 
 function FilterSelects({

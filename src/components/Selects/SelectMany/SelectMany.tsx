@@ -1,12 +1,13 @@
 "use client";
-import { IoIosArrowDown, IoIosArrowUp, IoIosCloseCircle } from "react-icons/io";
+import { IoIosArrowDown, IoIosCloseCircle } from "react-icons/io";
 import styles from "../Select.module.scss";
 import { useSelectMany } from "./useSelectMany";
+import { Option } from "@/@types/SelectsComponents";
 
 type Props = {
   placeholder: string;
   selectName: string;
-  optionsDefault?: string[];
+  optionsDefault?: Option[];
   queryParam?: string;
 };
 
@@ -24,7 +25,7 @@ function SelectMany({
     openOptions,
     inputValue,
     handleChangeSearch,
-    options,
+    optionsNormalizeds,
     clearOptionsSelecteds
   } = useSelectMany(optionsDefault, queryParam);
 
@@ -57,10 +58,7 @@ function SelectMany({
               <IoIosCloseCircle
                 onClick={clearOptionsSelecteds}
                 className={styles.icon}
-                style={{
-                  color: "#fff",
-                  fontSize: "1rem"
-                }}
+                style={{ color: "#fff", fontSize: "1rem" }}
               />
             </div>
           )}
@@ -79,32 +77,32 @@ function SelectMany({
 
       {optionsIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
-          {options.map((option, index) => (
+          {optionsNormalizeds.map((option) => (
             <div
-              key={index}
+              key={option.id}
               className={
-                optionsSelecteds.includes(option)
+                optionsSelecteds.includes(option.name)
                   ? `${styles.optionSelected} ${styles.option}`
                   : `${styles.option}`
               }
             >
-              <label htmlFor={option} className={styles.label}>
-                <p className="text">{option}</p>
+              <label htmlFor={option.name} className={styles.label}>
+                <p className="text">{option.name}</p>
               </label>
 
               <input
                 type="checkbox"
-                id={option}
+                id={option.name}
                 name={selectName}
-                checked={optionsSelecteds.includes(option)}
-                value={option}
+                checked={optionsSelecteds.includes(option.name)}
+                value={option.name}
                 onChange={handleChangeCheckbox}
                 hidden={true}
               />
             </div>
           ))}
 
-          {inputValue !== "" && options.length === 0 && (
+          {inputValue !== "" && optionsNormalizeds.length === 0 && (
             <p className={`${styles.textWarning} text`}>
               Não existe essa opção
             </p>

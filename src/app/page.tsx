@@ -25,12 +25,15 @@ export default async function Home() {
           </div>
           <div className={styles.right}>
             <div className={styles.mainCard}>
-              <Image
-                src={imgStrawberryCake}
-                alt="strawberry cake"
-                sizes="100vw"
-                style={{ width: "50%", height: "auto" }}
-              />
+              <div className={styles.divImg}>
+                <Image
+                  src={imgStrawberryCake}
+                  alt="strawberry cake"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  priority
+                />
+              </div>
               <div className={styles.divText}>
                 <h3>Explore as mais diversas opções de bolos</h3>
                 <h4>Explore as mais diversas opções de bolos</h4>

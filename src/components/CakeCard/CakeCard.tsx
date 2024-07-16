@@ -16,15 +16,8 @@ function CakeCard({ nameCake, typeCake, imageCake, priceCake }: Props) {
         <Image
           src={imageCake}
           alt={nameCake}
-          sizes="100vw"
-          width={1}
-          height={1}
-          style={{
-            width: "100%",
-            height: "auto",
-            objectFit: "contain"
-          }}
-          color="var(--primary-color)"
+          fill
+          style={{ objectFit: "contain" }}
         />
       </div>
       <div className={styles.divText}>

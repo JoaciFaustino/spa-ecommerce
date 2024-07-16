@@ -3,7 +3,7 @@ import { ICake } from "@/@types/Cake";
 import CakeCard from "@/components/CakeCard/CakeCard";
 import { getAllCakesCompleteUrl } from "@/services/requests";
 import { formatPriceNumber } from "@/utils/formatPrice";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import CakeCardSkeleton from "@/components/CakeCard/loading";
 
 type Props = {
@@ -16,6 +16,7 @@ function LoadNextCakes({ nextUrl }: Props) {
   const [nextUrlState, setNextUrlState] = useState<string | undefined>(nextUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [canLoadMoreCakes, setCanLoadMoreCakes] = useState(false);
+  const [_, startTransition] = useTransition();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -24,7 +25,7 @@ function LoadNextCakes({ nextUrl }: Props) {
           setCanLoadMoreCakes(true);
         }
       },
-      { rootMargin: "100px" }
+      { rootMargin: "300px" }
     );
 
     if (finalPageInspectorRef.current) {
@@ -75,7 +76,9 @@ function LoadNextCakes({ nextUrl }: Props) {
 
     const { cakes: newCakes, nextUrl: newNextUrl } = response;
 
-    setCakes((prev) => [...prev, ...newCakes]);
+    startTransition(() => {
+      setCakes((prev) => [...prev, ...newCakes]);
+    });
     setNextUrlState(newNextUrl || undefined);
   };
 

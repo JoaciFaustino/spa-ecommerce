@@ -1,10 +1,11 @@
+import { Option } from "@/@types/SelectsComponents";
 import { parseAsString, useQueryState } from "nuqs";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-export const useSelect = (options: string[], queryParam?: string) => {
+export const useSelect = (options: Option[], queryParam?: string) => {
   const [optionsIsOpen, setOptionsIsOpen] = useState(false);
   const optionsRef = useRef<HTMLDivElement | null>(null);
-  const [optionSelected, setOptionSelected] = useState(options[0]);
+  const [optionSelected, setOptionSelected] = useState(options[0].name);
 
   const [queryParamState, setQueryParamState] = useQueryState(
     queryParam || "",
@@ -16,7 +17,7 @@ export const useSelect = (options: string[], queryParam?: string) => {
   );
 
   useEffect(() => {
-    getDefaultParam(options, queryParam);
+    getDefaultParam(queryParam);
 
     document.addEventListener("mousedown", handleClickOutsideModal);
 
@@ -25,18 +26,22 @@ export const useSelect = (options: string[], queryParam?: string) => {
     };
   }, []);
 
-  const getDefaultParam = (options: string[], queryParam?: string) => {
+  const getDefaultParam = (queryParam?: string) => {
     if (!queryParam) {
       return;
     }
 
-    if (queryParamState && options.includes(queryParamState)) {
+    const queryParamIncludesInOptionsDefault = options.some(
+      (option) => queryParamState === option.name
+    );
+
+    if (queryParamState && queryParamIncludesInOptionsDefault) {
       setOptionSelected(queryParamState);
 
       return;
     }
 
-    setQueryParamState(options[0]);
+    setQueryParamState(options[0].name);
   };
 
   const handleClickOutsideModal: EventListener = (event) => {

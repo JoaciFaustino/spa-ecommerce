@@ -8,6 +8,7 @@ import { useHeader } from "./useHeader";
 import { usePathname } from "next/navigation";
 import Navbar from "../Navbar/Navbar";
 import UserInfo from "../UserInfo/UserInfo";
+import logo from "../../../public/images/logo.png";
 
 function Header() {
   const pathName = usePathname();
@@ -30,7 +31,13 @@ function Header() {
 
         <div className={styles.divLogo}>
           <Link href="/">
-            <Image src="/images/logo.png" width={60} height={30} alt="logo" />
+            <Image
+              src={logo}
+              width={60}
+              height={30}
+              alt="logo"
+              
+            />
           </Link>
         </div>
 

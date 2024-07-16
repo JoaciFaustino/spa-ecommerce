@@ -2,11 +2,12 @@
 import styles from "../Select.module.scss";
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelect } from "./useSelect";
+import { Option } from "@/@types/SelectsComponents";
 
 type Props = {
   selectName: string;
   label: string;
-  options: string[];
+  options: Option[];
   queryParam?: string;
 };
 
@@ -42,25 +43,25 @@ function Select({ selectName, label, options, queryParam }: Props) {
 
       {optionsIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
-          {options.map((option, index) => (
+          {options.map((option) => (
             <div
-              key={index}
+              key={option.id}
               className={
-                optionSelected === option
+                optionSelected === option.name
                   ? `${styles.optionSelected} ${styles.option}`
                   : `${styles.option}`
               }
             >
-              <label htmlFor={option}>
-                <p className={`${styles.label} text`}>{option}</p>
+              <label htmlFor={option.name}>
+                <p className={`${styles.label} text`}>{option.name}</p>
               </label>
 
               <input
                 type="radio"
-                id={option}
+                id={option.name}
                 name={selectName}
-                checked={optionSelected === option}
-                value={option}
+                checked={optionSelected === option.name}
+                value={option.name}
                 onChange={handleChangeInputOption}
                 hidden={true}
               />

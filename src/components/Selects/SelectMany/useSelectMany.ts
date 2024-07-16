@@ -1,15 +1,17 @@
+import { Option } from "@/@types/SelectsComponents";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
 
 export const useSelectMany = (
-  optionsDefault: string[],
+  optionsDefault: Option[],
   queryParam?: string
 ) => {
   const [optionsSelecteds, setOptionsSelecteds] = useState<string[]>([]);
+  const [optionsNormalizeds, setOptionsNormalizeds] =
+    useState<Option[]>(optionsDefault);
   const [optionsIsOpen, setOptionsIsOpen] = useState(false);
   const optionsRef = useRef<HTMLDivElement | null>(null);
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState<string[]>(optionsDefault);
 
   const [queryParamState, setQueryParamState] = useQueryState(
     queryParam || "",
@@ -61,7 +63,7 @@ export const useSelectMany = (
     }
 
     setOptionsSelecteds((prev) => {
-      return prev.filter((option) => option !== e.target.value);
+      return prev.filter((option: string) => option !== e.target.value);
     });
 
     removeQueryParamValue(e.target.value, queryParam);
@@ -76,17 +78,17 @@ export const useSelectMany = (
       return;
     }
 
-    const filteredOptions = optionsDefault.filter((option) =>
-      option.toLowerCase().includes(e.target.value.toLowerCase())
+    const filteredOptions = optionsDefault.filter(({ name }) =>
+      name.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
-    setOptions([...filteredOptions]);
+    setOptionsNormalizeds([...filteredOptions]);
   };
 
   const sequenceOptions = () => {
-    const selectedsOptionsFirst: string[] = optionsDefault.reduce(
-      (sequencedOptions: string[], option: string) => {
-        if (optionsSelecteds.includes(option)) {
+    const selectedsOptionsFirst = optionsDefault.reduce(
+      (sequencedOptions: Option[], option: Option) => {
+        if (optionsSelecteds.includes(option.name)) {
           return [option, ...sequencedOptions];
         }
 
@@ -95,7 +97,7 @@ export const useSelectMany = (
       []
     );
 
-    setOptions([...selectedsOptionsFirst]);
+    setOptionsNormalizeds([...selectedsOptionsFirst]);
   };
 
   const clearOptionsSelecteds = () => {
@@ -113,11 +115,20 @@ export const useSelectMany = (
       return;
     }
 
+    const urlOptionsIncludedsInOptionsDefault: string[] = optionsDefault.reduce(
+      (acm: string[], option: Option) => {
+        if ((queryParamState || []).includes(option.name)) {
+          return [...acm, option.name];
+        }
+
+        return [...acm];
+      },
+      []
+    );
+
     setOptionsSelecteds((prev) => [
       ...prev,
-      ...(queryParamState || []).filter((value) =>
-        optionsDefault.includes(value)
-      )
+      ...urlOptionsIncludedsInOptionsDefault
     ]);
   };
 
@@ -151,7 +162,7 @@ export const useSelectMany = (
     openOptions,
     inputValue,
     handleChangeSearch,
-    options,
+    optionsNormalizeds,
     clearOptionsSelecteds
   };
 };
