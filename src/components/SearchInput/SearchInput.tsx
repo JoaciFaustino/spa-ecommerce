@@ -1,14 +1,31 @@
+"use client";
 import { BsSearch } from "react-icons/bs";
 import styles from "./SearchInput.module.scss";
+import { useEffect, useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+import { parseAsString, useQueryState } from "nuqs";
 
 function SearchInput({ placeholder }: { placeholder: string }) {
+  const [value, setValue] = useState("");
+  const debouncedValue = useDebounce(value, 800);
+  const [_, setSearchParam] = useQueryState(
+    "search",
+    parseAsString.withOptions({ clearOnDefault: true, shallow: false })
+  );
+
+  useEffect(() => {
+    setSearchParam(debouncedValue || null);
+  }, [debouncedValue]);
+
   return (
     <div className={styles.divSearch}>
       <input
         type="text"
         name="search"
+        value={value}
         placeholder={placeholder}
         className={`text`}
+        onChange={(e) => setValue(e.target.value)}
       />
 
       <BsSearch

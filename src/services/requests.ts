@@ -28,6 +28,7 @@ export const getAllCakes = async ({
   category,
   filling,
   frosting,
+  search,
   limit = "20",
   page = "1",
   sortBy
@@ -40,14 +41,15 @@ export const getAllCakes = async ({
       nextUrl: null | string;
     }>("/cakes", {
       params: {
-        type: type,
-        size: size,
-        category: category,
-        filling: filling,
-        frosting: frosting,
-        limit: limit,
-        page: page,
-        sortBy: sortBy
+        type,
+        size,
+        category,
+        filling,
+        frosting,
+        limit,
+        page,
+        sortBy,
+        search
       },
       paramsSerializer: {
         indexes: false

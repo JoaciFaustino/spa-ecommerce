@@ -5,6 +5,7 @@ export type CakeQueryParams = {
   filling?: string[] | string;
   size?: string[] | string;
   sortBy?: string[] | string;
+  search?: string;
   limit?: string;
   page?: string;
 };

@@ -13,10 +13,7 @@ function Profile() {
     <div className={styles.userIcon}>
       <BiUserCircle
         onClick={handleOpenAndCloseModal}
-        style={{
-          color: "var(--color-text-title)",
-          fontSize: "2rem"
-        }}
+        style={{ color: "var(--color-text-title)", fontSize: "2rem" }}
       />
 
       {modalIsOpen && (

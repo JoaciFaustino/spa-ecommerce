@@ -29,7 +29,8 @@ async function LoadInitialCakes({
   category,
   size,
   filling,
-  frosting
+  frosting,
+  search
 }: CakeQueryParams) {
   const sortByLastValue: string | undefined = Array.isArray(sortBy)
     ? sortBy[sortBy.length - 1]
@@ -38,6 +39,7 @@ async function LoadInitialCakes({
   const response = await getAllCakes({
     limit,
     page,
+    search,
     type: splitQueryParam(type),
     category: splitQueryParam(category),
     size: splitQueryParam(size),
