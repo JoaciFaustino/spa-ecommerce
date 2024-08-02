@@ -8,5 +8,7 @@ export const usePopUpError = () => {
     popUpRef?.current?.classList.add(styles.popUpClosed);
   };
 
+  
+
   return { handleClosePopUp, popUpRef };
 };

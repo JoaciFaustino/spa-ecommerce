@@ -1,13 +1,20 @@
+"use client";
 import styles from "./Profile.module.scss";
 import { BiUserCircle } from "react-icons/bi";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { UserContext } from "@/contexts/userProvider";
-import { useProfile } from "./useProfile";
+import { User } from "@/@types/User";
+import { useModal } from "@/hooks/useModal";
 
-function Profile() {
-  const { handleLogout, user } = useContext(UserContext);
-  const { handleOpenAndCloseModal, modalIsOpen, modalRef } = useProfile();
+function Profile({ user }: { user: User }) {
+  const { handleLogout, changeUserLogged } = useContext(UserContext);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const { handleOpenAndCloseModal, modalIsOpen } = useModal(modalRef);
+
+  useEffect(() => {
+    changeUserLogged(user);
+  }, [user]);
 
   return (
     <div className={styles.userIcon}>

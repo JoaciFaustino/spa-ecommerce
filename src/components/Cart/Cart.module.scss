@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .divCart {
   position: relative;
   display: flex;
@@ -5,7 +7,7 @@
   padding: var(--padding-2);
   transition: all 0.3s;
 
-  &:hover {
+  svg:hover {
     cursor: pointer;
     transform: scale(1.1);
   }
@@ -27,4 +29,127 @@
   background-color: var(--primary-color);
   color: white;
   border-radius: 500px;
+}
+
+.cartModal {
+  position: absolute;
+  right: 0;
+  top: var(--padding-14);
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  background-color: rgba(#fff, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: fadeInModal 0.3s;
+
+  max-height: 28rem;
+  width: 24rem;
+  max-width: 100vw;
+  padding: var(--padding-2) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-2);
+}
+
+.divItemCakes {
+  position: relative;
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-3) var(--gray-1);
+  transition: width 0.5s;
+}
+
+.textWarning {
+  display: flex;
+  align-items: center;
+  height: 24rem;
+  color: var(--color-warning-1);
+}
+
+.divItemCakes::-webkit-scrollbar {
+  width: var(--padding-3);
+}
+
+.divItemCakes::-webkit-scrollbar-track {
+  background: var(--gray-1);
+}
+
+.divItemCakes::-webkit-scrollbar-thumb {
+  background: var(--gray-2);
+}
+
+.divItemCakes::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-3);
+}
+
+.priceText {
+  color: var(--secondary-color);
+}
+
+.cartFooter {
+  position: relative;
+  width: 100%;
+  padding: 0 var(--padding-4);
+  text-align: right;
+
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: calc(var(--padding-2) * (-1));
+    transform: translateY(-100%);
+    width: 100%;
+    height: 2rem;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.07) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+  }
+}
+
+.cartFooter .divBtns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--padding-2);
+}
+
+.cartFooter .divBtns .completePurchaseBtn {
+  background-color: var(--secondary-color);
+  color: #fff;
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+@keyframes fadeInModal {
+  0% {
+    opacity: 0;
+    margin-top: var(--padding-2);
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: $sm) {
+  .cartModal {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - var(--padding-4));
+    max-width: 100%;
+    max-height: 50vh;
+  }
 }

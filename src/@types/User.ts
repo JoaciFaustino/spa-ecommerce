@@ -4,6 +4,7 @@ export type User = {
   username: string;
   email: string;
   role: string;
+  cartId: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

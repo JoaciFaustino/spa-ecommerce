@@ -12,22 +12,14 @@ function PopUpError({ message }: Props) {
   const { handleClosePopUp, popUpRef } = usePopUpError();
 
   return (
-    <div className={styles.popUp} ref={popUpRef}>
+    <div className={styles.popUp} ref={popUpRef} key={message + Date.now}>
       <IoIosCloseCircle
         className={styles.iconClosePopUp}
-        style={{
-          color: "var(--color-warning-1)",
-          fontSize: "1.5rem"
-        }}
+        style={{ color: "var(--color-warning-1)", fontSize: "1.5rem" }}
         onClick={handleClosePopUp}
       />
       <div className={styles.divIcon}>
-        <RiErrorWarningLine
-          style={{
-            color: "#fff",
-            fontSize: "2.4rem"
-          }}
-        />
+        <RiErrorWarningLine style={{ color: "#fff", fontSize: "2.4rem" }} />
       </div>
       <div className={styles.divMessage}>
         <p>{message}</p>

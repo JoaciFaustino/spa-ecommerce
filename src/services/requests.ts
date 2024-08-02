@@ -6,6 +6,8 @@ import { IFilling } from "@/@types/Filling";
 import { IFrosting } from "@/@types/Frosting";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
+import { getSession } from "@/lib/session";
+import { headers } from "next/headers";
 
 type SucessGetAllCakes = {
   sucess: true;
@@ -131,7 +133,6 @@ export const getAllCakesCompleteUrl = async (
   }
 };
 
-//trocar isso depois e usar o getAllCakes com os filtros
 export const getCakeBestSellers = async (): Promise<ICake[] | undefined> => {
   try {
     const limit = 12;
@@ -190,5 +191,30 @@ export const getAllFrostings = async (): Promise<IFrosting[] | undefined> => {
     return data.frostings;
   } catch (error: any) {
     return;
+  }
+};
+
+export const removeItemCart = async (
+  cartId: string,
+  itemCartId: string
+): Promise<void> => {
+  try {
+    const session = await getSession();
+
+    throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
+
+    await api.patch<{ message: string }>(
+      `/cart/remove-cake/${cartId}/${itemCartId}`,
+      {},
+      { headers: { Authorization: session } }
+    );
+  } catch (error: any) {
+    throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
+
+    if (!axios.isAxiosError(error)) {
+      throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
+    }
+
+    throw new Error(error?.response?.statusText);
   }
 };

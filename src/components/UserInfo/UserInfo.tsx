@@ -1,45 +1,64 @@
-"use client";
-import { useContext } from "react";
+"use server";
 import styles from "./UserInfo.module.scss";
-import { useUserInfo } from "./useUserInfo";
-import { UserContext } from "@/contexts/userProvider";
 import Cart from "../Cart/Cart";
 import Profile from "../Profile/Profile";
 import Link from "next/link";
+import { getUserLogged } from "@/actions/user";
+import { User } from "@/@types/User";
+import { Suspense } from "react";
+import { getCartById } from "@/actions/cart";
+import { Cart as CartType } from "@/@types/Cart";
 
-function UserInfo() {
-  const { reqIsPending } = useUserInfo();
-  const { user } = useContext(UserContext);
-  const isAuthenticated = !!user;
-
+async function UserInfo() {
   return (
     <div className={styles.divUser}>
-      {reqIsPending && (
-        <>
-          <span className={`${styles.iconSkeleton} loading`}></span>
-          <span className={`${styles.iconSkeleton} loading`}></span>
-        </>
-      )}
-
-      {!reqIsPending && isAuthenticated && (
-        <>
-          <Cart />
-          <Profile />
-        </>
-      )}
-
-      {!reqIsPending && !isAuthenticated && (
-        <>
-          <Link href="/login">
-            <button className={styles.btnLogin}>Login</button>
-          </Link>
-          <Link href="/signup">
-            <button className={styles.btnSignup}>Cadastrar-se</button>
-          </Link>
-        </>
-      )}
+      <Suspense
+        fallback={
+          <>
+            <span className={`${styles.iconSkeleton} loading`}></span>
+            <span className={`${styles.iconSkeleton} loading`}></span>
+          </>
+        }
+      >
+        <ProfileServerComponent />
+      </Suspense>
     </div>
   );
+}
+
+async function ProfileServerComponent() {
+  const user: User | undefined = await getUserLogged();
+
+  if (!user) {
+    return (
+      <>
+        <Link href="/login">
+          <button className={styles.btnLogin}>Login</button>
+        </Link>
+        <Link href="/signup">
+          <button className={styles.btnSignup}>Cadastrar-se</button>
+        </Link>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Suspense
+        fallback={<span className={`${styles.iconSkeleton} loading`}></span>}
+      >
+        <CartServerComponent cartId={user.cartId} />
+      </Suspense>
+
+      <Profile user={user} />
+    </>
+  );
+}
+
+async function CartServerComponent({ cartId }: { cartId: string }) {
+  const cart: CartType | undefined = await getCartById(cartId);
+
+  return <Cart cart={cart} />;
 }
 
 export default UserInfo;

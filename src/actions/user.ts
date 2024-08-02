@@ -11,7 +11,7 @@ export async function getUserLogged(): Promise<User | undefined> {
 
     if (!session) return;
 
-    const { data } = await api.get<{ user: User }>(`/user/findById/${userId}`, {
+    const { data } = await api.get<{ user: User }>(`/user/${userId}`, {
       headers: { Authorization: session }
     });
 

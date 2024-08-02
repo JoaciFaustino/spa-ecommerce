@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .userIcon {
   position: relative;
   display: flex;
@@ -7,19 +9,24 @@
 
 .userIcon .userModal {
   max-width: 24rem;
+  max-height: 32rem;
   position: absolute;
   right: 0;
-  bottom: calc(var(--padding-4) * (-1));
-  transform: translateY(100%);
+  top: var(--padding-14);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
-  background-color: rgba(#fff, 0.5);
+  background-color: rgba(#fff, 0.7);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: var(--padding-4) var(--padding-2);
   text-align: center;
   text-wrap: nowrap;
   animation: fadeInModal 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 
   h6 {
     min-width: 12rem;
@@ -66,10 +73,21 @@
 @keyframes fadeInModal {
   0% {
     opacity: 0;
-    transform: translateY(104%);
+    margin-top: var(--padding-2);
   }
   100% {
     opacity: 1;
-    transform: translateY(100%);
+    margin-top: 0;
+  }
+}
+
+@media (max-width: $sm) {
+  .userIcon .userModal {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - var(--padding-4));
+    max-width: 100%;
+    max-height: 50vh;
   }
 }

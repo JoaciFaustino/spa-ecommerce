@@ -10,7 +10,7 @@ import Navbar from "../Navbar/Navbar";
 import UserInfo from "../UserInfo/UserInfo";
 import logo from "../../../public/images/logo.png";
 
-function Header() {
+function Header({ userInfoComponent }: { userInfoComponent: React.ReactNode }) {
   const pathName = usePathname();
   const { handleOpenAndCloseAsideMenu, headerRef, openAsideMenu } = useHeader();
   const pageIsAuth: boolean = pathName === "/login" || pathName === "/signup";
@@ -31,19 +31,13 @@ function Header() {
 
         <div className={styles.divLogo}>
           <Link href="/">
-            <Image
-              src={logo}
-              width={60}
-              height={30}
-              alt="logo"
-              
-            />
+            <Image src={logo} width={60} height={30} alt="logo" />
           </Link>
         </div>
 
         <Navbar className={styles.navbar} />
 
-        <UserInfo />
+        {userInfoComponent}
       </div>
     </header>
   ) : (

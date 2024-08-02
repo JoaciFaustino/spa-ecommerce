@@ -1,9 +1,9 @@
 .popUp {
+  position: fixed;
   max-width: 98vw;
   top: var(--padding-4);
   left: 50%;
   transform: translateX(-50%);
-  position: fixed;
   border: solid 2px var(--color-warning-1);
   display: flex;
   background-color: #fff;

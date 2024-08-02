@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    API_PROTOCOL: process.env.API_PROTOCOL,
+    API_HOST: process.env.API_HOST,
+    API_PORT: process.env.API_PORT
+  },
   images: {
     remotePatterns: [
       {

@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 
-export const useProfile = () => {
+export const useModal = (modalRef: MutableRefObject<HTMLElement | null>) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideModal);
@@ -17,18 +16,13 @@ export const useProfile = () => {
   };
 
   const handleClickOutsideModal: EventListener = (event) => {
-    if (
-      modalIsOpen &&
-      modalRef.current &&
-      !modalRef.current.contains(event.target as Node)
-    ) {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       setModalIsOpen(false);
     }
   };
 
   return {
-    modalIsOpen,
-    modalRef,
-    handleOpenAndCloseModal
+    handleOpenAndCloseModal,
+    modalIsOpen
   };
 };
