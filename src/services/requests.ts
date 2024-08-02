@@ -201,8 +201,6 @@ export const removeItemCart = async (
   try {
     const session = await getSession();
 
-    throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
-
     await api.patch<{ message: string }>(
       `/cart/remove-cake/${cartId}/${itemCartId}`,
       {},
@@ -210,11 +208,5 @@ export const removeItemCart = async (
     );
   } catch (error: any) {
     throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
-
-    if (!axios.isAxiosError(error)) {
-      throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
-    }
-
-    throw new Error(error?.response?.statusText);
   }
 };
