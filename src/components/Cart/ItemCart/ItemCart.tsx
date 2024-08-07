@@ -25,10 +25,9 @@ function ItemCart({
 }: {
   cartId: string;
   cake: PersonalizedCake;
-  removeOneItemFn: (cartId: string, itemCartId: string) => Promise<void>;
+  removeOneItemFn: (itemCartId: string) => Promise<void>;
 }) {
   const { isPending, handleRemoveItem } = useItemCart(
-    cartId,
     itemCartId,
     removeOneItemFn
   );
@@ -54,7 +53,6 @@ function ItemCart({
         height={80}
         alt={`${name} cart image`}
         style={{ borderRadius: "5px" }}
-        color="red"
       />
       <div className={styles.textContent}>
         <h6>{name}</h6>

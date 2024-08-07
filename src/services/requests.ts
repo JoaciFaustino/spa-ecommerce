@@ -210,3 +210,17 @@ export const removeItemCart = async (
     throw new Error("Ocorreu um erro ao tentar remover o item do carrinho!");
   }
 };
+
+export const clearCart = async (cartId: string) => {
+  try {
+    const session = await getSession();
+
+    await api.patch<{ message: string }>(
+      `/cart/clear/${cartId}`,
+      {},
+      { headers: { Authorization: session } }
+    );
+  } catch (error: any) {
+    throw new Error("Ocorreu um erro ao limpar o carrinho!");
+  }
+};

@@ -1,10 +1,8 @@
 import { useRef, useState } from "react";
-import styles from "./ItemCart.module.scss";
 
 export const useItemCart = (
-  cartId: string,
   itemCartId: string,
-  removeOneItemFn: (cartId: string, itemCartId: string) => Promise<void>
+  removeOneItemFn: (itemCartId: string) => Promise<void>
 ) => {
   const [isPending, setIsPending] = useState(false);
 
@@ -16,7 +14,7 @@ export const useItemCart = (
     setIsPending(true);
 
     try {
-      await removeOneItemFn(cartId, itemCartId);
+      await removeOneItemFn(itemCartId);
 
       setIsPending(false);
     } catch (error) {

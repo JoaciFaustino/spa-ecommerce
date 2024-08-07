@@ -20,42 +20,38 @@ async function UserInfo() {
           </>
         }
       >
-        <ProfileServerComponent />
+        <ProfileSuspense />
       </Suspense>
     </div>
   );
 }
 
-async function ProfileServerComponent() {
+async function ProfileSuspense() {
   const user: User | undefined = await getUserLogged();
 
-  if (!user) {
-    return (
-      <>
-        <Link href="/login">
-          <button className={styles.btnLogin}>Login</button>
-        </Link>
-        <Link href="/signup">
-          <button className={styles.btnSignup}>Cadastrar-se</button>
-        </Link>
-      </>
-    );
-  }
-
-  return (
+  return user ? (
     <>
       <Suspense
         fallback={<span className={`${styles.iconSkeleton} loading`}></span>}
       >
-        <CartServerComponent cartId={user.cartId} />
+        <CartSuspense cartId={user.cartId} />
       </Suspense>
 
       <Profile user={user} />
     </>
+  ) : (
+    <>
+      <Link href="/login">
+        <button className={styles.btnLogin}>Login</button>
+      </Link>
+      <Link href="/signup">
+        <button className={styles.btnSignup}>Cadastrar-se</button>
+      </Link>
+    </>
   );
 }
 
-async function CartServerComponent({ cartId }: { cartId: string }) {
+async function CartSuspense({ cartId }: { cartId: string }) {
   const cart: CartType | undefined = await getCartById(cartId);
 
   return <Cart cart={cart} />;

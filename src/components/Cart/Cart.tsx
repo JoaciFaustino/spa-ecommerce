@@ -10,18 +10,17 @@ import { useCart } from "./useCart";
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const { handleOpenAndCloseModal, modalIsOpen } = useModal(modalRef);
-  const { allCakes, removeOneItem, totalPriceCart } = useCart(cart?.cakes);
-
-  //===================================//
-  //                                   //
-  //                                   //
-  //                                   //
-  // precisa fazer um placeholder pras //
-  //   imagens de cada item do cart    //
-  //                                   //
-  //                                   //
-  //                                   //
-  //===================================//
+  const {
+    allCakes,
+    removeOneItem,
+    totalPriceCart,
+    handleClearCart,
+    clearCartIsPending
+  } = useCart(cart?._id, cart?.cakes);
+  const cakeQuantity = allCakes.reduce(
+    (acm, { quantity }) => acm + quantity,
+    0
+  );
 
   return (
     <div className={styles.divCart}>
@@ -30,8 +29,8 @@ function Cart({ cart }: { cart: CartType | undefined }) {
         onClick={handleOpenAndCloseModal}
       />
 
-      {cart && allCakes.length > 0 && (
-        <span className={styles.qntItemsCart}>{allCakes.length}</span>
+      {cart && cakeQuantity > 0 && (
+        <span className={styles.qntItemsCart}>{cakeQuantity}</span>
       )}
 
       {modalIsOpen && (
@@ -44,13 +43,13 @@ function Cart({ cart }: { cart: CartType | undefined }) {
               </p>
             )}
 
-            {cart && allCakes.length === 0 && (
+            {cart && cakeQuantity === 0 && (
               <p className={`text ${styles.textWarning}`}>
                 Seu carrinho está vazio!
               </p>
             )}
 
-            {cart && cart._id && allCakes.length > 0 && (
+            {cart && cart._id && cakeQuantity > 0 && (
               <>
                 {allCakes.map((cake) => (
                   <ItemCart
@@ -72,13 +71,15 @@ function Cart({ cart }: { cart: CartType | undefined }) {
             <div className={styles.divBtns}>
               <button
                 className={styles.cleanCartBtn}
-                disabled={allCakes.length === 0}
+                disabled={cakeQuantity === 0 || clearCartIsPending}
+                onClick={handleClearCart}
               >
-                Limpar tudo
+                {!clearCartIsPending && "Limpar tudo"}
+                {clearCartIsPending && <div className={styles.loader}></div>}
               </button>
               <button
                 className={styles.completePurchaseBtn}
-                disabled={allCakes.length === 0}
+                disabled={cakeQuantity === 0}
               >
                 Finalizar compra
               </button>

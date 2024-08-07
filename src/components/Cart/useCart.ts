@@ -1,17 +1,24 @@
 import { PersonalizedCake } from "@/@types/Cart";
-import { removeItemCart } from "@/services/requests";
+import { clearCart, removeItemCart } from "@/services/requests";
 import { formatPriceNumber } from "@/utils/formatPrice";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export const useCart = (cakes: PersonalizedCake[] | undefined = []) => {
+export const useCart = (
+  cartId: string | undefined,
+  cakes: PersonalizedCake[] | undefined = []
+) => {
   const [allCakes, setAllCakes] = useState(cakes);
   const totalPriceCart: string = formatPriceNumber(
     allCakes.reduce((acm, { totalPricing }) => acm + totalPricing, 0)
   );
+  const [clearCartIsPending, setClearCartIsPending] = useState(false);
 
+  const removeOneItem = async (itemCartId: string) => {
+    if (!cartId) {
+      return;
+    }
 
-  const removeOneItem = async (cartId: string, itemCartId: string) => {
     try {
       await removeItemCart(cartId, itemCartId);
 
@@ -26,5 +33,32 @@ export const useCart = (cakes: PersonalizedCake[] | undefined = []) => {
     }
   };
 
-  return { allCakes, removeOneItem, totalPriceCart };
+  const handleClearCart = async () => {
+    if (!cartId) {
+      return;
+    }
+
+    try {
+      setClearCartIsPending(true);
+      await clearCart(cartId);
+
+      setAllCakes([]);
+      setClearCartIsPending(false);
+    } catch (error) {
+      const message = "Falha ao limpar carrinho. Tente novamente mais tarde!";
+
+      toast.error(message);
+      setClearCartIsPending(false);
+
+      throw new Error(message);
+    }
+  };
+
+  return {
+    allCakes,
+    removeOneItem,
+    totalPriceCart,
+    handleClearCart,
+    clearCartIsPending
+  };
 };
