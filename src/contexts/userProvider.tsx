@@ -1,7 +1,7 @@
 "use client";
 import { User } from "@/@types/User";
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 type TypeUserContext = {
   user: User | undefined;

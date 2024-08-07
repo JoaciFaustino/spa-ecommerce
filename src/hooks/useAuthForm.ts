@@ -12,11 +12,9 @@ import {
   FocusEvent,
   FormEvent,
   useContext,
-  useEffect,
   useState
 } from "react";
-
-const ANIMATION_TIME_ERROR_POPUP = 1000 * 15;
+import { toast } from "react-toastify";
 
 export const useAuthForm = <T>(
   defaultFields: T,
@@ -24,14 +22,10 @@ export const useAuthForm = <T>(
 ) => {
   const router = useRouter();
   const [allFieldsIsValid, setAllFieldsIsValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+
   const [reqIsPending, setReqIsPending] = useState(false);
   const [fields, setFields] = useState<T>(defaultFields);
   const { changeUserLogged } = useContext(UserContext);
-
-  useEffect(() => {
-    setTimeout(() => setErrorMessage(""), ANIMATION_TIME_ERROR_POPUP);
-  }, [errorMessage]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,7 +35,8 @@ export const useAuthForm = <T>(
     }
 
     if (!allFieldsIsValid) {
-      setErrorMessage("Preencha todos os campos!");
+      toast.error("Preencha todos os campos!");
+
       return;
     }
 
@@ -50,7 +45,7 @@ export const useAuthForm = <T>(
     const { error, user } = await serverActionFn(fields);
 
     if (error || !user) {
-      setErrorMessage(error || "");
+      toast.error(error || "");
       setReqIsPending(false);
       clearFields(fields);
       return;
@@ -159,7 +154,6 @@ export const useAuthForm = <T>(
     handleChange,
     handleBlur,
     reqIsPending,
-    allFieldsIsValid,
-    errorMessage
+    allFieldsIsValid
   };
 };

@@ -1,0 +1,11 @@
+.toast {
+  color: var(--color-warning-1);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  font-size: 1rem;
+}
+
+.progressBar {
+  background-color: var(--color-warning-1);
+}

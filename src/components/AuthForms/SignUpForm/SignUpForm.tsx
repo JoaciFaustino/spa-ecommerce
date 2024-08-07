@@ -1,5 +1,4 @@
 "use client";
-import PopUpError from "@/components/PopUpError/PopUpError";
 import styles from "../AuthForms.module.scss";
 import Link from "next/link";
 import Input from "../Input/Input";
@@ -28,15 +27,12 @@ function SignUpForm({ signUpAction }: Props) {
     handleChange,
     handleSubmit,
     handleBlur,
-    errorMessage,
     allFieldsIsValid,
     reqIsPending
   } = useAuthForm<FieldsFormSignUp>(DEFAULT_FIELDS, signUpAction);
 
   return (
     <div className={styles.divForm}>
-      {errorMessage && <PopUpError message={errorMessage} />}
-
       <h3>Bem vindo</h3>
       <p className="textBig">Bem vindo! Por favor insira suas credenciais</p>
 

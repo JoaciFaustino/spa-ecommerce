@@ -1,47 +1,30 @@
 "use client";
 import { CgShoppingCart } from "react-icons/cg";
 import styles from "./Cart.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Cart as CartType } from "@/@types/Cart";
 import { useModal } from "@/hooks/useModal";
-import { formatPriceNumber } from "@/utils/formatPrice";
 import ItemCart from "./ItemCart/ItemCart";
-import { removeItemCart } from "@/services/requests";
-import PopUpError from "../PopUpError/PopUpError";
-
-const ANIMATION_TIME_ERROR_POPUP = 1000 * 15;
+import { useCart } from "./useCart";
 
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [allCakes, setAllCakes] = useState(cart?.cakes || []);
   const { handleOpenAndCloseModal, modalIsOpen } = useModal(modalRef);
-  const [popUpIsActived, setPopUpIsActived] = useState(false);
-  const totalPriceCart: string = formatPriceNumber(
-    allCakes.reduce((acm, { totalPricing }) => acm + totalPricing, 0)
-  );
+  const { allCakes, removeOneItem, totalPriceCart } = useCart(cart?.cakes);
 
-  useEffect(() => {
-    setTimeout(() => setPopUpIsActived(false), ANIMATION_TIME_ERROR_POPUP);
-  }, [popUpIsActived]);
-
-  const removeOneItem = async (cartId: string, itemCartId: string) => {
-    try {
-      await removeItemCart(cartId, itemCartId);
-
-      setAllCakes((prev) => prev.filter((cake) => cake._id !== itemCartId));
-    } catch (error: any) {
-      setPopUpIsActived(true);
-    }
-  };
+  //===================================//
+  //                                   //
+  //                                   //
+  //                                   //
+  // precisa fazer um placeholder pras //
+  //   imagens de cada item do cart    //
+  //                                   //
+  //                                   //
+  //                                   //
+  //===================================//
 
   return (
     <div className={styles.divCart}>
-      {!!popUpIsActived && (
-        <PopUpError
-          message={"Ocorreu um erro ao tentar remover o item do carrinho!"}
-        />
-      )}
-
       <CgShoppingCart
         style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
         onClick={handleOpenAndCloseModal}

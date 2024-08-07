@@ -1,6 +1,5 @@
 "use client";
 import styles from "../AuthForms.module.scss";
-import PopUpError from "@/components/PopUpError/PopUpError";
 import Link from "next/link";
 import Input from "../Input/Input";
 import { AuthResponse, FieldsFormLogin } from "@/@types/Auth";
@@ -21,7 +20,6 @@ function LoginForm({ loginAction }: Props) {
     handleBlur,
     handleChange,
     email,
-    errorMessage,
     password,
     reqIsPending,
     allFieldsIsValid
@@ -29,8 +27,6 @@ function LoginForm({ loginAction }: Props) {
 
   return (
     <div className={styles.divForm}>
-      {errorMessage && <PopUpError message={errorMessage} />}
-
       <h3>Bem vindo de volta</h3>
       <p className="textBig">
         Bem vindo de volta! Por favor insira suas credenciais

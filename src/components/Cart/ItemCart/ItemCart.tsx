@@ -1,11 +1,12 @@
 "use client";
 import { PersonalizedCake } from "@/@types/Cart";
-import { useRef, useState, useTransition } from "react";
+import { useState } from "react";
 import styles from "./ItemCart.module.scss";
 import Image from "next/image";
 import { formatPriceNumber } from "@/utils/formatPrice";
 import { IoIosArrowDown } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
+import { useItemCart } from "./useItemCart";
 
 function ItemCart({
   cartId,
@@ -26,6 +27,11 @@ function ItemCart({
   cake: PersonalizedCake;
   removeOneItemFn: (cartId: string, itemCartId: string) => Promise<void>;
 }) {
+  const { isPending, handleRemoveItem } = useItemCart(
+    cartId,
+    itemCartId,
+    removeOneItemFn
+  );
   const [moreDetailsActived, setMoreDetailsActived] = useState(false);
   const unitPrice: string = formatPriceNumber(totalPricing / (quantity || 1));
   const totalPrice: string = formatPriceNumber(totalPricing);
@@ -33,22 +39,6 @@ function ItemCart({
     fillings.length > 1
       ? fillings.slice(0, -1).join(", ") + " e " + fillings[fillings.length - 1]
       : fillings[0];
-  const [isPending, startTransition] = useTransition();
-  const itemCartRef = useRef<HTMLDivElement | null>(null);
-
-  const handleRemoveItem = () => {
-    if (isPending) {
-      return;
-    }
-
-    startTransition(async () => {
-      await removeOneItemFn(cartId, itemCartId);
-
-      if (itemCartRef.current) {
-        itemCartRef.current.classList.add(styles.removedItem);
-      }
-    });
-  };
 
   return (
     <div
@@ -57,7 +47,6 @@ function ItemCart({
           ? `${styles.itemCart} ${styles.disabledItem}`
           : `${styles.itemCart}`
       }
-      ref={itemCartRef}
     >
       <Image
         src={imageUrl}
@@ -65,6 +54,7 @@ function ItemCart({
         height={80}
         alt={`${name} cart image`}
         style={{ borderRadius: "5px" }}
+        color="red"
       />
       <div className={styles.textContent}>
         <h6>{name}</h6>

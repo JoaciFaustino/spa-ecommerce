@@ -5,7 +5,7 @@
   padding: var(--padding-2) var(--padding-4);
   gap: var(--padding-2);
   border-bottom: solid 1px rgba(#000000, 0.1);
-  transition: background-color 0.3s, transform 1s; //quando é mais de 1 tipo de transição é obrigatorio o tipo da transição ser primeiro que o tempo
+  transition: all 0.3s; //quando é mais de 1 tipo de transição é obrigatorio o tipo da transição ser primeiro que o tempo
 
   &:hover {
     background-color: rgba(#000000, 0.1);

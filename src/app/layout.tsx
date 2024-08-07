@@ -7,6 +7,7 @@ import Footer from "@/components/Footer/Footer";
 import UserProvider from "@/contexts/userProvider";
 import { getUserLogged } from "@/actions/user";
 import UserInfo from "@/components/UserInfo/UserInfo";
+import Alert from "@/components/Alert/Alert";
 
 const nunito = Nunito({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
@@ -33,6 +34,8 @@ export default async function RootLayout({
             getUserLoggedAction={getUserLogged}
             logoutAction={logout}
           >
+            <Alert />
+
             <Header userInfoComponent={<UserInfo />} />
 
             {children}
