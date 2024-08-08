@@ -7,6 +7,7 @@ import { formatPriceNumber } from "@/utils/formatPrice";
 import { IoIosArrowDown } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
 import { useItemCart } from "./useItemCart";
+import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 function ItemCart({
   cartId,
@@ -103,7 +104,7 @@ function ItemCart({
       </div>
 
       <div className={styles.divIconDelete}>
-        {isPending && <div className={styles.loader}></div>}
+        {isPending && <SpinnerLoader color="var(--primary-color)" size={1} unitSize="rem" />}
 
         {!isPending && (
           <BsTrash

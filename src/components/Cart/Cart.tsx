@@ -6,6 +6,7 @@ import { Cart as CartType } from "@/@types/Cart";
 import { useModal } from "@/hooks/useModal";
 import ItemCart from "./ItemCart/ItemCart";
 import { useCart } from "./useCart";
+import SpinnerLoader from "../SpinnerLoader/SpinnerLoader";
 
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -75,7 +76,13 @@ function Cart({ cart }: { cart: CartType | undefined }) {
                 onClick={handleClearCart}
               >
                 {!clearCartIsPending && "Limpar tudo"}
-                {clearCartIsPending && <div className={styles.loader}></div>}
+                {clearCartIsPending && (
+                  <SpinnerLoader
+                    color="var(--primary-color)"
+                    size={1}
+                    unitSize="rem"
+                  />
+                )}
               </button>
               <button
                 className={styles.completePurchaseBtn}

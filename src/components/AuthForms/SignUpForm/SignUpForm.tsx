@@ -4,6 +4,7 @@ import Link from "next/link";
 import Input from "../Input/Input";
 import { AuthResponse, FieldsFormSignUp } from "@/@types/Auth";
 import { useAuthForm } from "@/hooks/useAuthForm";
+import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 const DEFAULT_FIELDS: FieldsFormSignUp = {
   name: { value: "", isValid: false, wasBlur: false },
@@ -93,7 +94,9 @@ function SignUpForm({ signUpAction }: Props) {
           className={styles.btnSubmit}
           disabled={!allFieldsIsValid || reqIsPending}
         >
-          {reqIsPending && <div className={styles.loader}></div>}
+          {reqIsPending && (
+            <SpinnerLoader color="#fff" size={1} unitSize="rem" />
+          )}
           {!reqIsPending && "Registrar-se"}
         </button>
 

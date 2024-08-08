@@ -4,6 +4,7 @@ import Link from "next/link";
 import Input from "../Input/Input";
 import { AuthResponse, FieldsFormLogin } from "@/@types/Auth";
 import { useAuthForm } from "@/hooks/useAuthForm";
+import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 const DEFAULT_FIELDS: FieldsFormLogin = {
   email: { value: "", isValid: false, wasBlur: false },
@@ -59,7 +60,9 @@ function LoginForm({ loginAction }: Props) {
           className={styles.btnSubmit}
           disabled={!allFieldsIsValid || reqIsPending}
         >
-          {reqIsPending && <div className={styles.loader}></div>}
+          {reqIsPending && (
+            <SpinnerLoader color="#fff" size={1} unitSize="rem" />
+          )}
           {!reqIsPending && "Login"}
         </button>
 
