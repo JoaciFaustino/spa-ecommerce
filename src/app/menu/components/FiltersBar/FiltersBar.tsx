@@ -9,9 +9,9 @@ import {
 } from "@/services/requests";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
-import Select from "@/components/Selects/Select/Select";
 import FilterSelects from "../FilterSelects/FilterSelects";
 import { Option } from "@/@types/SelectsComponents";
+import SortBy from "../SortBy/SortBy";
 
 async function FiltersBar() {
   const [cakeTypesRes, categoriesRes, fillingsRes, frostingsRes] =
@@ -21,13 +21,6 @@ async function FiltersBar() {
       getAllFillings(),
       getAllFrostings()
     ]);
-
-  const sortByOptions: Option[] = [
-    "popularidade",
-    "preço: do maior para o menor",
-    "preço: do menor para o maior",
-    "novos"
-  ].map((value, index) => ({ id: index, name: value }));
 
   const sizes: Option[] | undefined = SIZES_POSSIBLES_ENUM.map(
     (size, index) => ({ id: index, name: size })
@@ -54,12 +47,7 @@ async function FiltersBar() {
           </div>
 
           <div className={styles.divSortBy}>
-            <Select
-              selectName="sortBy"
-              label="Ordenar por:"
-              options={sortByOptions}
-              queryParam="sortBy"
-            />
+            <SortBy />
           </div>
         </div>
 

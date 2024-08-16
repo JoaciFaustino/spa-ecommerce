@@ -10,7 +10,7 @@ import SpinnerLoader from "../SpinnerLoader/SpinnerLoader";
 
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { handleOpenAndCloseModal, modalIsOpen } = useModal(modalRef);
+  const { toggleModal, modalIsOpen } = useModal(modalRef);
   const {
     allCakes,
     removeOneItem,
@@ -27,7 +27,7 @@ function Cart({ cart }: { cart: CartType | undefined }) {
     <div className={styles.divCart}>
       <CgShoppingCart
         style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
-        onClick={handleOpenAndCloseModal}
+        onClick={toggleModal}
       />
 
       {cart && cakeQuantity > 0 && (

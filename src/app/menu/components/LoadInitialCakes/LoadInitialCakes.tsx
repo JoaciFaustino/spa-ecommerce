@@ -67,6 +67,7 @@ async function LoadInitialCakes({
       {response.cakes.map((cake) => (
         <CakeCard
           key={cake._id}
+          cakeId={cake._id}
           nameCake={cake.name}
           typeCake={cake.type}
           imageCake={cake.imageUrl}

@@ -10,7 +10,7 @@ import { useModal } from "@/hooks/useModal";
 function Profile({ user }: { user: User }) {
   const { handleLogout, changeUserLogged } = useContext(UserContext);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { handleOpenAndCloseModal, modalIsOpen } = useModal(modalRef);
+  const { toggleModal, modalIsOpen } = useModal(modalRef);
 
   useEffect(() => {
     changeUserLogged(user);
@@ -19,7 +19,7 @@ function Profile({ user }: { user: User }) {
   return (
     <div className={styles.userIcon}>
       <BiUserCircle
-        onClick={handleOpenAndCloseModal}
+        onClick={toggleModal}
         style={{ color: "var(--color-text-title)", fontSize: "2rem" }}
       />
 

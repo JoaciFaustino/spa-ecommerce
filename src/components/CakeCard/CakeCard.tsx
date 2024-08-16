@@ -1,15 +1,17 @@
 import Image from "next/image";
 import styles from "./CakeCard.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
+import Link from "next/link";
 
 type Props = {
+  cakeId: string;
   nameCake: string;
   typeCake: string;
   imageCake: string;
   priceCake: string;
 };
 
-function CakeCard({ nameCake, typeCake, imageCake, priceCake }: Props) {
+function CakeCard({ cakeId, nameCake, typeCake, imageCake, priceCake }: Props) {
   return (
     <div className={styles.card}>
       <div className={styles.divImg}>
@@ -29,14 +31,16 @@ function CakeCard({ nameCake, typeCake, imageCake, priceCake }: Props) {
       <div className={styles.hoverInfo}>
         <h4>{nameCake}</h4>
         <p className="textBig">{nameCake}</p>
-        <button className={styles.btnCart}>
-          <CgShoppingCart
-            style={{
-              color: "var(--primary-color)",
-              fontSize: "1.5rem"
-            }}
-          />
-        </button>
+        <Link href={`/cake/${cakeId}`}>
+          <button className={styles.btnCart}>
+            <CgShoppingCart
+              style={{
+                color: "var(--primary-color)",
+                fontSize: "1.5rem"
+              }}
+            />
+          </button>
+        </Link>
       </div>
     </div>
   );
