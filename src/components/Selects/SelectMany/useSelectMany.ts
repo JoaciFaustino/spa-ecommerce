@@ -1,72 +1,40 @@
 import { Option } from "@/@types/SelectsComponents";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import { ChangeEvent, useEffect, useRef, useState, useTransition } from "react";
+import { useModal } from "@/hooks/useModal";
+import { ChangeEvent, useRef, useState } from "react";
 
 export const useSelectMany = (
   optionsDefault: Option[],
-  queryParam?: string
+  optionsSelecteds: string[],
+  handleOptionsSelecteds: (newOptionsSelecteds: string[]) => void
 ) => {
-  const [optionsSelecteds, setOptionsSelecteds] = useState<string[]>([]);
   const [optionsNormalizeds, setOptionsNormalizeds] =
     useState<Option[]>(optionsDefault);
-  const [optionsIsOpen, setOptionsIsOpen] = useState(false);
-  const optionsRef = useRef<HTMLDivElement | null>(null);
   const [inputValue, setInputValue] = useState("");
-
-  const [queryParamState, setQueryParamState] = useQueryState(
-    queryParam || "",
-    parseAsArrayOf(parseAsString).withOptions({
-      clearOnDefault: true,
-      shallow: false
-      // throttleMs: 1000
-    })
-  );
-
-  useEffect(() => {
-    getDefaultParams(queryParam);
-
-    document.addEventListener("mousedown", handleClickOutsideOptions);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideOptions);
-    };
-  }, []);
-
-  const handleClickOutsideOptions: EventListener = (event) => {
-    if (
-      optionsRef.current &&
-      !optionsRef.current.contains(event.target as Node)
-    ) {
-      setOptionsIsOpen(false);
-    }
-  };
+  const optionsRef = useRef<HTMLDivElement | null>(null);
+  const { handleIsOpen, modalIsOpen } = useModal(optionsRef);
 
   const openOptions = () => {
     if (inputValue === "") {
       sequenceOptions();
     }
 
-    setOptionsIsOpen(true);
+    handleIsOpen(true);
   };
 
   const handleChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
-    setOptionsIsOpen(true);
+    handleIsOpen(true);
 
-    if (!optionsSelecteds.includes(e.target.value)) {
-      setOptionsSelecteds((prev) => {
-        return [...prev, e.target.value];
-      });
-
-      setQueryParamStateValue(e.target.value, queryParam);
+    if (optionsSelecteds.includes(e.target.value)) {
+      const newOptionsSelecteds = optionsSelecteds.filter(
+        (option: string) => option !== e.target.value
+      );
+      handleOptionsSelecteds(newOptionsSelecteds);
 
       return;
     }
 
-    setOptionsSelecteds((prev) => {
-      return prev.filter((option: string) => option !== e.target.value);
-    });
-
-    removeQueryParamValue(e.target.value, queryParam);
+    const newOptionsSelecteds = [...optionsSelecteds, e.target.value];
+    handleOptionsSelecteds(newOptionsSelecteds);
   };
 
   const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +42,6 @@ export const useSelectMany = (
 
     if (e.target.value === "") {
       sequenceOptions();
-
       return;
     }
 
@@ -101,68 +68,17 @@ export const useSelectMany = (
   };
 
   const clearOptionsSelecteds = () => {
-    setOptionsSelecteds([]);
-
-    if (!queryParam) {
-      return;
-    }
-
-    setQueryParamState(null);
-  };
-
-  const getDefaultParams = (queryParam?: string) => {
-    if (!queryParam) {
-      return;
-    }
-
-    const urlOptionsIncludedsInOptionsDefault: string[] = optionsDefault.reduce(
-      (acm: string[], option: Option) => {
-        if ((queryParamState || []).includes(option.name)) {
-          return [...acm, option.name];
-        }
-
-        return [...acm];
-      },
-      []
-    );
-
-    setOptionsSelecteds((prev) => [
-      ...prev,
-      ...urlOptionsIncludedsInOptionsDefault
-    ]);
-  };
-
-  const setQueryParamStateValue = (value: string, queryParam?: string) => {
-    if (!queryParam) {
-      return;
-    }
-
-    setQueryParamState((prev) => [...(prev || []), value]);
-  };
-
-  const removeQueryParamValue = (value: string, queryParam?: string) => {
-    if (!queryParam) {
-      return;
-    }
-
-    setQueryParamState((prev) => {
-      const arrayWitValueDeleted = (prev || []).filter(
-        (valuePrev) => valuePrev !== value
-      );
-
-      return arrayWitValueDeleted.length !== 0 ? arrayWitValueDeleted : null;
-    });
+    handleOptionsSelecteds([]);
   };
 
   return {
-    optionsIsOpen,
     handleChangeCheckbox,
-    optionsRef,
-    optionsSelecteds,
     openOptions,
     inputValue,
     handleChangeSearch,
     optionsNormalizeds,
+    optionsRef,
+    modalIsOpen,
     clearOptionsSelecteds
   };
 };

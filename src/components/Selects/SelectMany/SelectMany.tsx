@@ -3,38 +3,44 @@ import { IoIosArrowDown, IoIosCloseCircle } from "react-icons/io";
 import styles from "../Select.module.scss";
 import { useSelectMany } from "./useSelectMany";
 import { Option } from "@/@types/SelectsComponents";
+import { useEffect, useState } from "react";
 
 type Props = {
   placeholder: string;
   selectName: string;
   optionsDefault?: Option[];
-  queryParam?: string;
+  optionsSelecteds: string[];
+  handleOptionsSelecteds: (newOptionsSelecteds: string[]) => void;
 };
 
 function SelectMany({
   placeholder,
   selectName,
-  queryParam,
-  optionsDefault = []
+  optionsDefault = [],
+  handleOptionsSelecteds,
+  optionsSelecteds = []
 }: Props) {
   const {
-    optionsIsOpen,
     handleChangeCheckbox,
-    optionsRef,
-    optionsSelecteds,
     openOptions,
     inputValue,
     handleChangeSearch,
     optionsNormalizeds,
-    clearOptionsSelecteds
-  } = useSelectMany(optionsDefault, queryParam);
+    clearOptionsSelecteds,
+    modalIsOpen,
+    optionsRef
+  } = useSelectMany(optionsDefault, optionsSelecteds, handleOptionsSelecteds);
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
 
   if (optionsDefault.length === 0) {
     return <></>;
   }
 
   return (
-    <div className={styles.select}>
+    <div className={`${!isMounted ? styles.disabled : ""} ${styles.select}`}>
       <div className={styles.divInputSelect}>
         <input
           type="text"
@@ -51,7 +57,7 @@ function SelectMany({
         />
 
         <div className={styles.divIcons} onClick={openOptions}>
-          {optionsSelecteds.length > 0 && (
+          {isMounted && optionsSelecteds.length > 0 && (
             <div className={styles.divCountSelected}>
               <p className="textSmall">{optionsSelecteds.length}</p>
 
@@ -66,7 +72,7 @@ function SelectMany({
           <IoIosArrowDown
             onClick={openOptions}
             className={
-              optionsIsOpen
+              modalIsOpen
                 ? `${styles.rotated} ${styles.icon}`
                 : `${styles.icon}`
             }
@@ -75,7 +81,7 @@ function SelectMany({
         </div>
       </div>
 
-      {optionsIsOpen && (
+      {modalIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
           {optionsNormalizeds.map((option) => (
             <div

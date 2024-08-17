@@ -3,11 +3,11 @@ import { ChangeEvent } from "react";
 
 export const useSelect = (
   options: Option[],
-  handleCloseModal: () => void,
+  handleOptionIsOpen: (isOpen: boolean) => void,
   handleOptionSelected: (newValue: string) => void
 ) => {
   const handleChangeInputOption = (e: ChangeEvent<HTMLInputElement>) => {
-    handleCloseModal();
+    handleOptionIsOpen(false);
 
     const optionNames = options.map(({ name }) => name);
 

@@ -15,12 +15,8 @@ export const useModal = (modalRef: MutableRefObject<HTMLElement | null>) => {
     setModalIsOpen((prev) => !prev);
   };
 
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const handleIsOpen = (isOpen: boolean) => {
+    setModalIsOpen(isOpen);
   };
 
   const handleClickOutsideModal: EventListener = (event) => {
@@ -32,7 +28,6 @@ export const useModal = (modalRef: MutableRefObject<HTMLElement | null>) => {
   return {
     toggleModal,
     modalIsOpen,
-    openModal,
-    closeModal
+    handleIsOpen
   };
 };

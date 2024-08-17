@@ -23,11 +23,11 @@ function Select({
   handleOptionSelected
 }: Props) {
   const optionsRef = useRef<HTMLDivElement | null>(null);
-  const { toggleModal, modalIsOpen, closeModal } = useModal(optionsRef);
+  const { toggleModal, modalIsOpen, handleIsOpen } = useModal(optionsRef);
 
   const { handleChangeInputOption } = useSelect(
     options,
-    closeModal,
+    handleIsOpen,
     handleOptionSelected
   );
 

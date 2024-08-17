@@ -51,12 +51,16 @@ async function LoadInitialCakes({
   const { sucess } = response;
 
   if (!sucess && response.status === 404) {
-    return <h5>Nenhum resultado encontrado!</h5>;
+    return (
+      <h5 style={{ gridColumn: "span 12" }}>Nenhum resultado encontrado!</h5>
+    );
   }
 
   if (!sucess) {
     return (
-      <h5 style={{ color: "var(--color-text-paragraph)" }}>
+      <h5
+        style={{ color: "var(--color-text-paragraph)", gridColumn: "span 12" }}
+      >
         Ocorreu um erro no servidor! por favor tente novamente mais tarde
       </h5>
     );
