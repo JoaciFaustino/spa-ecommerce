@@ -4,11 +4,11 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useSelect } from "./useSelect";
 import { Option } from "@/@types/SelectsComponents";
 import { useModal } from "@/hooks/useModal";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   selectName: string;
-  label: string;
+  label?: string;
   options: Option[];
 
   optionSelected: string;
@@ -31,25 +31,28 @@ function Select({
     handleOptionSelected
   );
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
+
   if (options.length === 0) {
     return <></>;
   }
 
   return (
-    <div className={styles.select}>
-      <label htmlFor={selectName}>{label}</label>
+    <div className={`${!isMounted ? styles.disabled : ""} ${styles.select}`}>
+      {!!label && <label>{label}</label>}
 
-      <button className={styles.btnOpen} onClick={toggleModal}>
-        {optionSelected}
+      <button className={styles.btnOpen} onClick={toggleModal} type="button">
+        <p>{optionSelected}</p>
 
-        <IoIosArrowDown
-          className={
-            modalIsOpen ? `${styles.rotated} ${styles.icon}` : `${styles.icon}`
-          }
-          style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
-        />
+        <div className={styles.divIcon}>
+          <IoIosArrowDown
+            className={`${styles.icon} ${modalIsOpen ? styles.rotated : ""}`}
+            style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
+          />
+        </div>
       </button>
-
       {modalIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
           {options.map((option) => (

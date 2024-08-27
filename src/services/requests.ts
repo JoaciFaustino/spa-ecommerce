@@ -1,5 +1,5 @@
 import { ICakeType } from "@/@types/CakeType";
-import { ICake } from "../@types/Cake";
+import { ICake, Size } from "../@types/Cake";
 import { api } from "./api";
 import { ICategory } from "@/@types/Category";
 import { IFilling } from "@/@types/Filling";
@@ -8,6 +8,7 @@ import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
 import { getSession } from "@/lib/session";
 import { headers } from "next/headers";
+import { CustomError } from "@/utils/customError";
 
 type SucessGetAllCakes = {
   sucess: true;
@@ -22,6 +23,38 @@ type failedGetAllCakes = {
   message: string;
   status: number;
   maxPages: 0;
+};
+
+export const getCakeById = async (cakeId: string): Promise<ICake> => {
+  try {
+    const session = await getSession();
+
+    const { data } = await api.get<{ cake: ICake }>(`/cakes/${cakeId}`, {
+      headers: { Authorization: session }
+    });
+
+    return data.cake;
+  } catch (error: any) {
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("ocorreu um erro!", 500);
+    }
+
+    const status = error?.response?.status;
+
+    if (status === 401) {
+      throw new CustomError("Você não está autenticado", 401);
+    }
+
+    if (status === 404) {
+      throw new CustomError("Bolo não encontrado", 404);
+    }
+
+    if (status === 500) {
+      throw new CustomError("Ocorreu um erro no servidor", 500);
+    }
+
+    throw new CustomError("ocorreu um erro!", 500);
+  }
 };
 
 export const getAllCakes = async ({
@@ -191,6 +224,36 @@ export const getAllFrostings = async (): Promise<IFrosting[] | undefined> => {
     return data.frostings;
   } catch (error: any) {
     return;
+  }
+};
+
+export const addItemToCart = async (
+  cartId: string,
+  cakeId: string,
+  quantity: number,
+  type?: string,
+  frosting?: string,
+  fillings?: string[],
+  size?: Size
+): Promise<void> => {
+  try {
+    const session = await getSession();
+
+    await api.patch<{ message: string }>(
+      `/cart/add-cake/${cartId}`,
+      {
+        cartId,
+        cakeId,
+        type,
+        frosting,
+        fillings,
+        size,
+        quantity
+      },
+      { headers: { Authorization: session } }
+    );
+  } catch (error) {
+    throw new Error("Ocorreu um erro ao tentar adicionar o item no carrinho!");
   }
 };
 

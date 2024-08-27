@@ -30,7 +30,7 @@ export default async function Home() {
                   src={imgStrawberryCake}
                   alt="strawberry cake"
                   fill
-                  style={{ objectFit: "cover" }}
+                  style={{ objectFit: "contain" }}
                   priority
                 />
               </div>
@@ -169,6 +169,7 @@ async function CakesBestSellers() {
           {cakesBestSellers.map((cake) => (
             <CakeCard
               key={cake._id}
+              cakeId={cake._id}
               nameCake={cake.name}
               typeCake={cake.type}
               imageCake={cake.imageUrl}

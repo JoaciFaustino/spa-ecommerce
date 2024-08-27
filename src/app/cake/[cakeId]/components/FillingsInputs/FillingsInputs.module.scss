@@ -1,0 +1,69 @@
+.fillingsDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  p {
+    text-align: start;
+  }
+
+  button {
+    background-color: var(--gray-1);
+    color: var(--color-text-title);
+    display: flex;
+    gap: var(--padding-2);
+    border: none;
+
+    &:hover {
+      background-color: var(--gray-1-hover);
+    }
+  }
+}
+
+.disabled {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default !important;
+}
+
+.errorMessage {
+  color: var(--color-warning-1);
+}
+
+.fillingsDiv .divSelects {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--padding-1);
+}
+
+.fillingsDiv .divSelects .divSelect {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  gap: var(--padding-1);
+}
+
+.fillingsDiv .divSelects .divSelect .btnRemove {
+  background-color: var(--gray-1);
+  padding: 0 var(--padding-2);
+  background-color: var(--primary-color);
+  animation: fadeIn 0.5s;
+
+  &:hover {
+    background-color: var(--primary-color-hover);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -19,6 +19,7 @@ function CakeCard({ cakeId, nameCake, typeCake, imageCake, priceCake }: Props) {
           src={imageCake}
           alt={nameCake}
           fill
+          sizes="100vw"
           style={{ objectFit: "contain" }}
         />
       </div>

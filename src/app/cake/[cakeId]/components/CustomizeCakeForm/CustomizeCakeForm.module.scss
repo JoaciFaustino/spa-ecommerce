@@ -1,0 +1,142 @@
+.form {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--padding-2);
+  gap: var(--padding-2);
+
+  label {
+    text-align: start;
+  }
+}
+
+.customizablePartsMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--padding-1);
+}
+
+.errorMessage {
+  text-align: start;
+  color: var(--color-warning-1);
+}
+
+.divInput {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.divTypeAndFrosting {
+  display: flex;
+  gap: var(--padding-2);
+
+  .divInput {
+    width: 50%;
+    max-width: 50%;
+  }
+}
+
+.divSizeInputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.divRadioCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.divRadioCheckbox .divInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  label {
+    color: var(--color-text-paragraph);
+    padding-left: var(--padding-2);
+    cursor: pointer;
+  }
+
+  input[type="radio"] {
+    cursor: pointer;
+    appearance: none;
+
+    box-sizing: border-box;
+    height: 1rem;
+    aspect-ratio: 1/1;
+
+    border: 2px solid var(--gray-1);
+    padding: 2px;
+    border-radius: 100%;
+  }
+
+  input[type="radio"]:checked {
+    border-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input[type="radio"]:checked::after {
+    content: "";
+
+    width: calc(100%);
+    height: calc(100%);
+
+    border-radius: 100%;
+    background-color: var(--secondary-color);
+  }
+}
+
+.quantityInput {
+  padding: var(--padding-2) var(--padding-4);
+  color: var(--color-text-title);
+  background-color: var(--gray-1);
+  cursor: pointer;
+  outline: none;
+  border-radius: 3px;
+  transition: 0.3s;
+  border: none;
+
+  &:hover {
+    background-color: var(--gray-1-hover);
+  }
+}
+
+.divPriceAndSubmitBtn {
+  margin-top: auto;
+  display: flex;
+  gap: var(--padding-4);
+  align-items: center;
+  margin-top: auto;
+
+  .price {
+    color: var(--secondary-color);
+  }
+
+  button {
+    border: none;
+    background-color: var(--secondary-color);
+    border-radius: 999px;
+    color: #fff;
+    flex: 1;
+    transition: all 0.3s;
+
+    display: flex;
+    align-items: center;
+    gap: var(--padding-2);
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
+}
+
+.disabled {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default !important;
+}

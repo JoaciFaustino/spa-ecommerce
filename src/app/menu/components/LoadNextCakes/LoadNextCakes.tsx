@@ -4,7 +4,8 @@ import CakeCard from "@/components/CakeCard/CakeCard";
 import { getAllCakesCompleteUrl } from "@/services/requests";
 import { formatPriceNumber } from "@/utils/formatPrice";
 import { useEffect, useRef, useState, useTransition } from "react";
-import CakeCardSkeleton from "@/components/CakeCard/loading";
+import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
+import styles from "./LoadNextCakes.module.scss";
 
 type Props = {
   nextUrl: string | undefined;
@@ -16,7 +17,7 @@ function LoadNextCakes({ nextUrl }: Props) {
   const [nextUrlState, setNextUrlState] = useState<string | undefined>(nextUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [canLoadMoreCakes, setCanLoadMoreCakes] = useState(false);
-  const [_, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -95,10 +96,11 @@ function LoadNextCakes({ nextUrl }: Props) {
         />
       ))}
 
-      {isLoading &&
-        Array.from({ length: 12 }).map((_, index) => (
-          <CakeCardSkeleton key={index} />
-        ))}
+      {(isPending || isLoading) && (
+        <div className={styles.divSpinnerLoader}>
+          <SpinnerLoader color="var(--primary-color)" size={2} unitSize="rem" />
+        </div>
+      )}
 
       <span
         ref={finalPageInspectorRef}
