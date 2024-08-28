@@ -9,9 +9,11 @@ import { BsTrash } from "react-icons/bs";
 import { useItemCart } from "./useItemCart";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
+type ItemCartProps = {
+  cake: PersonalizedCake;
+};
+
 function ItemCart({
-  cartId,
-  removeOneItemFn,
   cake: {
     _id: itemCartId,
     imageUrl,
@@ -23,18 +25,13 @@ function ItemCart({
     type,
     frosting
   }
-}: {
-  cartId: string;
-  cake: PersonalizedCake;
-  removeOneItemFn: (itemCartId: string) => Promise<void>;
-}) {
-  const { isPending, handleRemoveItem } = useItemCart(
-    itemCartId,
-    removeOneItemFn
-  );
+}: ItemCartProps) {
+  const { isPending, handleRemoveItem } = useItemCart(itemCartId);
   const [moreDetailsActived, setMoreDetailsActived] = useState(false);
-  const unitPrice: string = formatPriceNumber(totalPricing / (quantity || 1));
-  const totalPrice: string = formatPriceNumber(totalPricing);
+  const unitPrice: string = formatPriceNumber(
+    (totalPricing || 0) / (quantity || 1)
+  );
+  const totalPrice: string = formatPriceNumber(totalPricing || 0);
   const fillingsFormated: string =
     fillings.length > 1
       ? fillings.slice(0, -1).join(", ") + " e " + fillings[fillings.length - 1]
@@ -53,7 +50,11 @@ function ItemCart({
         width={80}
         height={80}
         alt={`${name} cart image`}
-        style={{ borderRadius: "5px" }}
+        style={{
+          borderRadius: "5px",
+          objectFit: "cover",
+          backgroundColor: "rgba(0, 0, 0, 0.2)"
+        }}
       />
       <div className={styles.textContent}>
         <h6>{name}</h6>
@@ -104,7 +105,9 @@ function ItemCart({
       </div>
 
       <div className={styles.divIconDelete}>
-        {isPending && <SpinnerLoader color="var(--primary-color)" size={1} unitSize="rem" />}
+        {isPending && (
+          <SpinnerLoader color="var(--primary-color)" size={1} unitSize="rem" />
+        )}
 
         {!isPending && (
           <BsTrash

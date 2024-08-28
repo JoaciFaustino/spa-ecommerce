@@ -1,13 +1,16 @@
-import { Size, SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
+import { ICake, Size, SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
+import { PersonalizedCake } from "@/@types/Cart";
 import { IFilling } from "@/@types/Filling";
 import { IFrosting } from "@/@types/Frosting";
+import { CartContext } from "@/contexts/CartProvider";
 import { addItemToCart } from "@/services/requests";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
+import { useCalculatePricing } from "./useCalculatePricing";
 
 const messagesError = {
   invalid_type_error: "Esse campo é invalido!",
@@ -18,7 +21,7 @@ const maxQuantity = 20;
 const minQuantity = 1;
 
 const schema = z.object({
-  type: z.string(messagesError).trim().optional(),
+  type: z.string(messagesError).trim(),
   frosting: z
     .string(messagesError)
     .trim()
@@ -44,15 +47,51 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
+const getFillingsSelectedsObjs = (
+  fillingsSelectedsStrings: string[],
+  fillingsOptions: IFilling[]
+): IFilling[] => {
+  const fillingsObjs: IFilling[] = fillingsSelectedsStrings.reduce(
+    (fillingsObjs: IFilling[], fillingSelected: string) => {
+      const [fillingObj] = fillingsOptions.filter(
+        ({ name }) => name === fillingSelected
+      );
+
+      return fillingObj ? [...fillingsObjs, fillingObj] : [...fillingsObjs];
+    },
+    []
+  );
+
+  return fillingsObjs;
+};
+
+const getFrostingSelectedObj = (
+  frostingSelected: string | undefined,
+  frostingOptions: IFrosting[]
+): IFrosting | undefined => {
+  const [frostingsObj] = frostingOptions.filter(
+    ({ name }) => name === frostingSelected
+  );
+
+  return frostingsObj;
+};
+
 export const useCakeForm = (
-  cakeId: string,
-  defaultType: string,
-  defaultFrosting: IFrosting | undefined,
-  defaultSize: Size,
-  defaultFillings: IFilling[] = []
+  {
+    _id: cakeId,
+    type: defaultType,
+    frosting: defaultFrosting,
+    fillings: defaultFillings,
+    size: defaultSize,
+    pricePerSize
+  }: ICake,
+  fillingsOptions: IFilling[],
+  frostingOptions: IFrosting[]
 ) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
+  const { cartId, addItemToCart: addItemToCartContext } =
+    useContext(CartContext);
 
   const {
     register,
@@ -72,13 +111,25 @@ export const useCakeForm = (
     }
   });
 
-  const cartId = "669c193ae61c26aae0a8adcc";
-
   const typeSelected = watch("type");
   const frostingSelected = watch("frosting");
   const fillingsSelecteds = watch("fillings");
   const sizeSelected = watch("size");
   const quantity = watch("quantity") || 0;
+
+  const { totalPriceString, totalPriceNumber } = useCalculatePricing(
+    pricePerSize[sizeSelected] || 0,
+    getFillingsSelectedsObjs(fillingsSelecteds, fillingsOptions),
+    getFrostingSelectedObj(frostingSelected, frostingOptions),
+    quantity
+  );
+
+  const submitIsDisabled =
+    totalPriceNumber <= 0 ||
+    Number.isNaN(totalPriceNumber) ||
+    !isValid ||
+    isSubmitting ||
+    isSubmitted;
 
   const handleChangeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
     const onlyNumberRegex = /^\d*$/;
@@ -108,7 +159,12 @@ export const useCakeForm = (
     frosting
   }: Schema) => {
     try {
-      await addItemToCart(
+      if (!cartId || submitIsDisabled) {
+        toast.error("Falha ao adicionar item ao carrinho!");
+        return;
+      }
+
+      const itemCart: PersonalizedCake = await addItemToCart(
         cartId,
         cakeId,
         quantity,
@@ -119,6 +175,8 @@ export const useCakeForm = (
       );
 
       setIsSubmitted(true);
+
+      addItemToCartContext(itemCart);
 
       toast.success("Item adicionado ao carrinho com sucesso!");
 
@@ -135,12 +193,13 @@ export const useCakeForm = (
     sizeSelected,
     quantity,
     isSubmitting,
-    isSubmitted,
-    isValid,
     register,
     errors,
     setValue,
     handleChangeQuantity,
+    totalPriceString,
+    totalPriceNumber,
+    submitIsDisabled,
     handleSubmit: handleSubmit(onSubmit)
   };
 };

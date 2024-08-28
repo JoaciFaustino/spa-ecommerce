@@ -1,7 +1,8 @@
 "use client";
 import { User } from "@/@types/User";
 import { useRouter } from "next/navigation";
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { CartContext } from "./CartProvider";
 
 type TypeUserContext = {
   user: User | undefined;
@@ -24,6 +25,7 @@ function UserProvider({
   children
 }: UserProviderProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
+  const { changeCartId, changeCartItems } = useContext(CartContext);
   const router = useRouter();
 
   const getUserLogged = async (): Promise<User | undefined> => {
@@ -45,6 +47,9 @@ function UserProvider({
       await logoutAction();
 
       setUser(undefined);
+
+      changeCartId(undefined);
+      changeCartItems([]);
 
       router.push("/login");
     } catch (error) {

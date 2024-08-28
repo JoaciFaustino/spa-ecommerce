@@ -9,6 +9,7 @@ import axios from "axios";
 import { getSession } from "@/lib/session";
 import { headers } from "next/headers";
 import { CustomError } from "@/utils/customError";
+import { PersonalizedCake } from "@/@types/Cart";
 
 type SucessGetAllCakes = {
   sucess: true;
@@ -235,11 +236,11 @@ export const addItemToCart = async (
   frosting?: string,
   fillings?: string[],
   size?: Size
-): Promise<void> => {
+): Promise<PersonalizedCake> => {
   try {
     const session = await getSession();
 
-    await api.patch<{ message: string }>(
+    const { data } = await api.patch<{ addedCake: PersonalizedCake }>(
       `/cart/add-cake/${cartId}`,
       {
         cartId,
@@ -252,6 +253,8 @@ export const addItemToCart = async (
       },
       { headers: { Authorization: session } }
     );
+
+    return data.addedCake;
   } catch (error) {
     throw new Error("Ocorreu um erro ao tentar adicionar o item no carrinho!");
   }

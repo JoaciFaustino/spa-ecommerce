@@ -1,31 +1,31 @@
-import { useRef, useState } from "react";
+import { CartContext } from "@/contexts/CartProvider";
+import { removeItemCart } from "@/services/requests";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 
-export const useItemCart = (
-  itemCartId: string,
-  removeOneItemFn: (itemCartId: string) => Promise<void>
-) => {
+export const useItemCart = (itemCartId: string) => {
   const [isPending, setIsPending] = useState(false);
+  const { cartId, removeItemToCart } = useContext(CartContext);
 
   const handleRemoveItem = async () => {
-    if (isPending) {
+    if (isPending || !cartId) {
       return;
     }
 
     setIsPending(true);
 
     try {
-      await removeOneItemFn(itemCartId);
+      await removeItemCart(cartId, itemCartId);
 
-      setIsPending(false);
-    } catch (error) {
-      setIsPending(false);
-
-      return;
+      removeItemToCart(itemCartId);
+    } catch (error: any) {
+      toast.error(
+        "Falha ao remover item do carrinho. Tente novamente mais tarde!"
+      );
     }
+
+    setIsPending(false);
   };
 
-  return {
-    handleRemoveItem,
-    isPending
-  };
+  return { handleRemoveItem, isPending };
 };

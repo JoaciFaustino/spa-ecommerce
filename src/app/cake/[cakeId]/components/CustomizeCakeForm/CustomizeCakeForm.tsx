@@ -10,7 +10,6 @@ import { useCustomizableParts } from "./useCustomizableParts";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { IFilling } from "@/@types/Filling";
 import { IFrosting } from "@/@types/Frosting";
-import { useCalculatePricing } from "./useCalculatePricing";
 import { CgShoppingCart } from "react-icons/cg";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
@@ -25,81 +24,12 @@ const createSelectOptions = (options: string[]): Option[] => {
   return options.map((option, index) => ({ id: index, name: option }));
 };
 
-const getFillingsSelectedsObjs = (
-  fillingsSelectedsStrings: string[],
-  fillingsOptions: IFilling[]
-): IFilling[] => {
-  const fillingsObjs: IFilling[] = fillingsSelectedsStrings.reduce(
-    (fillingsObjs: IFilling[], fillingSelected: string) => {
-      const [fillingObj] = fillingsOptions.filter(
-        ({ name }) => name === fillingSelected
-      );
-
-      if (!fillingObj) {
-        return [...fillingsObjs];
-      }
-
-      return [...fillingsObjs, fillingObj];
-    },
-
-    []
-  );
-
-  return fillingsObjs;
-};
-
-const getFrostingSelectedObj = (
-  frostingSelected: string | undefined,
-  frostingOptions: IFrosting[]
-): IFrosting | undefined => {
-  const [frostingsObj] = frostingOptions.filter(
-    ({ name }) => name === frostingSelected
-  );
-
-  if (!frostingsObj) {
-    return;
-  }
-
-  return frostingsObj;
-};
-
 function CustomizeCakeForm({
   typeOptions = [],
   fillingsOptions = [],
   frostingOptions = [],
-  defaultCake: {
-    _id: cakeId,
-    type: defaultType,
-    frosting: defaultFrosting,
-    fillings: defaultFillings,
-    size: defaultSize,
-    sizesPossibles,
-    customizableParts,
-    pricePerSize
-  }
+  defaultCake
 }: Props) {
-  const {
-    typeSelected,
-    frostingSelected,
-    fillingsSelecteds,
-    sizeSelected,
-    quantity,
-    isSubmitting,
-    isSubmitted,
-    isValid,
-    handleSubmit,
-    errors,
-    register,
-    setValue,
-    handleChangeQuantity
-  } = useCakeForm(
-    cakeId,
-    defaultType,
-    defaultFrosting,
-    defaultSize,
-    defaultFillings
-  );
-
   const [fillingsOptionsNames] = useState<string[]>(
     fillingsOptions.map(({ name }) => name)
   );
@@ -108,35 +38,35 @@ function CustomizeCakeForm({
   );
 
   const {
+    typeSelected,
+    frostingSelected,
+    fillingsSelecteds,
+    sizeSelected,
+    totalPriceString,
+    isSubmitting,
+    submitIsDisabled,
+    handleSubmit,
+    errors,
+    register,
+    setValue,
+    handleChangeQuantity
+  } = useCakeForm(defaultCake, fillingsOptions, frostingOptions);
+
+  const {
     isCustomizableCakeType,
     isCustomizableFillings,
     isCustomizableFrosting,
     isCustomizableSize,
     messageNoCustomizableParts
   } = useCustomizableParts(
-    customizableParts,
+    defaultCake.customizableParts,
     typeOptions,
     fillingsOptionsNames,
     frostingOptionsNames,
-    sizesPossibles
-  );
-
-  const { totalPriceString, totalPriceNumber } = useCalculatePricing(
-    pricePerSize[sizeSelected] || 0,
-    getFillingsSelectedsObjs(fillingsSelecteds, fillingsOptions),
-    getFrostingSelectedObj(frostingSelected, frostingOptions),
-    quantity
+    defaultCake.sizesPossibles
   );
 
   const [isMounted, setIsMounted] = useState(false);
-
-  const submitIsDisabled =
-    totalPriceNumber <= 0 ||
-    Number.isNaN(totalPriceNumber) ||
-    !isMounted ||
-    !isValid ||
-    isSubmitting ||
-    isSubmitted;
 
   useEffect(() => setIsMounted(true), []);
 
@@ -152,7 +82,7 @@ function CustomizeCakeForm({
             label="Tipo da massa"
             inputsHtmlAttributes={register("type")}
             options={createSelectOptions(typeOptions)}
-            optionSelected={typeSelected || defaultType}
+            optionSelected={typeSelected || defaultCake.type}
             containerOptionsStyle={{ maxHeight: "12rem" }}
           />
 
@@ -193,7 +123,7 @@ function CustomizeCakeForm({
       >
         <label>Tamanho</label>
         <div className={styles.divRadioCheckbox}>
-          {sizesPossibles.map((size) => (
+          {defaultCake.sizesPossibles.map((size) => (
             <div className={styles.divInput} key={size}>
               <input
                 {...register("size", { required: true })}
@@ -240,10 +170,10 @@ function CustomizeCakeForm({
 
       <div className={styles.divPriceAndSubmitBtn}>
         <h2 className={styles.price}>
-          {submitIsDisabled ? "R$ --,--" : totalPriceString}
+          {!isMounted || submitIsDisabled ? "R$ --,--" : totalPriceString}
         </h2>
 
-        <button type="submit" disabled={submitIsDisabled}>
+        <button type="submit" disabled={!isMounted || submitIsDisabled}>
           {!isSubmitting ? (
             <>
               <CgShoppingCart style={{ color: "#fff", fontSize: "1rem" }} />

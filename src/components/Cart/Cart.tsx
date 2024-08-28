@@ -11,17 +11,10 @@ import SpinnerLoader from "../SpinnerLoader/SpinnerLoader";
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const { toggleModal, modalIsOpen } = useModal(modalRef);
-  const {
-    allCakes,
-    removeOneItem,
-    totalPriceCart,
-    handleClearCart,
-    clearCartIsPending
-  } = useCart(cart?._id, cart?.cakes);
-  const cakeQuantity = allCakes.reduce(
-    (acm, { quantity }) => acm + quantity,
-    0
-  );
+  const { cakes, totalPriceCart, handleClearCart, clearCartIsPending } =
+    useCart(cart?._id, cart?.cakes);
+  const cakeQuantity =
+    cakes?.reduce((acm, { quantity }) => acm + quantity, 0) || 0;
 
   return (
     <div className={styles.divCart}>
@@ -52,13 +45,8 @@ function Cart({ cart }: { cart: CartType | undefined }) {
 
             {cart && cart._id && cakeQuantity > 0 && (
               <>
-                {allCakes.map((cake) => (
-                  <ItemCart
-                    cartId={cart._id!}
-                    cake={cake}
-                    removeOneItemFn={removeOneItem}
-                    key={cake._id}
-                  />
+                {cakes?.map((cake) => (
+                  <ItemCart key={cake._id} cake={cake} />
                 ))}
               </>
             )}

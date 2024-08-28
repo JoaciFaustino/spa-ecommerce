@@ -8,12 +8,12 @@ export interface PersonalizedCake {
   frosting?: string;
   fillings: string[];
   size: Size;
-  totalPricing: number;
+  totalPricing?: number;
   quantity: number;
   imageUrl: string;
 }
 
 export interface Cart {
-  _id?: string;
+  _id: string;
   cakes: PersonalizedCake[];
 }
