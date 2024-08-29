@@ -46,6 +46,7 @@
 .divRadioCheckbox {
   display: flex;
   align-items: center;
+  gap: var(--padding-2);
 }
 
 .divRadioCheckbox .divInput {
@@ -114,6 +115,7 @@
 
   .price {
     color: var(--secondary-color);
+    white-space: nowrap;
   }
 
   button {
@@ -123,7 +125,6 @@
     color: #fff;
     flex: 1;
     transition: all 0.3s;
-
     display: flex;
     align-items: center;
     gap: var(--padding-2);
