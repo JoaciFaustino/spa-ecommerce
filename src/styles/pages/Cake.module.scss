@@ -40,11 +40,6 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-
-    &.loading {
-      height: 4.625rem;
-      border-radius: 5px;
-    }
   }
 }
 
@@ -54,6 +49,7 @@
   display: flex;
   gap: var(--padding-2);
   overflow-x: auto;
+
   scrollbar-width: thin;
   scrollbar-color: var(--gray-3) var(--gray-1);
 }
@@ -83,7 +79,6 @@
   font-weight: 700;
   transition: 0.3s;
   user-select: none;
-  box-sizing: content-box;
 
   &:hover {
     background-color: var(--secondary-color-hover);

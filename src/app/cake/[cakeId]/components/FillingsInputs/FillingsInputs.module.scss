@@ -56,12 +56,6 @@
   }
 }
 
-.btnRemoveLoading {
-  width: auto;
-  cursor: default;
-  padding: 0 var(--padding-2);
-}
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -71,15 +65,5 @@
   100% {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes skeletonBgAnimation {
-  0% {
-    background-color: var(--loading-gray-1);
-  }
-
-  100% {
-    background-color: var(--loading-gray-2);
   }
 }

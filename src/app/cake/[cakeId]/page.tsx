@@ -17,10 +17,6 @@ type Props = {
 
 async function CakePage({ params: { cakeId } }: Props) {
   try {
-    await new Promise((resolve) => {
-      setTimeout(() => resolve("chibanco"), 5000);
-    });
-
     const [cake, cakeTypesRes, fillingsRes, frostingsRes] = await Promise.all([
       getCakeById(cakeId),
       getAllCakeTypes(),
@@ -61,6 +57,23 @@ async function CakePage({ params: { cakeId } }: Props) {
             />
           </div>
         </div>
+
+        {/* <pre>
+          {JSON.stringify(
+            {
+              type: cake.type,
+              frosting: cake.frosting,
+              fillings: cake.fillings,
+              totalPricing: cake.totalPricing,
+              size: cake.size,
+              customizableParts: cake.customizableParts,
+              pricePerSize: cake.pricePerSize,
+              sizesPossibles: cake.sizesPossibles
+            },
+            null,
+            2
+          )}
+        </pre> */}
       </section>
     );
   } catch (error: any) {
@@ -69,6 +82,7 @@ async function CakePage({ params: { cakeId } }: Props) {
     }
 
     if (error instanceof CustomError && error.status === 404) {
+      //LEMBRAR DE ESTILIZAR A not-found
       notFound();
     }
 
