@@ -10,6 +10,7 @@ import { notFound, redirect } from "next/navigation";
 import { CustomError } from "@/utils/customError";
 import Image from "next/image";
 import CustomizeCakeForm from "./components/CustomizeCakeForm/CustomizeCakeForm";
+import CakePageError from "./error";
 
 type Props = {
   params: { cakeId: string };
@@ -17,6 +18,8 @@ type Props = {
 
 async function CakePage({ params: { cakeId } }: Props) {
   try {
+    // await new Promise((r) => setTimeout(() => r(""), 5000));
+
     const [cake, cakeTypesRes, fillingsRes, frostingsRes] = await Promise.all([
       getCakeById(cakeId),
       getAllCakeTypes(),
@@ -57,23 +60,6 @@ async function CakePage({ params: { cakeId } }: Props) {
             />
           </div>
         </div>
-
-        {/* <pre>
-          {JSON.stringify(
-            {
-              type: cake.type,
-              frosting: cake.frosting,
-              fillings: cake.fillings,
-              totalPricing: cake.totalPricing,
-              size: cake.size,
-              customizableParts: cake.customizableParts,
-              pricePerSize: cake.pricePerSize,
-              sizesPossibles: cake.sizesPossibles
-            },
-            null,
-            2
-          )}
-        </pre> */}
       </section>
     );
   } catch (error: any) {
@@ -82,15 +68,10 @@ async function CakePage({ params: { cakeId } }: Props) {
     }
 
     if (error instanceof CustomError && error.status === 404) {
-      //LEMBRAR DE ESTILIZAR A not-found
       notFound();
     }
 
-    return (
-      <main className={styles.main}>
-        <h1>Ocorreu um erro inesperado!</h1>
-      </main>
-    );
+    return <CakePageError />;
   }
 }
 

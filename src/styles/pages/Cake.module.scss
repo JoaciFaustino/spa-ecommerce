@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   padding: var(--padding-4) 0;
+  flex: 1;
 }
 
 .wrapper {
@@ -21,7 +22,22 @@
   aspect-ratio: 1/1;
   overflow: hidden;
   border-radius: 20px;
-  background-color: #adadad;
+  background-color: var(--gray-1);
+}
+
+.divImageNotFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--gray-2);
+
+  // background-color: transparent;
+
+  h1 {
+    color: var(--gray-2);
+    font-size: 12vw;
+  }
 }
 
 .divContent {
@@ -30,6 +46,13 @@
   display: flex;
   width: 50%;
   flex-direction: column;
+
+  &.notFound {
+    margin: auto 0;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
 
   h1 {
     line-height: 4.625rem;
@@ -44,6 +67,7 @@
 }
 
 .divCategories {
+  padding-top: var(--padding-1);
   position: relative;
   width: 100%;
   display: flex;
@@ -82,6 +106,38 @@
 
   &:hover {
     background-color: var(--secondary-color-hover);
+  }
+}
+
+.divBtnNotFound {
+  display: flex;
+  gap: var(--padding-2);
+
+  button {
+    border: none;
+    border-radius: 99px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--padding-2);
+  }
+
+  .btnBack {
+    background-color: var(--secondary-color);
+    color: #fff;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
+
+  .btnHome {
+    color: var(--color-text-paragraph);
+
+    a {
+      color: var(--color-text-paragraph);
+    }
   }
 }
 

@@ -46,16 +46,17 @@
 .divRadioCheckbox {
   display: flex;
   align-items: center;
+  gap: var(--padding-2);
 }
 
 .divRadioCheckbox .divInput {
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: var(--padding-2);
 
   label {
     color: var(--color-text-paragraph);
-    padding-left: var(--padding-2);
     cursor: pointer;
   }
 

@@ -194,17 +194,21 @@ a {
   align-content: center;
 }
 
-.loading {
-  background-color: var(--loading-gray-1);
-  animation: 0.5s alternate infinite skeletonBgAnimation;
+.loading,
+.loading:hover {
+  user-select: none;
+  cursor: default !important;
+  color: transparent !important;
+  background-color: var(--loading-gray-1) !important;
+  animation: 0.5s alternate infinite skeletonBgAnimation !important;
 }
 
 @keyframes skeletonBgAnimation {
   0% {
-    background-color: var(--loading-gray-1);
+    background-color: var(--loading-gray-1) !important;
   }
 
   100% {
-    background-color: var(--loading-gray-2);
+    background-color: var(--loading-gray-2) !important;
   }
 }

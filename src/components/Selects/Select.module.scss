@@ -7,10 +7,15 @@
 }
 
 .btnOpen,
-.divInputSelect input {
+.divInputSelect input,
+.selectLoading {
   width: 100%;
   border: none;
   border-radius: 5px;
+}
+
+.selectLoading {
+  padding: var(--padding-2) var(--padding-4);
 }
 
 .btnOpen {
