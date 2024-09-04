@@ -1,22 +1,17 @@
 "use client";
 import styles from "./AsideMenu.module.scss";
-import { useContext } from "react";
 import { CgClose } from "react-icons/cg";
-import Link from "next/link";
 import { useAsideMenu } from "./useAsideMenu";
-import { UserContext } from "@/contexts/userProvider";
-import Profile from "../Profile/Profile";
-import Cart from "../Cart/Cart";
 import Navbar from "../Navbar/Navbar";
 import UserInfo from "../UserInfo/UserInfo";
+import { useRef } from "react";
 
 type Props = {
   handleCloseAsideMenu: () => void;
+  userInfoComponent: React.ReactNode;
 };
 
-const STYLE_ROUTE_ACTIVED = { color: "var(--primary-color)" };
-
-function AsideMenu({ handleCloseAsideMenu }: Props) {
+function AsideMenu({ handleCloseAsideMenu, userInfoComponent }: Props) {
   const { backdropRef, asideMenuRef, closeAndInitAnimationClose } =
     useAsideMenu(handleCloseAsideMenu);
 
@@ -30,10 +25,10 @@ function AsideMenu({ handleCloseAsideMenu }: Props) {
             className={styles.btnClose}
             onClick={closeAndInitAnimationClose}
           >
-            <CgClose style={{ color: "white", fontSize: "1.5rem" }} />
+            <CgClose style={{ color: "#fff", fontSize: "1.5rem" }} />
           </button>
 
-          <UserInfo />
+          {userInfoComponent}
         </header>
 
         <Navbar className={styles.navbar} />

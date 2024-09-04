@@ -7,7 +7,6 @@ import { CgMenu } from "react-icons/cg";
 import { useHeader } from "./useHeader";
 import { usePathname } from "next/navigation";
 import Navbar from "../Navbar/Navbar";
-import UserInfo from "../UserInfo/UserInfo";
 import logo from "../../../public/images/logo.png";
 
 function Header({ userInfoComponent }: { userInfoComponent: React.ReactNode }) {
@@ -18,7 +17,10 @@ function Header({ userInfoComponent }: { userInfoComponent: React.ReactNode }) {
   return !pageIsAuth ? (
     <header className={styles.header} ref={headerRef}>
       {openAsideMenu && (
-        <AsideMenu handleCloseAsideMenu={handleOpenAndCloseAsideMenu} />
+        <AsideMenu
+          handleCloseAsideMenu={handleOpenAndCloseAsideMenu}
+          userInfoComponent={userInfoComponent}
+        />
       )}
 
       <div className={styles.wrapper + " wrapper"}>
