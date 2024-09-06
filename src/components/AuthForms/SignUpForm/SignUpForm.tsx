@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import { AuthResponse, FieldsFormSignUp } from "@/@types/Auth";
 import { useAuthForm } from "@/hooks/useAuthForm";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
+import { parseAsString, useQueryState } from "nuqs";
 
 const DEFAULT_FIELDS: FieldsFormSignUp = {
   name: { value: "", isValid: false, wasBlur: false },
@@ -19,6 +20,11 @@ type Props = {
 };
 
 function SignUpForm({ signUpAction }: Props) {
+  const [redirect] = useQueryState(
+    "redirect",
+    parseAsString.withOptions({ clearOnDefault: true })
+  );
+
   const {
     name,
     username,
@@ -30,7 +36,11 @@ function SignUpForm({ signUpAction }: Props) {
     handleBlur,
     allFieldsIsValid,
     reqIsPending
-  } = useAuthForm<FieldsFormSignUp>(DEFAULT_FIELDS, signUpAction);
+  } = useAuthForm<FieldsFormSignUp>(
+    DEFAULT_FIELDS,
+    signUpAction,
+    redirect || "/"
+  );
 
   return (
     <div className={styles.divForm}>

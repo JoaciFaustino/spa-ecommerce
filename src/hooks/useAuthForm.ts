@@ -18,7 +18,8 @@ import { toast } from "react-toastify";
 
 export const useAuthForm = <T>(
   defaultFields: T,
-  serverActionFn: (fields: T) => Promise<AuthResponse>
+  serverActionFn: (fields: T) => Promise<AuthResponse>,
+  redirect: string
 ) => {
   const router = useRouter();
   const [allFieldsIsValid, setAllFieldsIsValid] = useState(false);
@@ -53,7 +54,7 @@ export const useAuthForm = <T>(
 
     changeUserLogged(user);
 
-    router.push("/");
+    router.push(decodeURIComponent(redirect));
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

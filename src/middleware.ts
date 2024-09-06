@@ -20,7 +20,9 @@ export async function middleware(request: NextRequest) {
     const { userId } = await auth();
 
     if (!userId) {
-      return NextResponse.redirect(new URL(`/login`, request.url));
+      return NextResponse.redirect(
+        new URL(`/login?redirect=${encodeURIComponent(pathname)}`, request.url)
+      );
     }
   }
 

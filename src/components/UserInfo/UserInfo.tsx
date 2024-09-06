@@ -8,6 +8,7 @@ import { User } from "@/@types/User";
 import { Suspense } from "react";
 import { getCartById } from "@/actions/cart";
 import { Cart as CartType } from "@/@types/Cart";
+import Buttons from "./components/Buttons";
 
 async function UserInfo() {
   return (
@@ -40,14 +41,7 @@ async function ProfileSuspense() {
       <Profile user={user} />
     </>
   ) : (
-    <>
-      <Link href="/login">
-        <button className={styles.btnLogin}>Login</button>
-      </Link>
-      <Link href="/signup">
-        <button className={styles.btnSignup}>Cadastrar-se</button>
-      </Link>
-    </>
+    <Buttons />
   );
 }
 
