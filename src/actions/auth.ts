@@ -111,9 +111,17 @@ export async function auth(): Promise<{ userId?: string; role?: string }> {
 
     if (!session) return {};
 
-    const { data } = await api.get("/auth/", {
-      headers: { Authorization: session }
+    const response = await fetch(`${api.getUri()}/auth/`, {
+      method: "GET",
+      headers: { Authorization: session },
+      cache: "no-store"
     });
+
+    if (!response.ok) {
+      return {};
+    }
+
+    const data = await response.json();
 
     const { userId, role } = data;
 

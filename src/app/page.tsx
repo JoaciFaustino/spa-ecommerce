@@ -109,7 +109,8 @@ export default async function Home() {
               <span className={styles.dotTopic}></span>
               <h4>Pedido</h4>
               <p className="textBig">
-                Escolha o que você quer e coloque no carrinho.
+                Escolha o que você quer, coloque no carrinho e finalize o
+                pedido.
               </p>
             </div>
             <div className={styles.topic}>
