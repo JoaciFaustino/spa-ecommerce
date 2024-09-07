@@ -31,17 +31,13 @@ function SelectHookForm({
 }: SelectHookFormProps) {
   const optionsRef = useRef<HTMLDivElement | null>(null);
   const { toggleModal, modalIsOpen } = useModal(optionsRef);
-
   const [isMounted, setIsMounted] = useState(false);
+  const isDisabled = !isMounted || options.length === 0;
 
   useEffect(() => setIsMounted(true), []);
 
-  if (options.length === 0) {
-    return <></>;
-  }
-
   return (
-    <div className={`${!isMounted ? styles.disabled : ""} ${styles.select}`}>
+    <div className={`${styles.select} ${isDisabled ? styles.disabled : ""}`}>
       {!!label && <label>{label}</label>}
 
       <button
@@ -49,6 +45,7 @@ function SelectHookForm({
         style={buttonStyle}
         onClick={toggleModal}
         type="button"
+        disabled={isDisabled}
       >
         <p>{optionSelected !== "" ? optionSelected : nullOptionLabel}</p>
 

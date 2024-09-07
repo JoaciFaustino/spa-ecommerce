@@ -32,15 +32,12 @@ function SelectMany({
   } = useSelectMany(optionsDefault, optionsSelecteds, handleOptionsSelecteds);
 
   const [isMounted, setIsMounted] = useState(false);
+  const isDisabled = !isMounted || optionsDefault.length === 0;
 
   useEffect(() => setIsMounted(true), []);
 
-  if (optionsDefault.length === 0) {
-    return <></>;
-  }
-
   return (
-    <div className={`${!isMounted ? styles.disabled : ""} ${styles.select}`}>
+    <div className={`${isDisabled ? styles.disabled : ""} ${styles.select}`}>
       <div className={styles.divInputSelect}>
         <input
           type="text"

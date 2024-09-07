@@ -24,7 +24,6 @@ function Select({
 }: Props) {
   const optionsRef = useRef<HTMLDivElement | null>(null);
   const { toggleModal, modalIsOpen, handleIsOpen } = useModal(optionsRef);
-
   const { handleChangeInputOption } = useSelect(
     options,
     handleIsOpen,
@@ -32,18 +31,20 @@ function Select({
   );
 
   const [isMounted, setIsMounted] = useState(false);
+  const isDisabled = !isMounted || options.length === 0;
 
   useEffect(() => setIsMounted(true), []);
 
-  if (options.length === 0) {
-    return <></>;
-  }
-
   return (
-    <div className={`${!isMounted ? styles.disabled : ""} ${styles.select}`}>
+    <div className={`${styles.select} ${isDisabled ? styles.disabled : ""}`}>
       {!!label && <label>{label}</label>}
 
-      <button className={styles.btnOpen} onClick={toggleModal} type="button">
+      <button
+        className={styles.btnOpen}
+        onClick={toggleModal}
+        type="button"
+        disabled={isDisabled}
+      >
         <p>{optionSelected}</p>
 
         <div className={styles.divIcon}>
@@ -58,11 +59,9 @@ function Select({
           {options.map((option) => (
             <div
               key={option.id}
-              className={
-                optionSelected === option.name
-                  ? `${styles.optionSelected} ${styles.option}`
-                  : `${styles.option}`
-              }
+              className={`${styles.option} ${
+                optionSelected === option.name ? styles.optionSelected : ""
+              }`}
             >
               <label htmlFor={option.name}>
                 <p className={`${styles.label} text`}>{option.name}</p>
