@@ -12,10 +12,9 @@ type Props = {
 };
 
 function LoadNextCakes({ nextUrl }: Props) {
-  const finalPageInspectorRef = useRef<HTMLSpanElement | null>(null);
+  const finalPageInspectorRef = useRef<HTMLDivElement | null>(null);
   const [cakes, setCakes] = useState<ICake[]>([]);
   const [nextUrlState, setNextUrlState] = useState<string | undefined>(nextUrl);
-  const [isLoading, setIsLoading] = useState(false);
   const [canLoadMoreCakes, setCanLoadMoreCakes] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -26,7 +25,7 @@ function LoadNextCakes({ nextUrl }: Props) {
           setCanLoadMoreCakes(true);
         }
       },
-      { rootMargin: "300px" }
+      { rootMargin: "500px" }
     );
 
     if (finalPageInspectorRef.current) {
@@ -40,47 +39,43 @@ function LoadNextCakes({ nextUrl }: Props) {
 
   useEffect(() => {
     setNextUrlState(nextUrl);
-    setIsLoading(false);
   }, [nextUrl]);
 
   useEffect(() => {
     if (canLoadMoreCakes) {
       setCanLoadMoreCakes(false);
 
-      getNewCakes().finally(() => {
-        setIsLoading(false);
-      });
+      getNewCakes();
     }
   }, [canLoadMoreCakes]);
 
   const getNewCakes = async () => {
-    if (isLoading || !nextUrlState) {
+    if (isPending || !nextUrlState) {
       return;
     }
 
-    setIsLoading(true);
-    const response = await getAllCakesCompleteUrl(nextUrlState);
+    startTransition(async () => {
+      const response = await getAllCakesCompleteUrl(nextUrlState);
 
-    const { sucess } = response;
+      const { sucess } = response;
 
-    if (
-      (!sucess && response.status === 404) ||
-      (sucess && response.cakes.length === 0)
-    ) {
-      setNextUrlState(undefined);
-      return;
-    }
+      if (
+        (!sucess && response.status === 404) ||
+        (sucess && response.cakes.length === 0)
+      ) {
+        setNextUrlState(undefined);
+        return;
+      }
 
-    if (!sucess) {
-      return;
-    }
+      if (!sucess) {
+        return;
+      }
 
-    const { cakes: newCakes, nextUrl: newNextUrl } = response;
+      const { cakes: newCakes, nextUrl: newNextUrl } = response;
 
-    startTransition(() => {
       setCakes((prev) => [...prev, ...newCakes]);
+      setNextUrlState(newNextUrl || undefined);
     });
-    setNextUrlState(newNextUrl || undefined);
   };
 
   return (
@@ -96,16 +91,11 @@ function LoadNextCakes({ nextUrl }: Props) {
         />
       ))}
 
-      {(isPending || isLoading) && (
-        <div className={styles.divSpinnerLoader}>
+      <div className={styles.divSpinnerLoader} ref={finalPageInspectorRef}>
+        {isPending && (
           <SpinnerLoader color="var(--primary-color)" size={2} unitSize="rem" />
-        </div>
-      )}
-
-      <span
-        ref={finalPageInspectorRef}
-        style={{ gridColumn: "span 12" }}
-      ></span>
+        )}
+      </div>
     </>
   );
 }

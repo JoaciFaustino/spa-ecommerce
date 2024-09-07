@@ -11,8 +11,6 @@ const adminRoutes: string[] = [];
 //More info: https://nextjs.org/docs/messages/invalid-page-config
 
 export async function middleware(request: NextRequest) {
-  console.log("você jogou foraaaaa, o amor que eu te dei");
-
   const { pathname } = request.nextUrl;
   const routeAcess = getRouteAccess(pathname, authenticatedRoutes, adminRoutes);
 

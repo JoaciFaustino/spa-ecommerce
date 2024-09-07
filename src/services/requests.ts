@@ -7,7 +7,6 @@ import { IFrosting } from "@/@types/Frosting";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
 import { getSession } from "@/lib/session";
-import { headers } from "next/headers";
 import { CustomError } from "@/utils/customError";
 import { PersonalizedCake } from "@/@types/Cart";
 

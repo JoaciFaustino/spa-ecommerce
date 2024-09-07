@@ -5,6 +5,8 @@ import CakeCard from "@/components/CakeCard/CakeCard";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import { sortByApiOptions } from "@/@types/SortBy";
 import { getAllCakes } from "@/services/requests";
+import styles from "./LoadInitialCakes.module.scss";
+import Button from "./Button";
 
 const SORT_BY_API_OPTIONS: sortByApiOptions = {
   popularidade: "popularity",
@@ -52,17 +54,20 @@ async function LoadInitialCakes({
 
   if (!sucess && response.status === 404) {
     return (
-      <h5 style={{ gridColumn: "span 12" }}>Nenhum resultado encontrado!</h5>
+      <div className={styles.errorDiv}>
+        <h5>Nenhum resultado encontrado!</h5>
+      </div>
     );
   }
 
   if (!sucess) {
     return (
-      <h5
-        style={{ color: "var(--color-text-paragraph)", gridColumn: "span 12" }}
-      >
-        Ocorreu um erro no servidor! por favor tente novamente mais tarde
-      </h5>
+      <div className={styles.errorDiv}>
+        <h5>
+          Ocorreu um erro no servidor! por favor tente novamente mais tarde
+        </h5>
+        <Button />
+      </div>
     );
   }
 
