@@ -1,4 +1,3 @@
-import { IoIosArrowDown } from "react-icons/io";
 import styles from "./FiltersBar.module.scss";
 import FilterSelectsSkeleton from "../FilterSelects/loading";
 import SearchInput from "@/components/SearchInput/SearchInput";

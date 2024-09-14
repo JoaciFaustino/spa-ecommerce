@@ -7,6 +7,7 @@ import { useModal } from "@/hooks/useModal";
 import ItemCart from "./ItemCart/ItemCart";
 import { useCart } from "./useCart";
 import SpinnerLoader from "../SpinnerLoader/SpinnerLoader";
+import Link from "next/link";
 
 function Cart({ cart }: { cart: CartType | undefined }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -15,6 +16,8 @@ function Cart({ cart }: { cart: CartType | undefined }) {
     useCart(cart?._id, cart?.cakes);
   const cakeQuantity =
     cakes?.reduce((acm, { quantity }) => acm + quantity, 0) || 0;
+
+  const urlOrderPage = `/order/${cart?._id || ""}`;
 
   return (
     <div className={styles.divCart}>
@@ -46,7 +49,7 @@ function Cart({ cart }: { cart: CartType | undefined }) {
             {cart && cart._id && cakeQuantity > 0 && (
               <>
                 {cakes?.map((cake) => (
-                  <ItemCart key={cake._id} cake={cake} />
+                  <ItemCart key={cake._id} cake={cake} componentType="cart" />
                 ))}
               </>
             )}
@@ -72,12 +75,15 @@ function Cart({ cart }: { cart: CartType | undefined }) {
                   />
                 )}
               </button>
-              <button
-                className={styles.completePurchaseBtn}
-                disabled={cakeQuantity === 0}
-              >
-                Finalizar compra
-              </button>
+
+              <Link href={urlOrderPage}>
+                <button
+                  className={styles.completePurchaseBtn}
+                  disabled={cakeQuantity === 0}
+                >
+                  Finalizar compra
+                </button>
+              </Link>
             </div>
           </footer>
         </div>

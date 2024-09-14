@@ -19,7 +19,7 @@ export default async function Home() {
         <div className={`${styles.wrapper} wrapper grid`}>
           <div className={styles.left}>
             <h2>Delicie-se com os sabores mais irresistíveis da confeitaria</h2>
-            <Link href="/menu">
+            <Link href="/menu?sortBy=popularidade">
               <button className="textBig">ver menu</button>
             </Link>
           </div>
@@ -37,7 +37,7 @@ export default async function Home() {
               <div className={styles.divText}>
                 <h3>Explore as mais diversas opções de bolos</h3>
                 <h4>Explore as mais diversas opções de bolos</h4>
-                <Link href="/menu">
+                <Link href="/menu?sortBy=popularidade">
                   <button>
                     <CgArrowTopRight
                       className={styles.iconArrow}

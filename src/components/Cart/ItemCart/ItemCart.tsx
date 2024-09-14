@@ -11,6 +11,7 @@ import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 type ItemCartProps = {
   cake: PersonalizedCake;
+  componentType: "cart" | "orderPage";
 };
 
 function ItemCart({
@@ -24,7 +25,8 @@ function ItemCart({
     size,
     type,
     frosting
-  }
+  },
+  componentType
 }: ItemCartProps) {
   const { isPending, handleRemoveItem } = useItemCart(itemCartId);
   const [moreDetailsActived, setMoreDetailsActived] = useState(false);
@@ -39,11 +41,9 @@ function ItemCart({
 
   return (
     <div
-      className={
-        isPending
-          ? `${styles.itemCart} ${styles.disabledItem}`
-          : `${styles.itemCart}`
-      }
+      className={`${styles.itemCart} ${isPending ? styles.disabledItem : ""} ${
+        componentType === "orderPage" ? styles.orderStyle : styles.cartStyle
+      }`}
     >
       <Image
         src={imageUrl}
@@ -58,37 +58,20 @@ function ItemCart({
       />
       <div className={styles.textContent}>
         <h6>{name}</h6>
-        <p className="text">
-          Quantidade: <span>{quantity}</span>
-        </p>
-        <p className="text">
-          Preço unitário: <span>{unitPrice}</span>
-        </p>
-        <p className="text">
-          Preço total: <span className={styles.priceText}>{totalPrice}</span>
-        </p>
+        <Text title="Quantidade" value={quantity} />
+        <Text title="Preço unitário" value={unitPrice} />
+        <Text title="Preço total" value={totalPrice} isPrice />
 
         {moreDetailsActived && (
           <>
-            <p className="text">
-              Tipo de massa: <span>{type}</span>
-            </p>
-
-            {frosting && (
-              <p className="text">
-                Cobertura: <span>{frosting}</span>
-              </p>
-            )}
-
-            {fillings && fillings.length > 0 && (
-              <p className="text">
-                Recheios: <span>{fillingsFormated}</span>
-              </p>
-            )}
-
-            <p className="text">
-              Tamanho: <span>{size}</span>
-            </p>
+            <Text title="Tipo de massa" value={type} />
+            <Text title="Cobertura" value={frosting} isShow={!!frosting} />
+            <Text
+              title="Recheios"
+              value={fillingsFormated}
+              isShow={fillings && fillings.length > 0}
+            />
+            <Text title="Tamanho" value={size} />
           </>
         )}
 
@@ -104,19 +87,42 @@ function ItemCart({
         </p>
       </div>
 
-      <div className={styles.divIconDelete}>
-        {isPending && (
-          <SpinnerLoader color="var(--primary-color)" size={1} unitSize="rem" />
-        )}
+      {componentType === "cart" && (
+        <div className={styles.divIconDelete}>
+          {isPending && (
+            <SpinnerLoader
+              color="var(--primary-color)"
+              size={1}
+              unitSize="rem"
+            />
+          )}
 
-        {!isPending && (
-          <BsTrash
-            style={{ color: "red", fontSize: "1.5rem" }}
-            onClick={handleRemoveItem}
-          />
-        )}
-      </div>
+          {!isPending && (
+            <BsTrash
+              style={{ color: "red", fontSize: "1.5rem" }}
+              onClick={handleRemoveItem}
+            />
+          )}
+        </div>
+      )}
     </div>
+  );
+}
+
+type TextProps = {
+  title: string;
+  value?: string | number;
+  isPrice?: boolean;
+  isShow?: boolean;
+};
+
+function Text({ title, value, isPrice = false, isShow = true }: TextProps) {
+  return isShow && value ? (
+    <p className="text">
+      {title}: <span className={isPrice ? styles.priceText : ""}>{value}</span>
+    </p>
+  ) : (
+    <></>
   );
 }
 

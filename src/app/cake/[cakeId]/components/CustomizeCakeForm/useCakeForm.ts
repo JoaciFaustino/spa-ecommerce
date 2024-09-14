@@ -88,7 +88,6 @@ export const useCakeForm = (
   fillingsOptions: IFilling[],
   frostingOptions: IFrosting[]
 ) => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
   const { cartId, addItemToCart: addItemToCartContext } =
     useContext(CartContext);
@@ -97,7 +96,7 @@ export const useCakeForm = (
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting, isSubmitted, isValid },
     setValue
   } = useForm<Schema>({
     mode: "all",
@@ -174,13 +173,11 @@ export const useCakeForm = (
         size
       );
 
-      setIsSubmitted(true);
-
       addItemToCartContext(itemCart);
 
       toast.success("Item adicionado ao carrinho com sucesso!");
 
-      router.push("/menu");
+      router.push("/menu?sortBy=popularidade");
     } catch (error) {
       toast.error("Falha ao adicionar item ao carrinho!");
     }

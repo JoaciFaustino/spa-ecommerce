@@ -1,0 +1,88 @@
+@import "@/styles/variables.scss";
+
+.mainSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: var(--pastel-pink);
+  border-radius: 20px;
+  padding: var(--padding-4);
+  gap: var(--padding-2);
+
+  .title {
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: var(--padding-2);
+
+    &:hover {
+      background-color: rgba(#fff, 0.2);
+    }
+  }
+}
+
+.icon {
+  transition: transform 0.2s;
+  transform: rotate(0deg);
+}
+
+.icon.rotated {
+  transform: rotate(180deg);
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--padding-2);
+  max-height: 16rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-3) var(--gray-1);
+}
+
+.products::-webkit-scrollbar {
+  width: var(--padding-3);
+}
+
+.products::-webkit-scrollbar-track {
+  background: var(--gray-1);
+}
+
+.products::-webkit-scrollbar-thumb {
+  background: var(--gray-2);
+}
+
+.products::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-3);
+}
+
+.product {
+  grid-column: 1fr;
+  display: flex;
+}
+
+.info {
+  background-color: rgba(#fff, 0.6);
+  transition: 0.3s;
+  border-radius: 10px;
+  padding: var(--padding-2) var(--padding-4);
+
+  &:hover {
+    background-color: #fff;
+  }
+}
+
+.priceText {
+  text-wrap: nowrap;
+  color: var(--secondary-color);
+}
+
+@media (max-width: $sm) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+}

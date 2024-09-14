@@ -2,12 +2,11 @@
 import styles from "./UserInfo.module.scss";
 import Cart from "../Cart/Cart";
 import Profile from "../Profile/Profile";
-import Link from "next/link";
 import { getUserLogged } from "@/actions/user";
 import { User } from "@/@types/User";
 import { Suspense } from "react";
 import { getCartById } from "@/actions/cart";
-import { Cart as CartType } from "@/@types/Cart";
+import type { Cart as CartType } from "@/@types/Cart";
 import Buttons from "./components/Buttons";
 
 async function UserInfo() {

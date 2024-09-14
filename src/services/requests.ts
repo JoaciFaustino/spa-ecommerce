@@ -9,6 +9,12 @@ import axios from "axios";
 import { getSession } from "@/lib/session";
 import { CustomError } from "@/utils/customError";
 import { PersonalizedCake } from "@/@types/Cart";
+import {
+  ContactDetails,
+  DeliveryAddress,
+  IOrder,
+  TypeOfReceipt
+} from "@/@types/Order";
 
 type SucessGetAllCakes = {
   sucess: true;
@@ -287,5 +293,45 @@ export const clearCart = async (cartId: string) => {
     );
   } catch (error: any) {
     throw new Error("Ocorreu um erro ao limpar o carrinho!");
+  }
+};
+
+export const createOrder = async (
+  cartId: string,
+  typeOfReceipt: TypeOfReceipt,
+  contactDetails: ContactDetails,
+  deliveryAddress?: DeliveryAddress,
+  observations?: string
+): Promise<IOrder> => {
+  try {
+    const session = await getSession();
+
+    const { data } = await api.post<{ order: IOrder }>(
+      "/orders/create",
+      {
+        cartId,
+        typeOfReceipt,
+        contactDetails,
+        observations,
+        deliveryAddress
+      },
+      { headers: { Authorization: session } }
+    );
+
+    return data.order;
+  } catch (error) {
+    // throw new ApiError(error.errors[0].message, 400);
+    // throw new ApiError("This cart doesn't exists", 404);
+    // throw new ApiError("This cart doesn't belong to this user", 403);
+    // throw new ApiError("failed to create the order", 500);
+
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed to create order", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed to create order";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
   }
 };

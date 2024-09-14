@@ -4,7 +4,7 @@ import { auth } from "./actions/auth";
 import { getRouteAccess } from "./utils/middlewareRoutes";
 
 const publicRoutes: string[] = ["/", "/menu", "/login", "/signup"];
-const authenticatedRoutes: string[] = ["/cake/:path*"];
+const authenticatedRoutes: string[] = ["/cake/:path*", "/order/:path*"];
 const adminRoutes: string[] = [];
 //note: you can't put that arrays in the config.matcher, so you need put
 //directly new routes in that arrays and in the config.matcher.
@@ -36,5 +36,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/cake/:path*"]
+  matcher: ["/cake/:path*", "/order/:path*"]
 };

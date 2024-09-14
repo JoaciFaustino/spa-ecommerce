@@ -1,0 +1,128 @@
+@import "@/styles/variables.scss";
+
+.form {
+  display: flex;
+  gap: var(--padding-4);
+  flex-direction: column;
+  justify-content: flex-start;
+  // align-items: flex-start;
+
+  button[type="submit"] {
+    color: #fff;
+    transition: 0.3s;
+    background-color: var(--secondary-color);
+    border: none;
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
+}
+
+.form h1 {
+  text-align: center;
+}
+
+.divRadios {
+  display: flex;
+  justify-content: center;
+  gap: var(--padding-4);
+}
+
+.divInputRadio {
+  display: flex;
+  align-items: center;
+
+  label {
+    padding-left: var(--padding-2);
+    cursor: pointer;
+  }
+
+  input[type="radio"] {
+    cursor: pointer;
+    appearance: none;
+
+    box-sizing: border-box;
+    height: 1rem;
+    aspect-ratio: 1/1;
+
+    border: 2px solid var(--gray-1);
+    padding: 2px;
+    border-radius: 100%;
+  }
+
+  input[type="radio"]:checked {
+    border-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input[type="radio"]:checked::after {
+    content: "";
+
+    width: calc(100%);
+    height: calc(100%);
+
+    border-radius: 100%;
+    background-color: var(--secondary-color);
+  }
+}
+
+.formList {
+  list-style-position: inside;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--padding-4);
+}
+
+.inputGroups {
+  grid-column: 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-4);
+}
+
+.divInput {
+  input,
+  label {
+    display: block;
+  }
+
+  input {
+    width: 100%;
+    padding: var(--padding-2);
+    border-radius: 5px;
+    border: none;
+    background-color: var(--gray-1);
+
+    &:focus {
+      outline: solid var(--primary-color) 2px;
+    }
+  }
+
+  .inputInvalid {
+    background-color: var(--color-warning-2);
+
+    &:focus {
+      outline: solid 2px var(--color-warning-1);
+    }
+  }
+}
+
+.messageError {
+  color: var(--color-warning-1);
+}
+
+.inputGroups .note {
+  border-radius: 10px;
+  padding: var(--padding-4);
+  background-color: var(--pastel-yellow);
+}
+
+@media (max-width: $sm) {
+  .formList {
+    grid-template-columns: 1fr;
+  }
+}
