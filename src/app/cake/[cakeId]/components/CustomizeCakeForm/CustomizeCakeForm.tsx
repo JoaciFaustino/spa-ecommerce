@@ -1,9 +1,7 @@
 "use client";
 import { ICake } from "@/@types/Cake";
 import styles from "./CustomizeCakeForm.module.scss";
-import SelectHookForm from "@/components/Selects/SelectHookForm/SelectHookForm";
-import { Option } from "@/@types/SelectsComponents";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FillingsInputs from "../FillingsInputs/FillingsInputs";
 import { useCakeForm } from "./useCakeForm";
 import { useCustomizableParts } from "./useCustomizableParts";
@@ -12,6 +10,7 @@ import { IFilling } from "@/@types/Filling";
 import { IFrosting } from "@/@types/Frosting";
 import { CgShoppingCart } from "react-icons/cg";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
+import Select from "@/components/Selects/Select/Select";
 
 type Props = {
   typeOptions?: string[];
@@ -20,22 +19,19 @@ type Props = {
   defaultCake: ICake;
 };
 
-const createSelectOptions = (options: string[]): Option[] => {
-  return options.map((option, index) => ({ id: index, name: option }));
-};
-
 function CustomizeCakeForm({
   typeOptions = [],
   fillingsOptions = [],
   frostingOptions = [],
   defaultCake
 }: Props) {
-  const [fillingsOptionsNames] = useState<string[]>(
-    fillingsOptions.map(({ name }) => name)
-  );
-  const [frostingOptionsNames] = useState<string[]>(
-    frostingOptions.map(({ name }) => name)
-  );
+  const fillingsOptionsNames: string[] = useMemo(() => {
+    return fillingsOptions.map(({ name }) => name);
+  }, []);
+
+  const frostingOptionsNames: string[] = useMemo(() => {
+    return frostingOptions.map(({ name }) => name);
+  }, []);
 
   const {
     typeSelected,
@@ -78,12 +74,14 @@ function CustomizeCakeForm({
             !isCustomizableCakeType ? styles.disabled : ""
           }`}
         >
-          <SelectHookForm
-            label="Tipo da massa"
-            inputsHtmlAttributes={register("type")}
-            options={createSelectOptions(typeOptions)}
-            optionSelected={typeSelected || defaultCake.type}
-            containerOptionsStyle={{ maxHeight: "12rem" }}
+          <label>Tipo da massa:</label>
+
+          <Select
+            options={typeOptions}
+            defaultValue={defaultCake.type}
+            onChangeOption={(newValue) =>
+              setValue("type", newValue || typeSelected)
+            }
           />
 
           <p className={styles.errorMessage}>{errors.type?.message}</p>
@@ -94,14 +92,14 @@ function CustomizeCakeForm({
             !isCustomizableFrosting ? styles.disabled : ""
           }`}
         >
-          <SelectHookForm
-            label="Cobertura:"
-            inputsHtmlAttributes={register("frosting")}
-            options={createSelectOptions(frostingOptionsNames)}
-            optionSelected={frostingSelected || ""}
-            containerOptionsStyle={{ maxHeight: "12rem" }}
-            required={false}
+          <label>Cobertura:</label>
+
+          <Select
+            options={frostingOptionsNames}
+            defaultValue={defaultCake.frosting?.name}
+            isRequired={false}
             nullOptionLabel="Sem cobertura"
+            onChangeOption={(newValue) => setValue("frosting", newValue)}
           />
         </div>
       </div>
@@ -111,7 +109,7 @@ function CustomizeCakeForm({
         sizeSelected={sizeSelected}
         setFillings={setValue<"fillings">}
         selectInitialValue={fillingsOptionsNames[0]}
-        fillingsOptions={createSelectOptions(fillingsOptionsNames)}
+        fillingsOptions={fillingsOptionsNames}
         errorMessage={errors.fillings?.message}
         isCustomizable={isCustomizableFillings}
       />

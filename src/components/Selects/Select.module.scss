@@ -120,11 +120,9 @@
   z-index: 1;
   right: 0;
   top: calc(100% + var(--padding-2));
-  //bottom: calc(100% + var(--padding-2) * (-1));
-  // transform: translateY(100%);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
-  background-color: rgba(#fff, 0.4);
+  background-color: rgba(#fff, 0.7);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   animation: fadeIn 0.3s;
@@ -192,6 +190,12 @@
 .textWarning {
   color: var(--color-warning-1);
   padding: var(--padding-2);
+}
+
+.finalPageInspector {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .disabled {

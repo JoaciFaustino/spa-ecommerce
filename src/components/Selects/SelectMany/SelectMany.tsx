@@ -1,115 +1,108 @@
 "use client";
-import { IoIosArrowDown, IoIosCloseCircle } from "react-icons/io";
 import styles from "../Select.module.scss";
 import { useSelectMany } from "./useSelectMany";
-import { Option } from "@/@types/SelectsComponents";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+import InputSelectMany from "../components/InputSelectMany";
+import OptionSelect from "../components/OptionSelect";
+import FinalOptionsInspector from "../components/FinalOptionsInspector";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
-type Props = {
+export type SelectManyProps = {
+  options: string[];
+  isLoadingOptions?: boolean;
   placeholder: string;
-  selectName: string;
-  optionsDefault?: Option[];
-  optionsSelecteds: string[];
-  handleOptionsSelecteds: (newOptionsSelecteds: string[]) => void;
+  isDisabled?: boolean;
+  newSelectedsOptions?: string[];
+  searchDebounceTime?: number;
+  onChangedOptionsSelecteds?: (newOptionsSelecteds: string[]) => void;
+  onEndOfOptionsReached?: () => void | Promise<void>;
+  onChangeSearch?: (value: string) => void | Promise<void>;
 };
 
 function SelectMany({
   placeholder,
-  selectName,
-  optionsDefault = [],
-  handleOptionsSelecteds,
-  optionsSelecteds = []
-}: Props) {
+  options = [],
+  isDisabled,
+  newSelectedsOptions = [],
+  isLoadingOptions = false,
+  searchDebounceTime = 0,
+  onChangedOptionsSelecteds,
+  onEndOfOptionsReached,
+  onChangeSearch
+}: SelectManyProps) {
   const {
     handleChangeCheckbox,
-    openOptions,
-    inputValue,
     handleChangeSearch,
-    optionsNormalizeds,
     clearOptionsSelecteds,
-    modalIsOpen,
+    openOptions,
+    filteredOptions,
+    inputValue,
+    optionsIsOpen,
+    optionsSelecteds,
+    isMounted,
     optionsRef
-  } = useSelectMany(optionsDefault, optionsSelecteds, handleOptionsSelecteds);
+  } = useSelectMany(
+    options,
+    newSelectedsOptions,
+    searchDebounceTime,
+    onChangedOptionsSelecteds,
+    onChangeSearch
+  );
 
-  const [isMounted, setIsMounted] = useState(false);
-  const isDisabled = !isMounted || optionsDefault.length === 0;
+  const autoIsDisabled = isDisabled || !isMounted;
+  const nameSelect = useMemo(() => String(Date.now() + Math.random()), []);
 
-  useEffect(() => setIsMounted(true), []);
+  const finalOptionsEventIsDisabled = !onEndOfOptionsReached || !optionsIsOpen;
+  const { finalPageInspectorRef } = useInfiniteScroll(
+    onEndOfOptionsReached,
+    undefined, //, "100px"
+    finalOptionsEventIsDisabled
+  );
 
   return (
-    <div className={`${isDisabled ? styles.disabled : ""} ${styles.select}`}>
-      <div className={styles.divInputSelect}>
-        <input
-          type="text"
-          placeholder={placeholder}
-          onClick={openOptions}
-          onFocus={openOptions}
-          style={
-            optionsSelecteds.length
-              ? { paddingRight: "calc(var(--padding-16) + 1rem)" }
-              : {}
-          }
-          onChange={handleChangeSearch}
-          value={inputValue}
-        />
+    <div
+      className={`${autoIsDisabled ? styles.disabled : ""} ${styles.select}`}
+    >
+      <InputSelectMany
+        clearOptionsSelecteds={clearOptionsSelecteds}
+        handleChangeSearch={handleChangeSearch}
+        inputValue={inputValue}
+        isMounted={isMounted}
+        openOptions={openOptions}
+        optionsIsOpen={optionsIsOpen}
+        optionsSelecteds={optionsSelecteds}
+        placeholder={placeholder}
+      />
 
-        <div className={styles.divIcons} onClick={openOptions}>
-          {isMounted && optionsSelecteds.length > 0 && (
-            <div className={styles.divCountSelected}>
-              <p className="textSmall">{optionsSelecteds.length}</p>
-
-              <IoIosCloseCircle
-                onClick={clearOptionsSelecteds}
-                className={styles.icon}
-                style={{ color: "#fff", fontSize: "1rem" }}
-              />
-            </div>
-          )}
-
-          <IoIosArrowDown
-            onClick={openOptions}
-            className={
-              modalIsOpen
-                ? `${styles.rotated} ${styles.icon}`
-                : `${styles.icon}`
-            }
-            style={{ color: "#fff", fontSize: "1rem" }}
-          />
-        </div>
-      </div>
-
-      {modalIsOpen && (
+      {optionsIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
-          {optionsNormalizeds.map((option) => (
-            <div
-              key={option.id}
-              className={
-                optionsSelecteds.includes(option.name)
-                  ? `${styles.optionSelected} ${styles.option}`
-                  : `${styles.option}`
-              }
-            >
-              <label htmlFor={option.name} className={styles.label}>
-                <p className="text">{option.name}</p>
-              </label>
+          {
+            //prettier-ignore
+            inputValue !== "" &&
+            filteredOptions.length === 0 &&
+            !isLoadingOptions && (
+              <p className={`${styles.textWarning} text`}>
+                Não existe essa opção
+              </p>
+            )
+          }
 
-              <input
-                type="checkbox"
-                id={option.name}
-                name={selectName}
-                checked={optionsSelecteds.includes(option.name)}
-                value={option.name}
-                onChange={handleChangeCheckbox}
-                hidden={true}
-              />
-            </div>
+          {filteredOptions.map((option) => (
+            <OptionSelect
+              key={option.id}
+              type="checkbox"
+              name={nameSelect}
+              disabled={autoIsDisabled}
+              handleChangeOption={handleChangeCheckbox}
+              isSelected={optionsSelecteds.includes(option.name)}
+              optionName={option.name}
+            />
           ))}
 
-          {inputValue !== "" && optionsNormalizeds.length === 0 && (
-            <p className={`${styles.textWarning} text`}>
-              Não existe essa opção
-            </p>
-          )}
+          <FinalOptionsInspector
+            isLoading={isLoadingOptions}
+            ref={finalPageInspectorRef}
+          />
         </div>
       )}
     </div>

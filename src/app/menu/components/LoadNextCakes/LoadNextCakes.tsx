@@ -32,14 +32,10 @@ function LoadNextCakes({ nextUrl }: Props) {
       observer.observe(finalPageInspectorRef.current);
     }
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    setNextUrlState(nextUrl);
-  }, [nextUrl]);
+  useEffect(() => setNextUrlState(nextUrl), [nextUrl]);
 
   useEffect(() => {
     if (canLoadMoreCakes) {
@@ -49,7 +45,7 @@ function LoadNextCakes({ nextUrl }: Props) {
     }
   }, [canLoadMoreCakes]);
 
-  const getNewCakes = async () => {
+  const getNewCakes = () => {
     if (isPending || !nextUrlState) {
       return;
     }

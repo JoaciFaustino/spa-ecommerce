@@ -141,8 +141,6 @@ export const useOrderForm = (cartId: string) => {
       toast.success("Pedido finalizado, agradecemos a sua compra!");
       router.push("/menu?sortBy=popularidade");
     } catch (error) {
-      console.log(error);
-
       toast.error(
         "Ocorreu um erro ao finalizar pedido! Tente novamente mais tarde."
       );

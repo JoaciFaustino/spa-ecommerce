@@ -41,7 +41,11 @@ export const useFillings = (
   };
 
   const selectHandlerFillingValue = (indexToModify: number) => {
-    return (newValue: string) => {
+    return (newValue: string | undefined) => {
+      if (!newValue) {
+        return;
+      }
+
       const newFillings = fillingsSelecteds.map((prevValue, index) =>
         index === indexToModify ? newValue : prevValue
       );

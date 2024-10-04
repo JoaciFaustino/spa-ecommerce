@@ -92,9 +92,7 @@ export const getAllCakes = async ({
         sortBy,
         search
       },
-      paramsSerializer: {
-        indexes: false
-      }
+      paramsSerializer: { indexes: false }
     });
 
     return { sucess: true, ...data };

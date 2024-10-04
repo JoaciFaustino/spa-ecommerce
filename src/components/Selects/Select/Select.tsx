@@ -1,83 +1,91 @@
 "use client";
 import styles from "../Select.module.scss";
-import { IoIosArrowDown } from "react-icons/io";
+import { useMemo } from "react";
+import Button from "../components/Button";
 import { useSelect } from "./useSelect";
-import { Option } from "@/@types/SelectsComponents";
-import { useModal } from "@/hooks/useModal";
-import { useEffect, useRef, useState } from "react";
+import OptionSelect from "../components/OptionSelect";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import FinalOptionsInspector from "../components/FinalOptionsInspector";
 
-type Props = {
-  selectName: string;
-  label?: string;
-  options: Option[];
-
-  optionSelected: string;
-  handleOptionSelected: (newValue: string) => void;
+type SelectProps = {
+  options: string[];
+  isRequired?: boolean;
+  isDisabled?: boolean;
+  nullOptionLabel?: string;
+  defaultValue?: string;
+  isLoadingOptions?: boolean;
+  onEndOfOptionsReached?: () => void | Promise<void>;
+  onChangeOption?: (newValue: string | undefined) => void;
 };
 
 function Select({
-  selectName,
-  label,
-  options,
-  optionSelected = options[0].name,
-  handleOptionSelected
-}: Props) {
-  const optionsRef = useRef<HTMLDivElement | null>(null);
-  const { toggleModal, modalIsOpen, handleIsOpen } = useModal(optionsRef);
-  const { handleChangeInputOption } = useSelect(
-    options,
-    handleIsOpen,
-    handleOptionSelected
+  options = [],
+  isRequired = true,
+  isDisabled = false,
+  nullOptionLabel = "None",
+  defaultValue,
+  isLoadingOptions = false,
+  onEndOfOptionsReached,
+  onChangeOption
+}: SelectProps) {
+  const {
+    optionsIsOpen,
+    optionsWithId,
+    selectedOption,
+    toggleOptions,
+    handleChangeOption,
+    optionsRef,
+    isMounted
+  } = useSelect(options, isRequired, defaultValue, onChangeOption);
+  const nameSelect = useMemo(() => String(Date.now() + Math.random()), []);
+  const autoIsDisabled = isDisabled || !isMounted;
+
+  const finalOptionsEventIsDisabled = !onEndOfOptionsReached || !optionsIsOpen;
+  const { finalPageInspectorRef } = useInfiniteScroll(
+    onEndOfOptionsReached,
+    undefined, //, "100px"
+    finalOptionsEventIsDisabled
   );
 
-  const [isMounted, setIsMounted] = useState(false);
-  const isDisabled = !isMounted || options.length === 0;
-
-  useEffect(() => setIsMounted(true), []);
-
   return (
-    <div className={`${styles.select} ${isDisabled ? styles.disabled : ""}`}>
-      {!!label && <label>{label}</label>}
+    <div
+      className={`${styles.select} ${autoIsDisabled ? styles.disabled : ""}`}
+    >
+      <Button
+        isDisabled={autoIsDisabled}
+        optionsIsOpen={optionsIsOpen}
+        textContent={selectedOption || nullOptionLabel}
+        toogleOptions={toggleOptions}
+      />
 
-      <button
-        className={styles.btnOpen}
-        onClick={toggleModal}
-        type="button"
-        disabled={isDisabled}
-      >
-        <p>{optionSelected}</p>
-
-        <div className={styles.divIcon}>
-          <IoIosArrowDown
-            className={`${styles.icon} ${modalIsOpen ? styles.rotated : ""}`}
-            style={{ color: "var(--color-text-title)", fontSize: "1rem" }}
-          />
-        </div>
-      </button>
-      {modalIsOpen && (
+      {optionsIsOpen && (
         <div className={styles.divOptions} ref={optionsRef}>
-          {options.map((option) => (
-            <div
-              key={option.id}
-              className={`${styles.option} ${
-                optionSelected === option.name ? styles.optionSelected : ""
-              }`}
-            >
-              <label htmlFor={option.name}>
-                <p className={`${styles.label} text`}>{option.name}</p>
-              </label>
+          {!isRequired && (
+            <OptionSelect
+              isNullOption
+              type="radio"
+              name={nameSelect}
+              isSelected={!selectedOption}
+              handleChangeOption={handleChangeOption}
+              optionName={nullOptionLabel}
+            />
+          )}
 
-              <input
-                type="radio"
-                id={option.name}
-                name={selectName}
-                checked={optionSelected === option.name}
-                value={option.name}
-                onChange={handleChangeInputOption}
-                hidden={true}
-              />
-            </div>
+          {optionsWithId.map((option) => (
+            <OptionSelect
+              key={option.id}
+              type="radio"
+              name={nameSelect}
+              handleChangeOption={handleChangeOption}
+              isSelected={selectedOption === option.name}
+              optionName={option.name}
+            />
           ))}
+
+          <FinalOptionsInspector
+            isLoading={isLoadingOptions}
+            ref={finalPageInspectorRef}
+          />
         </div>
       )}
     </div>

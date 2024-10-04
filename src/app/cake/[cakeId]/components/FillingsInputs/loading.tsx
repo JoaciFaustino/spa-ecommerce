@@ -1,6 +1,5 @@
 import SelectSkeleton from "@/components/Selects/loading";
 import styles from "./FillingsInputs.module.scss";
-import { BsTrash } from "react-icons/bs";
 
 function FillingsInputsSkeleton() {
   return (

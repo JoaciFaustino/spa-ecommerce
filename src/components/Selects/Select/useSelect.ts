@@ -1,22 +1,63 @@
 import { Option } from "@/@types/SelectsComponents";
-import { ChangeEvent } from "react";
+import { useModal } from "@/hooks/useModal";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { createOptions } from "@/utils/selectComponents";
 
 export const useSelect = (
-  options: Option[],
-  handleOptionIsOpen: (isOpen: boolean) => void,
-  handleOptionSelected: (newValue: string) => void
+  options: string[],
+  isRequired: boolean,
+  defaultValue?: string | undefined,
+  onChangeOption?: (newValue: string | undefined) => void
 ) => {
-  const handleChangeInputOption = (e: ChangeEvent<HTMLInputElement>) => {
-    handleOptionIsOpen(false);
+  const optionsRef = useRef<HTMLDivElement | null>(null);
+  const [optionsWithId, setOptionsWithId] = useState<Option[]>(
+    createOptions(options)
+  );
+  const [selectedOption, setSelectedOption] = useState(
+    isRequired && !defaultValue ? optionsWithId[0]?.name : defaultValue
+  );
+  const { toggleModal: toggleOptions, modalIsOpen: optionsIsOpen } =
+    useModal(optionsRef);
+  const [isMounted, setIsMounted] = useState(false);
 
-    const optionNames = options.map(({ name }) => name);
+  useEffect(() => {
+    setIsMounted(true);
 
-    if (!optionNames.includes(e.target.value)) {
+    if (!isMounted) {
       return;
     }
 
-    handleOptionSelected(e.target.value);
+    setOptionsWithId(createOptions(options));
+
+    if (isRequired && !selectedOption) {
+      setSelectedOption(
+        defaultValue && options.includes(defaultValue)
+          ? defaultValue
+          : optionsWithId[0].name
+      );
+
+      return;
+    }
+  }, [options]);
+
+  const handleChangeOption = (e: ChangeEvent<HTMLInputElement>) => {
+    const changedOption =
+      !isRequired && e.target.value === "" ? undefined : e.target.value;
+
+    setSelectedOption(changedOption);
+
+    if (onChangeOption) {
+      onChangeOption(changedOption);
+    }
   };
 
-  return { handleChangeInputOption };
+  return {
+    optionsWithId,
+    handleChangeOption,
+    selectedOption,
+    toggleOptions,
+    optionsIsOpen,
+    optionsRef,
+    isMounted
+  };
 };

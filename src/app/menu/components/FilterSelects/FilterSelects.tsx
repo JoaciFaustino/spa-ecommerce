@@ -3,23 +3,30 @@ import SelectMany from "@/components/Selects/SelectMany/SelectMany";
 import { IoIosArrowDown } from "react-icons/io";
 import styles from "./FilterSelects.module.scss";
 import { useState } from "react";
-import { Option } from "@/@types/SelectsComponents";
 import { useMenuQueryParams } from "@/hooks/useMenuQueryParams";
 
 type FilterSelectsProps = {
-  cakeTypes?: Option[];
-  frostings?: Option[];
-  fillings?: Option[];
-  categories?: Option[];
-  sizes?: Option[];
+  cakeTypes?: string[];
+  frostings?: string[];
+  fillings?: string[];
+  categories?: string[];
+  sizes?: string[];
+};
+
+const generateHandler = (setOptionsSelecteds: (...args: any[]) => any) => {
+  return (newOptionsSelecteds: string[]) => {
+    setOptionsSelecteds(
+      newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null
+    );
+  };
 };
 
 function FilterSelects({
-  cakeTypes,
-  frostings,
-  fillings,
-  sizes,
-  categories
+  cakeTypes = [],
+  frostings = [],
+  fillings = [],
+  sizes = [],
+  categories = []
 }: FilterSelectsProps) {
   const [filtersIsOpen, setFiltersIsOpen] = useState(true);
 
@@ -35,26 +42,6 @@ function FilterSelects({
     filling,
     setFilling
   } = useMenuQueryParams();
-
-  const handleTypesSelecteds = (newOptionsSelecteds: string[]) => {
-    setType(newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null);
-  };
-
-  const handleFrostingSelecteds = (newOptionsSelecteds: string[]) => {
-    setFrosting(newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null);
-  };
-
-  const handleCategoriesSelecteds = (newOptionsSelecteds: string[]) => {
-    setCategory(newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null);
-  };
-
-  const handleSizesSelecteds = (newOptionsSelecteds: string[]) => {
-    setSize(newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null);
-  };
-
-  const handleFillingsSelecteds = (newOptionsSelecteds: string[]) => {
-    setFilling(newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null);
-  };
 
   return (
     <details open className={styles.detailsSelectFilters}>
@@ -72,42 +59,37 @@ function FilterSelects({
       <div className={`${styles.filterSelects}`}>
         <SelectMany
           placeholder="Tipo de massa"
-          selectName="types"
-          optionsDefault={cakeTypes}
-          handleOptionsSelecteds={handleTypesSelecteds}
-          optionsSelecteds={type || []}
+          options={cakeTypes}
+          onChangedOptionsSelecteds={generateHandler(setType)}
+          newSelectedsOptions={type || []}
         />
 
         <SelectMany
           placeholder="Cobertura"
-          selectName="frostings"
-          optionsDefault={frostings}
-          handleOptionsSelecteds={handleFrostingSelecteds}
-          optionsSelecteds={frosting || []}
+          options={frostings}
+          onChangedOptionsSelecteds={generateHandler(setFrosting)}
+          newSelectedsOptions={frosting || []}
         />
 
         <SelectMany
           placeholder="Recheio"
-          selectName="fillings"
-          optionsDefault={fillings}
-          handleOptionsSelecteds={handleFillingsSelecteds}
-          optionsSelecteds={filling || []}
+          options={fillings}
+          onChangedOptionsSelecteds={generateHandler(setFilling)}
+          newSelectedsOptions={filling || []}
         />
 
         <SelectMany
           placeholder="Tamanho"
-          selectName="sizes"
-          optionsDefault={sizes}
-          handleOptionsSelecteds={handleSizesSelecteds}
-          optionsSelecteds={size || []}
+          options={sizes}
+          onChangedOptionsSelecteds={generateHandler(setSize)}
+          newSelectedsOptions={size || []}
         />
 
         <SelectMany
           placeholder="Categoria"
-          selectName="categories"
-          optionsDefault={categories}
-          handleOptionsSelecteds={handleCategoriesSelecteds}
-          optionsSelecteds={category || []}
+          options={categories}
+          onChangedOptionsSelecteds={generateHandler(setCategory)}
+          newSelectedsOptions={category || []}
         />
       </div>
     </details>

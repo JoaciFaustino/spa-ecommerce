@@ -2,7 +2,6 @@ import { Size } from "@/@types/Cake";
 import { SetValuesFillingsFunction, useFillings } from "./useFillings";
 import styles from "./FillingsInputs.module.scss";
 import Select from "@/components/Selects/Select/Select";
-import { Option } from "@/@types/SelectsComponents";
 import { BsPlusLg, BsTrash } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
@@ -12,7 +11,7 @@ type Props = {
   sizeSelected: Size;
   setFillings: SetValuesFillingsFunction;
   selectInitialValue: string;
-  fillingsOptions: Option[];
+  fillingsOptions: string[];
   errorMessage?: string;
 };
 
@@ -49,27 +48,36 @@ function FillingsInputs({
       <label>Recheios</label>
 
       <div className={styles.divSelects}>
-        {fillingsSelecteds.length === 0 && <p className="text">Sem recheio</p>}
+        {fillingsOptions.length === 0 && (
+          <p className="text" style={{ color: "var(--color-warning-1)" }}>
+            Ocorreu um erro! recarregue a página para personalizar os recheios!
+          </p>
+        )}
 
-        {fillingsSelecteds.map((filling, index) => (
-          <div className={styles.divSelect} key={index}>
-            <Select
-              handleOptionSelected={selectHandlerFillingValue(index)}
-              optionSelected={filling}
-              options={fillingsOptions}
-              selectName={`layer-${index}`}
-            />
+        {fillingsOptions.length !== 0 && fillingsSelecteds.length === 0 && (
+          <p className="text">Sem recheio</p>
+        )}
 
-            <button
-              type="button"
-              className={styles.btnRemove}
-              disabled={!isMounted}
-              onClick={() => removeLayer(index)}
-            >
-              <BsTrash style={{ color: "#fff", fontSize: "1.25rem" }} />
-            </button>
-          </div>
-        ))}
+        {fillingsOptions.length !== 0 &&
+          fillingsSelecteds.map((filling, index) => (
+            <div className={styles.divSelect} key={index}>
+              <Select
+                options={fillingsOptions}
+                onChangeOption={selectHandlerFillingValue(index)}
+                defaultValue={filling}
+              />
+
+              <button
+                type="button"
+                className={styles.btnRemove}
+                disabled={!isMounted}
+                onClick={() => removeLayer(index)}
+              >
+                <BsTrash style={{ color: "#fff", fontSize: "1.25rem" }} />
+              </button>
+            </div>
+          ))}
+
         <button
           type="button"
           onClick={addLayerFilling}

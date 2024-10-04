@@ -1,6 +1,5 @@
 "use server";
 import styles from "./FiltersBar.module.scss";
-
 import {
   getAllCakeTypes,
   getAllCategories,
@@ -10,7 +9,6 @@ import {
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
 import FilterSelects from "../FilterSelects/FilterSelects";
-import { Option } from "@/@types/SelectsComponents";
 import SortBy from "../SortBy/SortBy";
 
 async function FiltersBar() {
@@ -22,21 +20,10 @@ async function FiltersBar() {
       getAllFrostings()
     ]);
 
-  const sizes: Option[] | undefined = SIZES_POSSIBLES_ENUM.map(
-    (size, index) => ({ id: index, name: size })
-  );
-  const cakeTypes: Option[] | undefined = cakeTypesRes?.map(
-    ({ type, _id = type }) => ({ id: _id, name: type })
-  );
-  const categories: Option[] | undefined = categoriesRes?.map(
-    ({ category, _id = category }) => ({ id: _id, name: category })
-  );
-  const fillings: Option[] | undefined = fillingsRes?.map(
-    ({ name, _id = name }) => ({ id: _id, name: name })
-  );
-  const frostings: Option[] | undefined = frostingsRes?.map(
-    ({ name, _id = name }) => ({ id: _id, name: name })
-  );
+  const cakeTypes = cakeTypesRes?.map(({ type }) => type) || [];
+  const categories = categoriesRes?.map(({ category }) => category) || [];
+  const fillings = fillingsRes?.map(({ name }) => name) || [];
+  const frostings = frostingsRes?.map(({ name }) => name) || [];
 
   return (
     <section className={styles.filtersBar}>
@@ -56,7 +43,7 @@ async function FiltersBar() {
           categories={categories}
           fillings={fillings}
           frostings={frostings}
-          sizes={sizes}
+          sizes={[...SIZES_POSSIBLES_ENUM]}
         />
       </div>
     </section>
