@@ -1,9 +1,10 @@
 import { Size } from "@/@types/Cake";
 import { SetValuesFillingsFunction, useFillings } from "./useFillings";
 import styles from "./FillingsInputs.module.scss";
-import Select from "@/components/Selects/Select/Select";
 import { BsPlusLg, BsTrash } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import SelectInfiniteScoll from "@/components/Selects/SelectInfiniteScroll/SelectInfiniteScroll";
+import { getFillingsWithErrorHandling } from "@/utils/getCakePartsValues";
 
 type Props = {
   isCustomizable: boolean;
@@ -61,10 +62,17 @@ function FillingsInputs({
         {fillingsOptions.length !== 0 &&
           fillingsSelecteds.map((filling, index) => (
             <div className={styles.divSelect} key={index}>
-              <Select
-                options={fillingsOptions}
+              <SelectInfiniteScoll
+                initialOptions={fillingsOptions}
                 onChangeOption={selectHandlerFillingValue(index)}
                 defaultValue={filling}
+                initialPage={2}
+                limit={12}
+                onLoadMoreOptions={async (page, limit) => {
+                  const res = await getFillingsWithErrorHandling(limit, page);
+
+                  return res.map(({ name }) => name);
+                }}
               />
 
               <button

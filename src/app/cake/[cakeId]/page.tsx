@@ -1,33 +1,32 @@
 "use server";
-import {
-  getAllCakeTypes,
-  getAllFillings,
-  getAllFrostings,
-  getCakeById
-} from "@/services/requests";
+import { getCakeById } from "@/services/requests";
 import styles from "@/styles/pages/Cake.module.scss";
 import { notFound, redirect } from "next/navigation";
 import { CustomError } from "@/utils/customError";
 import Image from "next/image";
 import CustomizeCakeForm from "./components/CustomizeCakeForm/CustomizeCakeForm";
 import CakePageError from "./error";
+import {
+  getCakeTypesWithErrorHandling,
+  getFillingsWithErrorHandling,
+  getFrostingsWithErrorHandling
+} from "@/utils/getCakePartsValues";
 
 type Props = {
   params: { cakeId: string };
 };
 
+const limit = 12;
+const page = 1;
+
 async function CakePage({ params: { cakeId } }: Props) {
   try {
-    // await new Promise((r) => setTimeout(() => r(""), 5000));
-
-    const [cake, cakeTypesRes, fillingsRes, frostingsRes] = await Promise.all([
+    const [cake, cakeTypes, fillings, frostings] = await Promise.all([
       getCakeById(cakeId),
-      getAllCakeTypes(),
-      getAllFillings(),
-      getAllFrostings()
+      getCakeTypesWithErrorHandling(limit, page),
+      getFillingsWithErrorHandling(limit, page),
+      getFrostingsWithErrorHandling(limit, page)
     ]);
-
-    const cakeTypes = cakeTypesRes?.map(({ type }) => type);
 
     return (
       <section className={styles.mainSection}>
@@ -52,10 +51,11 @@ async function CakePage({ params: { cakeId } }: Props) {
                 ))}
               </div>
             )}
+
             <CustomizeCakeForm
-              typeOptions={cakeTypes}
-              fillingsOptions={fillingsRes}
-              frostingOptions={frostingsRes}
+              typeOptions={cakeTypes.map(({ type }) => type)}
+              fillingsOptions={fillings}
+              frostingOptions={frostings}
               defaultCake={cake}
             />
           </div>

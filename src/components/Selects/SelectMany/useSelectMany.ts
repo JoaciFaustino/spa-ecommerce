@@ -93,7 +93,7 @@ export const useSelectMany = (
       name.toLowerCase().includes(search.toLowerCase())
     );
 
-    setFilteredOptions([...filteredOptions]);
+    setFilteredOptions(filteredOptions);
   };
 
   const sequenceOptions = () => {

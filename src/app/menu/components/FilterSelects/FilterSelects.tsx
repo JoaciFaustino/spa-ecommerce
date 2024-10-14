@@ -4,16 +4,29 @@ import { IoIosArrowDown } from "react-icons/io";
 import styles from "./FilterSelects.module.scss";
 import { useState } from "react";
 import { useMenuQueryParams } from "@/hooks/useMenuQueryParams";
+import SelectManyInfiniteScroll from "@/components/Selects/SelectManyInfiniteScroll/SelectManyInfiniteScroll";
+import { Options } from "nuqs";
+import {
+  getCakeTypesWithErrorHandling,
+  getCategoriesWithErrorHandling,
+  getFillingsWithErrorHandling,
+  getFrostingsWithErrorHandling
+} from "@/utils/getCakePartsValues";
 
 type FilterSelectsProps = {
-  cakeTypes?: string[];
-  frostings?: string[];
-  fillings?: string[];
-  categories?: string[];
-  sizes?: string[];
+  initialCakeTypes?: string[];
+  initialFrostings?: string[];
+  initialFillings?: string[];
+  initialCategories?: string[];
+  initialSizes?: string[];
 };
 
-const generateHandler = (setOptionsSelecteds: (...args: any[]) => any) => {
+type SetQueryParamsFunction = <Shallow>(
+  value: string[] | ((old: string[] | null) => string[] | null) | null,
+  options?: Options<Shallow> | undefined
+) => Promise<URLSearchParams>;
+
+const generateHandler = (setOptionsSelecteds: SetQueryParamsFunction) => {
   return (newOptionsSelecteds: string[]) => {
     setOptionsSelecteds(
       newOptionsSelecteds.length > 0 ? newOptionsSelecteds : null
@@ -21,12 +34,19 @@ const generateHandler = (setOptionsSelecteds: (...args: any[]) => any) => {
   };
 };
 
+const paginatedSelectProps = {
+  initialPage: 2,
+  limit: 12,
+  searchDebounceTime: 500,
+  usePaginationFunctionOnSearch: true
+};
+
 function FilterSelects({
-  cakeTypes = [],
-  frostings = [],
-  fillings = [],
-  sizes = [],
-  categories = []
+  initialCakeTypes = [],
+  initialFrostings = [],
+  initialFillings = [],
+  initialSizes = [],
+  initialCategories = []
 }: FilterSelectsProps) {
   const [filtersIsOpen, setFiltersIsOpen] = useState(true);
 
@@ -57,39 +77,75 @@ function FilterSelects({
       </summary>
 
       <div className={`${styles.filterSelects}`}>
-        <SelectMany
+        <SelectManyInfiniteScroll
           placeholder="Tipo de massa"
-          options={cakeTypes}
+          initialOptions={initialCakeTypes}
           onChangedOptionsSelecteds={generateHandler(setType)}
           newSelectedsOptions={type || []}
+          {...paginatedSelectProps}
+          onLoadMoreOptions={async (limit, page, search) => {
+            const res = await getCakeTypesWithErrorHandling(
+              page,
+              limit,
+              search
+            );
+
+            return res.map(({ type }) => type);
+          }}
         />
 
-        <SelectMany
+        <SelectManyInfiniteScroll
           placeholder="Cobertura"
-          options={frostings}
+          initialOptions={initialFrostings}
           onChangedOptionsSelecteds={generateHandler(setFrosting)}
           newSelectedsOptions={frosting || []}
+          {...paginatedSelectProps}
+          onLoadMoreOptions={async (limit, page, search) => {
+            const res = await getFrostingsWithErrorHandling(
+              page,
+              limit,
+              search
+            );
+
+            return res.map(({ name }) => name);
+          }}
         />
 
-        <SelectMany
+        <SelectManyInfiniteScroll
           placeholder="Recheio"
-          options={fillings}
+          initialOptions={initialFillings}
           onChangedOptionsSelecteds={generateHandler(setFilling)}
           newSelectedsOptions={filling || []}
+          {...paginatedSelectProps}
+          onLoadMoreOptions={async (limit, page, search) => {
+            const res = await getFillingsWithErrorHandling(page, limit, search);
+
+            return res.map(({ name }) => name);
+          }}
         />
 
         <SelectMany
           placeholder="Tamanho"
-          options={sizes}
+          options={initialSizes}
           onChangedOptionsSelecteds={generateHandler(setSize)}
           newSelectedsOptions={size || []}
         />
 
-        <SelectMany
+        <SelectManyInfiniteScroll
           placeholder="Categoria"
-          options={categories}
+          initialOptions={initialCategories}
           onChangedOptionsSelecteds={generateHandler(setCategory)}
           newSelectedsOptions={category || []}
+          {...paginatedSelectProps}
+          onLoadMoreOptions={async (limit, page, search) => {
+            const res = await getCategoriesWithErrorHandling(
+              page,
+              limit,
+              search
+            );
+
+            return res.map(({ category }) => category);
+          }}
         />
       </div>
     </details>

@@ -1,29 +1,31 @@
 "use server";
 import styles from "./FiltersBar.module.scss";
-import {
-  getAllCakeTypes,
-  getAllCategories,
-  getAllFillings,
-  getAllFrostings
-} from "@/services/requests";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
 import FilterSelects from "../FilterSelects/FilterSelects";
 import SortBy from "../SortBy/SortBy";
+import {
+  getCakeTypesWithErrorHandling,
+  getCategoriesWithErrorHandling,
+  getFillingsWithErrorHandling,
+  getFrostingsWithErrorHandling
+} from "@/utils/getCakePartsValues";
+
+const page = 1;
+const limit = 12;
 
 async function FiltersBar() {
-  const [cakeTypesRes, categoriesRes, fillingsRes, frostingsRes] =
-    await Promise.all([
-      getAllCakeTypes(),
-      getAllCategories(),
-      getAllFillings(),
-      getAllFrostings()
-    ]);
+  const [cakeTypes, categories, fillings, frostings] = await Promise.all([
+    getCakeTypesWithErrorHandling(limit, page),
+    getCategoriesWithErrorHandling(limit, page),
+    getFillingsWithErrorHandling(limit, page),
+    getFrostingsWithErrorHandling(limit, page)
+  ]);
 
-  const cakeTypes = cakeTypesRes?.map(({ type }) => type) || [];
-  const categories = categoriesRes?.map(({ category }) => category) || [];
-  const fillings = fillingsRes?.map(({ name }) => name) || [];
-  const frostings = frostingsRes?.map(({ name }) => name) || [];
+  const cakeTypesNames = cakeTypes.map(({ type }) => type);
+  const categoriesNames = categories.map(({ category }) => category);
+  const fillingsNames = fillings.map(({ name }) => name);
+  const frostingsNames = frostings.map(({ name }) => name);
 
   return (
     <section className={styles.filtersBar}>
@@ -39,11 +41,11 @@ async function FiltersBar() {
         </div>
 
         <FilterSelects
-          cakeTypes={cakeTypes}
-          categories={categories}
-          fillings={fillings}
-          frostings={frostings}
-          sizes={[...SIZES_POSSIBLES_ENUM]}
+          initialCakeTypes={cakeTypesNames}
+          initialCategories={categoriesNames}
+          initialFillings={fillingsNames}
+          initialFrostings={frostingsNames}
+          initialSizes={[...SIZES_POSSIBLES_ENUM]}
         />
       </div>
     </section>

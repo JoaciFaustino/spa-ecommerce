@@ -10,7 +10,11 @@ import { IFilling } from "@/@types/Filling";
 import { IFrosting } from "@/@types/Frosting";
 import { CgShoppingCart } from "react-icons/cg";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
-import Select from "@/components/Selects/Select/Select";
+import SelectInfiniteScoll from "@/components/Selects/SelectInfiniteScroll/SelectInfiniteScroll";
+import {
+  getCakeTypesWithErrorHandling,
+  getFrostingsWithErrorHandling
+} from "@/utils/getCakePartsValues";
 
 type Props = {
   typeOptions?: string[];
@@ -18,6 +22,8 @@ type Props = {
   frostingOptions?: IFrosting[];
   defaultCake: ICake;
 };
+
+const paginatedSelectProps = { initialPage: 2, limit: 12 };
 
 function CustomizeCakeForm({
   typeOptions = [],
@@ -35,7 +41,6 @@ function CustomizeCakeForm({
 
   const {
     typeSelected,
-    frostingSelected,
     fillingsSelecteds,
     sizeSelected,
     totalPriceString,
@@ -76,12 +81,18 @@ function CustomizeCakeForm({
         >
           <label>Tipo da massa:</label>
 
-          <Select
-            options={typeOptions}
+          <SelectInfiniteScoll
+            initialOptions={typeOptions}
             defaultValue={defaultCake.type}
             onChangeOption={(newValue) =>
               setValue("type", newValue || typeSelected)
             }
+            {...paginatedSelectProps}
+            onLoadMoreOptions={async (page, limit) => {
+              const res = await getCakeTypesWithErrorHandling(limit, page);
+
+              return res.map(({ type }) => type);
+            }}
           />
 
           <p className={styles.errorMessage}>{errors.type?.message}</p>
@@ -94,12 +105,18 @@ function CustomizeCakeForm({
         >
           <label>Cobertura:</label>
 
-          <Select
-            options={frostingOptionsNames}
+          <SelectInfiniteScoll
+            initialOptions={frostingOptionsNames}
             defaultValue={defaultCake.frosting?.name}
             isRequired={false}
             nullOptionLabel="Sem cobertura"
             onChangeOption={(newValue) => setValue("frosting", newValue)}
+            {...paginatedSelectProps}
+            onLoadMoreOptions={async (page, limit) => {
+              const res = await getFrostingsWithErrorHandling(limit, page);
+
+              return res.map(({ name }) => name);
+            }}
           />
         </div>
       </div>

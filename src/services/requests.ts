@@ -31,6 +31,12 @@ type failedGetAllCakes = {
   maxPages: 0;
 };
 
+export type PaginatedRequest = {
+  maxPages: number;
+  prevUrl: null | string;
+  nextUrl: null | string;
+};
+
 export const getCakeById = async (cakeId: string): Promise<ICake> => {
   try {
     const session = await getSession();
@@ -75,25 +81,23 @@ export const getAllCakes = async ({
   sortBy
 }: CakeQueryParams): Promise<SucessGetAllCakes | failedGetAllCakes> => {
   try {
-    const { data } = await api.get<{
-      maxPages: number;
-      cakes: ICake[];
-      prevUrl: null | string;
-      nextUrl: null | string;
-    }>("/cakes", {
-      params: {
-        type,
-        size,
-        category,
-        filling,
-        frosting,
-        limit,
-        page,
-        sortBy,
-        search
-      },
-      paramsSerializer: { indexes: false }
-    });
+    const { data } = await api.get<PaginatedRequest & { cakes: ICake[] }>(
+      "/cakes",
+      {
+        params: {
+          type,
+          size,
+          category,
+          filling,
+          frosting,
+          limit,
+          page,
+          sortBy,
+          search
+        },
+        paramsSerializer: { indexes: false }
+      }
+    );
 
     return { sucess: true, ...data };
   } catch (error: any) {
@@ -134,12 +138,9 @@ export const getAllCakesCompleteUrl = async (
   url: string
 ): Promise<SucessGetAllCakes | failedGetAllCakes> => {
   try {
-    const { data } = await axios.get<{
-      maxPages: number;
-      cakes: ICake[];
-      prevUrl: null | string;
-      nextUrl: null | string;
-    }>(url);
+    const { data } = await axios.get<PaginatedRequest & { cakes: ICake[] }>(
+      url
+    );
 
     return { sucess: true, ...data };
   } catch (error: any) {
@@ -176,12 +177,9 @@ export const getCakeBestSellers = async (): Promise<ICake[] | undefined> => {
     const page = 1;
     const sortBy = "popularity";
 
-    const { data } = await api.get<{
-      maxPages: number;
-      cakes: ICake[];
-      prevUrl: null | string;
-      nextUrl: null | string;
-    }>(`/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`);
+    const { data } = await api.get<PaginatedRequest & { cakes: ICake[] }>(
+      `/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`
+    );
 
     return data.cakes;
   } catch (error: any) {
@@ -189,45 +187,105 @@ export const getCakeBestSellers = async (): Promise<ICake[] | undefined> => {
   }
 };
 
-export const getAllCakeTypes = async (): Promise<ICakeType[] | undefined> => {
+export const getAllCakeTypes = async (
+  limit?: number,
+  page?: number,
+  search?: string
+): Promise<PaginatedRequest & { cakeTypes: ICakeType[] }> => {
   try {
-    const { data } = await api.get<{ cakeTypes: ICakeType[] }>("/cakeTypes");
+    const { data } = await api.get<
+      PaginatedRequest & { cakeTypes: ICakeType[] }
+    >("/cakeTypes", {
+      params: { limit, page, search },
+      paramsSerializer: { indexes: false }
+    });
 
-    return data.cakeTypes;
+    return data;
   } catch (error: any) {
-    return;
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed get cake types", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed get cake types";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
   }
 };
 
-export const getAllCategories = async (): Promise<ICategory[] | undefined> => {
+export const getAllCategories = async (
+  limit?: number,
+  page?: number,
+  search?: string
+): Promise<PaginatedRequest & { categories: ICategory[] }> => {
   try {
-    const { data } = await api.get<{ categories: ICategory[] }>("/categories");
+    const { data } = await api.get<
+      PaginatedRequest & { categories: ICategory[] }
+    >("/categories", {
+      params: { limit, page, search },
+      paramsSerializer: { indexes: false }
+    });
 
-    return data.categories;
-  } catch (error: any) {
-    return;
+    return data;
+  } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed get categories", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed get categories";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
   }
 };
 
-export const getAllFillings = async (): Promise<IFilling[] | undefined> => {
+export const getAllFillings = async (
+  limit?: number,
+  page?: number,
+  search?: string
+): Promise<PaginatedRequest & { fillings: IFilling[] }> => {
   try {
-    const { data } = await api.get<{ fillings: IFilling[] }>("/fillings");
-
-    return data.fillings;
-  } catch (error: any) {
-    return;
-  }
-};
-
-export const getAllFrostings = async (): Promise<IFrosting[] | undefined> => {
-  try {
-    const { data } = await api.get<{ frostings: IFrosting[] | undefined }>(
-      "/frostings"
+    const { data } = await api.get<PaginatedRequest & { fillings: IFilling[] }>(
+      "/fillings",
+      { params: { limit, page, search }, paramsSerializer: { indexes: false } }
     );
 
-    return data.frostings;
+    return data;
   } catch (error: any) {
-    return;
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed get fillings", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed get fillings";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
+  }
+};
+
+export const getAllFrostings = async (
+  limit?: number,
+  page?: number,
+  search?: string
+): Promise<PaginatedRequest & { frostings: IFrosting[] }> => {
+  try {
+    const { data } = await api.get<
+      PaginatedRequest & { frostings: IFrosting[] }
+    >("/frostings", {
+      params: { limit, page, search },
+      paramsSerializer: { indexes: false }
+    });
+
+    return data;
+  } catch (error: any) {
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed get frostings", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed get frostings";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
   }
 };
 
@@ -318,11 +376,6 @@ export const createOrder = async (
 
     return data.order;
   } catch (error) {
-    // throw new ApiError(error.errors[0].message, 400);
-    // throw new ApiError("This cart doesn't exists", 404);
-    // throw new ApiError("This cart doesn't belong to this user", 403);
-    // throw new ApiError("failed to create the order", 500);
-
     if (!axios.isAxiosError(error)) {
       throw new CustomError("Failed to create order", 500);
     }
