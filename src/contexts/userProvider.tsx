@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 import { CartContext } from "./CartProvider";
 
-type TypeUserContext = {
+type UserContext = {
   user: User | undefined;
   getUserLogged: () => Promise<User | undefined>;
   changeUserLogged: (user: User) => void;
   handleLogout: () => Promise<void>;
 };
 
-export const UserContext = createContext({} as TypeUserContext);
+export const UserContext = createContext({} as UserContext);
 
 type UserProviderProps = {
   getUserLoggedAction: () => Promise<User | undefined>;

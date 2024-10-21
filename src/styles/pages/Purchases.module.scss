@@ -1,0 +1,20 @@
+.mainSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--padding-8) 0;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  gap: var(--padding-4);
+}
+
+.divSpinnerLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -23,6 +23,16 @@
   overflow: hidden;
   border-radius: 20px;
   background-color: var(--gray-1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--gray-2);
+
+  h1 {
+    color: var(--gray-2);
+    font-size: 12vw;
+  }
 }
 
 .divContent {
@@ -31,6 +41,10 @@
   display: flex;
   width: 50%;
   flex-direction: column;
+  margin: auto 0;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 
   h1 {
     line-height: 4.625rem;
@@ -44,46 +58,35 @@
   }
 }
 
-.divCategories {
-  padding-top: var(--padding-1);
-  position: relative;
-  width: 100%;
+.divBtnNotFound {
   display: flex;
   gap: var(--padding-2);
-  overflow-x: auto;
 
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-3) var(--gray-1);
-}
+  button {
+    border: none;
+    border-radius: 99px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--padding-2);
+  }
 
-.divCategories::-webkit-scrollbar {
-  height: var(--padding-3);
-}
+  .btnBack {
+    background-color: var(--secondary-color);
+    color: #fff;
+    transition: 0.3s;
 
-.divCategories::-webkit-scrollbar-track {
-  background: var(--gray-1);
-}
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
 
-.divCategories::-webkit-scrollbar-thumb {
-  background: var(--gray-2);
-}
+  .btnHome {
+    color: var(--color-text-paragraph);
 
-.divCategories::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-3);
-}
-
-.category {
-  white-space: nowrap;
-  padding: var(--padding-1) var(--padding-4);
-  border-radius: 99px;
-  background-color: var(--secondary-color);
-  color: #fff;
-  font-weight: 700;
-  transition: 0.3s;
-  user-select: none;
-
-  &:hover {
-    background-color: var(--secondary-color-hover);
+    a {
+      color: var(--color-text-paragraph);
+    }
   }
 }
 
@@ -101,13 +104,8 @@
     align-items: center;
     text-align: center;
   }
-
   .divContent {
     width: 100%;
-  }
-
-  .divCategories {
-    justify-content: center;
   }
 }
 

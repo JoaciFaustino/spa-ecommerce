@@ -200,16 +200,16 @@ a {
   user-select: none;
   cursor: default !important;
   color: transparent !important;
-  background-color: var(--loading-gray-1) !important;
+  // background-color: var(--loading-gray-1);
   animation: 0.5s alternate infinite skeletonBgAnimation !important;
 }
 
 @keyframes skeletonBgAnimation {
   0% {
-    background-color: var(--loading-gray-1) !important;
+    background-color: var(--loading-gray-1);
   }
 
   100% {
-    background-color: var(--loading-gray-2) !important;
+    background-color: var(--loading-gray-2);
   }
 }

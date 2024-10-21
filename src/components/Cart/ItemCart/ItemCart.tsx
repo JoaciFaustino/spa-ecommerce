@@ -11,7 +11,7 @@ import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 type ItemCartProps = {
   cake: PersonalizedCake;
-  componentType: "cart" | "orderPage";
+  componentType: "cart" | "order";
 };
 
 function ItemCart({
@@ -42,7 +42,7 @@ function ItemCart({
   return (
     <div
       className={`${styles.itemCart} ${isPending ? styles.disabledItem : ""} ${
-        componentType === "orderPage" ? styles.orderStyle : styles.cartStyle
+        componentType === "order" ? styles.orderStyle : styles.cartStyle
       }`}
     >
       <Image

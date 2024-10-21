@@ -1,6 +1,9 @@
 "use client";
+
 import PageError from "@/app/error";
 
-export default function CakePageError() {
+function PurchasesErrorPage() {
   return <PageError />;
 }
+
+export default PurchasesErrorPage;

@@ -277,7 +277,7 @@ export const getAllFrostings = async (
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     if (!axios.isAxiosError(error)) {
       throw new CustomError("Failed get frostings", 500);
     }
@@ -381,6 +381,60 @@ export const createOrder = async (
     }
 
     const message = error.response?.data?.message || "Failed to create order";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
+  }
+};
+
+export const getAllUserOrder = async (
+  limit: number,
+  page: number,
+  userId: string
+): Promise<PaginatedRequest & { orders: IOrder[] }> => {
+  try {
+    const session = await getSession();
+
+    const { data } = await api.get<PaginatedRequest & { orders: IOrder[] }>(
+      `/orders/${userId}`,
+      {
+        params: { limit, page },
+        paramsSerializer: { indexes: false },
+        headers: { Authorization: session }
+      }
+    );
+
+    return data;
+  } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed to get orders", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed to get orders";
+    const status = error.response?.status || 500;
+
+    throw new CustomError(message, status);
+  }
+};
+
+export const getAllUserOrderFullUrl = async (
+  url: string
+): Promise<PaginatedRequest & { orders: IOrder[] }> => {
+  try {
+    const session = await getSession();
+
+    const { data } = await api.get<PaginatedRequest & { orders: IOrder[] }>(
+      url,
+      { headers: { Authorization: session } }
+    );
+
+    return data;
+  } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      throw new CustomError("Failed to get orders", 500);
+    }
+
+    const message = error.response?.data?.message || "Failed to get orders";
     const status = error.response?.status || 500;
 
     throw new CustomError(message, status);

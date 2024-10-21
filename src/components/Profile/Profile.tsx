@@ -12,9 +12,7 @@ function Profile({ user }: { user: User }) {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const { toggleModal, modalIsOpen } = useModal(modalRef);
 
-  useEffect(() => {
-    changeUserLogged(user);
-  }, [user]);
+  useEffect(() => changeUserLogged(user), [user]);
 
   return (
     <div className={styles.userIcon}>
@@ -30,8 +28,8 @@ function Profile({ user }: { user: User }) {
             <span>{user?.username}</span>!
           </h6>
           <ul>
-            <Link href={`/user/${user?._id}`}>
-              <li className="text">Gerenciar conta</li>
+            <Link href={`/purchases/${user?._id}`}>
+              <li className="text">Verificar pedidos</li>
             </Link>
 
             {user?.role === "admin" && (
