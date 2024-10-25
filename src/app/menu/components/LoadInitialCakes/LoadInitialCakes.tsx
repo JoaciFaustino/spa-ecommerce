@@ -25,7 +25,6 @@ const splitQueryParam = (queryParam: undefined | string | string[]) => {
 
 async function LoadInitialCakes({
   sortBy,
-  limit,
   page,
   type,
   category,
@@ -39,7 +38,7 @@ async function LoadInitialCakes({
     : sortBy;
 
   const response = await getAllCakes({
-    limit,
+    limit: "20",
     page,
     search,
     type: splitQueryParam(type),

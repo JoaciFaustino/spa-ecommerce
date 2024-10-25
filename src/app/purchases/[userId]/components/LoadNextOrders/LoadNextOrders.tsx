@@ -21,7 +21,7 @@ function LoadNextOrders({ nextUrl }: Props) {
   const loadMoreDisabled = isPending || !nextUrlState;
   const { finalPageInspectorRef } = useInfiniteScroll(
     getNewOrders,
-    undefined,
+    "200px",
     loadMoreDisabled
   );
 
