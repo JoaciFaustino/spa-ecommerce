@@ -31,7 +31,7 @@ function OrderCard({ order }: { order: IOrder }) {
       </header>
 
       <div className={styles.cardContent}>
-        <OrderProductsList cakes={order.cakes} />
+        <OrderProductsList cakes={order.cakes} style="dark" />
 
         <div className={styles.orderInfo}>
           <h4>Informações do pedido</h4>
@@ -58,10 +58,16 @@ type OrderInfoTextProps = {
   label: string;
   value: string;
   color?: string;
+  loading?: boolean;
 };
 
-const OrderInfoText = ({ label, value, color }: OrderInfoTextProps) => (
-  <p className={`text ${styles.infoText}`}>
+export const OrderInfoText = ({
+  label,
+  value,
+  color,
+  loading = false
+}: OrderInfoTextProps) => (
+  <p className={`text ${loading ? styles.loading : ""}`}>
     {label}: <span style={{ color }}>{value}</span>
   </p>
 );

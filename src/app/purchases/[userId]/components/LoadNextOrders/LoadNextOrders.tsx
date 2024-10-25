@@ -5,7 +5,7 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getAllUserOrderFullUrl } from "@/services/requests";
 import { CustomError } from "@/utils/customError";
 import { useEffect, useState, useTransition } from "react";
-import OrderCard from "../OrderCard/OrderCard";
+import OrderCard from "@/components/OrderCard/OrderCard";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 
 type Props = {

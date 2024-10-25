@@ -25,6 +25,18 @@
   }
 }
 
+.dark {
+  background-color: var(--gray-1);
+
+  .title {
+    color: var(--color-text-title);
+
+    &:hover {
+      background-color: rgba(#000, 0.1);
+    }
+  }
+}
+
 .icon {
   transition: transform 0.2s;
   transform: rotate(0deg);

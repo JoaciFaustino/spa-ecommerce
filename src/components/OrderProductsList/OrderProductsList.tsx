@@ -9,9 +9,14 @@ import ItemCart from "../Cart/ItemCart/ItemCart";
 type Props = {
   cakes: PersonalizedCake[];
   startOpened?: boolean;
+  style?: "dark" | "pink";
 };
 
-function OrderProductsList({ cakes, startOpened = false }: Props) {
+function OrderProductsList({
+  cakes,
+  startOpened = false,
+  style = "pink"
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const { cakeQuantity, totalPrice } = useMemo(() => {
     return cakes.reduce(
@@ -34,7 +39,9 @@ function OrderProductsList({ cakes, startOpened = false }: Props) {
   }, []);
 
   return (
-    <section className={styles.mainSection}>
+    <section
+      className={`${styles.mainSection} ${style === "dark" ? styles.dark : ""}`}
+    >
       <div className={`${styles.info}`}>
         {cakeQuantity > 0 && (
           <p className={`text`}>
@@ -55,7 +62,7 @@ function OrderProductsList({ cakes, startOpened = false }: Props) {
         Produtos
         <IoIosArrowDown
           className={`${styles.icon} ${isOpen ? styles.rotated : ""}`}
-          style={{ color: "#fff", fontSize: "1.5rem" }}
+          style={{ fontSize: "1.5rem" }}
         />
       </h3>
 

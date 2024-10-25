@@ -1,4 +1,4 @@
-import OrderCardSkeleton from "./components/OrderCard/loading";
+import OrderCardSkeleton from "@/components/OrderCard/loading";
 import styles from "@/styles/pages/Purchases.module.scss";
 
 function PurchasesPageLoading() {

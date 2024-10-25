@@ -2,6 +2,7 @@
   box-shadow: 0 0 10px 0 rgba(#000000, 0.3);
   border-radius: 10px;
   overflow: hidden;
+  animation: fadeIn 0.5s;
 }
 
 .orderCard header {
@@ -24,10 +25,33 @@
   gap: var(--padding-2);
 }
 
-.infoText {
-  color: var(--color-text-title);
+.orderInfo {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 
-  span {
-    color: var(--color-text-paragraph);
+  p {
+    color: var(--color-text-title);
+
+    span {
+      color: var(--color-text-paragraph);
+    }
+  }
+}
+
+.orderInfo.loading p span {
+  user-select: none;
+  overflow: hidden;
+  filter: blur(3px);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

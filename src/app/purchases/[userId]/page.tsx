@@ -4,7 +4,7 @@ import { CustomError } from "@/utils/customError";
 import { redirect } from "next/navigation";
 import PurchasesErrorPage from "./error";
 import styles from "@/styles/pages/Purchases.module.scss";
-import OrderCard from "./components/OrderCard/OrderCard";
+import OrderCard from "@/components/OrderCard/OrderCard";
 import LoadNextOrders from "./components/LoadNextOrders/LoadNextOrders";
 
 type Props = {
