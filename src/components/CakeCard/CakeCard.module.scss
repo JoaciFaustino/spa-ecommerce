@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+@import "@/styles/variables.scss";
 
 .card {
   cursor: pointer;
@@ -62,8 +62,9 @@
     align-items: center;
 
     p {
-      line-height: 1.25rem;
-      max-height: 3.75rem;
+      white-space: wrap;
+      line-height: 1.375rem;
+      max-height: 4.125rem;
       text-align: center;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -110,13 +111,16 @@
 
   h4 {
     color: #fff;
+    white-space: wrap;
+    line-height: 1.5rem;
+    max-height: 4.5rem;
     text-align: center;
-  }
-
-  p {
-    color: #fff;
-    text-align: center;
-    display: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 
   .btnCart {
@@ -166,11 +170,9 @@
     grid-column: span 6;
   }
 
-  .info p {
-    display: block;
-  }
-
   .info h4 {
-    display: none;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    max-height: 4.125rem;
   }
 }

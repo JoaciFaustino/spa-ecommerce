@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./CakeCard.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 type Props = {
   cakeId: string;
@@ -13,28 +13,8 @@ type Props = {
   priceCake: string;
 };
 
-function CakeCard({ cakeId, nameCake, typeCake, imageCake, priceCake }: Props) {
+function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
   const infoCardRef = useRef<HTMLDivElement | null>(null);
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutsideCakeCard);
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutsideCakeCard);
-  //   };
-  // }, []);
-
-  // const handleClickOutsideCakeCard: EventListener = (event) => {
-  //   const { current } = infoCardRef;
-
-  //   if (current && !current.contains(event.target as Node)) {
-  //     current?.classList.remove(styles.infoOpen);
-  //   }
-  // };
-
-  // const handleClick = () => {
-  //   infoCardRef.current?.classList.toggle(styles.infoOpen);
-  // };
 
   const handleFocus = () => {
     infoCardRef.current?.classList.add(styles.infoOpen);
@@ -65,7 +45,8 @@ function CakeCard({ cakeId, nameCake, typeCake, imageCake, priceCake }: Props) {
 
       <div className={styles.info} ref={infoCardRef}>
         <h4>{nameCake}</h4>
-        <p className="textBig">{nameCake}</p>
+        {/* <p className="textBig">{nameCake}</p> */}
+
         <Link href={`/cake/${cakeId}`}>
           <div className={styles.btnCart}>
             <CgShoppingCart
