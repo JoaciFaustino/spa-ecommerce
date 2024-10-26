@@ -7,6 +7,7 @@ import { CakeQueryParams } from "@/@types/QueryParams";
 import CakeCardSkeleton from "@/components/CakeCard/loading";
 import { redirect } from "next/navigation";
 import LoadInitialCakes from "./components/LoadInitialCakes/LoadInitialCakes";
+import ScrollTop from "@/components/ScrollTop/ScrollTop";
 
 async function Menu({ searchParams }: { searchParams: CakeQueryParams }) {
   if (!searchParams.sortBy) {
@@ -20,7 +21,6 @@ async function Menu({ searchParams }: { searchParams: CakeQueryParams }) {
       <Suspense fallback={<FiltersBarSkeleton />}>
         <FiltersBar />
       </Suspense>
-
       <div className={styles.menuCakes}>
         <div className={`${styles.wrapper} wrapper grid`}>
           <Suspense key={key} fallback={<CakeSkeletons />}>
@@ -28,6 +28,8 @@ async function Menu({ searchParams }: { searchParams: CakeQueryParams }) {
           </Suspense>
         </div>
       </div>
+
+      <ScrollTop />
     </section>
   );
 }

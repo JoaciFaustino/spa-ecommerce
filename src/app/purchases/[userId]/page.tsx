@@ -6,6 +6,7 @@ import PurchasesErrorPage from "./error";
 import styles from "@/styles/pages/Purchases.module.scss";
 import OrderCard from "@/components/OrderCard/OrderCard";
 import LoadNextOrders from "./components/LoadNextOrders/LoadNextOrders";
+import ScrollTop from "@/components/ScrollTop/ScrollTop";
 
 type Props = {
   params: { userId: string };
@@ -33,6 +34,8 @@ async function PurchasesPage({ params: { userId } }: Props) {
 
           <LoadNextOrders nextUrl={nextUrl} />
         </div>
+
+        <ScrollTop />
       </section>
     );
   } catch (error) {
