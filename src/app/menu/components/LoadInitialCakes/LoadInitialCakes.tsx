@@ -4,9 +4,10 @@ import LoadNextCakes from "../LoadNextCakes/LoadNextCakes";
 import CakeCard from "@/components/CakeCard/CakeCard";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import { sortByApiOptions } from "@/@types/SortBy";
-import { getAllCakes } from "@/services/requests";
+import { getAllCakes } from "@/services/cakes";
 import styles from "./LoadInitialCakes.module.scss";
 import Button from "./Button";
+import { CustomError } from "@/utils/customError";
 
 const SORT_BY_API_OPTIONS: sortByApiOptions = {
   popularidade: "popularity",
@@ -37,29 +38,43 @@ async function LoadInitialCakes({
     ? sortBy[sortBy.length - 1]
     : sortBy;
 
-  const response = await getAllCakes({
-    limit: "20",
-    page,
-    search,
-    type: splitQueryParam(type),
-    category: splitQueryParam(category),
-    size: splitQueryParam(size),
-    filling: splitQueryParam(filling),
-    frosting: splitQueryParam(frosting),
-    sortBy: SORT_BY_API_OPTIONS[sortByLastValue || ""] ?? undefined
-  });
+  try {
+    const { cakes, nextUrl } = await getAllCakes({
+      limit: "20",
+      page,
+      search,
+      type: splitQueryParam(type),
+      category: splitQueryParam(category),
+      size: splitQueryParam(size),
+      filling: splitQueryParam(filling),
+      frosting: splitQueryParam(frosting),
+      sortBy: SORT_BY_API_OPTIONS[sortByLastValue || ""] ?? undefined
+    });
 
-  const { sucess } = response;
-
-  if (!sucess && response.status === 404) {
     return (
-      <div className={styles.errorDiv}>
-        <h5>Nenhum resultado encontrado!</h5>
-      </div>
+      <>
+        {cakes.map((cake) => (
+          <CakeCard
+            key={cake._id}
+            cakeId={cake._id}
+            nameCake={cake.name}
+            typeCake={cake.type}
+            imageCake={cake.imageUrl}
+            priceCake={formatPriceNumber(cake.totalPricing)}
+          />
+        ))}
+        <LoadNextCakes nextUrl={nextUrl || undefined} />
+      </>
     );
-  }
+  } catch (error: any) {
+    if (error instanceof CustomError && error.status === 404) {
+      return (
+        <div className={styles.errorDiv}>
+          <h5>Nenhum resultado encontrado!</h5>
+        </div>
+      );
+    }
 
-  if (!sucess) {
     return (
       <div className={styles.errorDiv}>
         <h5>
@@ -69,22 +84,6 @@ async function LoadInitialCakes({
       </div>
     );
   }
-
-  return (
-    <>
-      {response.cakes.map((cake) => (
-        <CakeCard
-          key={cake._id}
-          cakeId={cake._id}
-          nameCake={cake.name}
-          typeCake={cake.type}
-          imageCake={cake.imageUrl}
-          priceCake={formatPriceNumber(cake.totalPricing)}
-        />
-      ))}
-      <LoadNextCakes nextUrl={response.nextUrl || undefined} />
-    </>
-  );
 }
 
 export default LoadInitialCakes;

@@ -1,12 +1,13 @@
 "use client";
 import { ICake } from "@/@types/Cake";
 import CakeCard from "@/components/CakeCard/CakeCard";
-import { getAllCakesCompleteUrl } from "@/services/requests";
+import { getAllCakesCompleteUrl } from "@/services/cakes";
 import { formatPriceNumber } from "@/utils/formatPrice";
 import { useEffect, useState, useTransition } from "react";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 import styles from "./LoadNextCakes.module.scss";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { CustomError } from "@/utils/customError";
 
 type Props = {
   nextUrl: string | undefined;
@@ -33,26 +34,23 @@ function LoadNextCakes({ nextUrl }: Props) {
     }
 
     startTransition(async () => {
-      const response = await getAllCakesCompleteUrl(nextUrlState);
+      try {
+        const { cakes, nextUrl } = await getAllCakesCompleteUrl(nextUrlState);
 
-      const { sucess } = response;
+        if (cakes.length === 0) {
+          setNextUrlState(undefined);
+          return;
+        }
 
-      if (
-        (!sucess && response.status === 404) ||
-        (sucess && response.cakes.length === 0)
-      ) {
-        setNextUrlState(undefined);
-        return;
+        setCakes((prev) => [...prev, ...cakes]);
+        setNextUrlState(nextUrl || undefined);
+      } catch (error) {
+        if (error instanceof CustomError && error.status === 404) {
+          setNextUrlState(undefined);
+
+          return;
+        }
       }
-
-      if (!sucess) {
-        return;
-      }
-
-      const { cakes: newCakes, nextUrl: newNextUrl } = response;
-
-      setCakes((prev) => [...prev, ...newCakes]);
-      setNextUrlState(newNextUrl || undefined);
     });
   }
 

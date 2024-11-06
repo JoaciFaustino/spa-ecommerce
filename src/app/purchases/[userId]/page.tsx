@@ -1,5 +1,5 @@
 import { auth } from "@/actions/auth";
-import { getAllUserOrder } from "@/services/requests";
+import { getAllUserOrders } from "@/services/order";
 import { CustomError } from "@/utils/customError";
 import { redirect } from "next/navigation";
 import PurchasesErrorPage from "./error";
@@ -23,7 +23,7 @@ async function PurchasesPage({ params: { userId } }: Props) {
     const limit = 6;
     const page = 1;
 
-    const { nextUrl, orders } = await getAllUserOrder(limit, page, userId);
+    const { nextUrl, orders } = await getAllUserOrders(limit, page, userId);
 
     return (
       <section className={styles.mainSection}>

@@ -1,6 +1,6 @@
 import { PersonalizedCake } from "@/@types/Cart";
 import { CartContext } from "@/contexts/CartProvider";
-import { clearCart, removeItemCart } from "@/services/requests";
+import { clearCart } from "@/services/cart";
 import { formatPriceNumber } from "@/utils/formatPrice";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -17,7 +17,10 @@ export const useCart = (
   useEffect(() => changeCartItems(newCakes), [newCakes]);
 
   const totalPriceCart: string = formatPriceNumber(
-    (cakes || []).reduce((acm, { totalPricing }) => acm + (totalPricing || 0), 0)
+    (cakes || []).reduce(
+      (acm, { totalPricing }) => acm + (totalPricing || 0),
+      0
+    )
   );
   const [clearCartIsPending, setClearCartIsPending] = useState(false);
 

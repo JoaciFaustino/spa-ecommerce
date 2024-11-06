@@ -2,7 +2,7 @@
 import styles from "@/styles/pages/Purchases.module.scss";
 import { IOrder } from "@/@types/Order";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { getAllUserOrderFullUrl } from "@/services/requests";
+import { getAllUserOrdersFullUrl } from "@/services/order";
 import { CustomError } from "@/utils/customError";
 import { useEffect, useState, useTransition } from "react";
 import OrderCard from "@/components/OrderCard/OrderCard";
@@ -34,7 +34,7 @@ function LoadNextOrders({ nextUrl }: Props) {
 
     startTransition(async () => {
       try {
-        const { nextUrl, orders } = await getAllUserOrderFullUrl(nextUrlState);
+        const { nextUrl, orders } = await getAllUserOrdersFullUrl(nextUrlState);
 
         setOrders(orders);
         setNextUrlState(nextUrl);

@@ -1,5 +1,5 @@
 "use server";
-import { getCakeById } from "@/services/requests";
+import { getCakeById } from "@/services/cakes";
 import styles from "@/styles/pages/Cake.module.scss";
 import { notFound, redirect } from "next/navigation";
 import { CustomError } from "@/utils/customError";
@@ -27,6 +27,10 @@ async function CakePage({ params: { cakeId } }: Props) {
       getFillingsWithErrorHandling(limit, page),
       getFrostingsWithErrorHandling(limit, page)
     ]);
+
+    if (!cake) {
+      notFound();
+    }
 
     return (
       <section className={styles.mainSection}>

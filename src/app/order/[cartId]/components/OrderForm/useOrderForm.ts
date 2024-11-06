@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
 import { z } from "zod";
 import { useHookFormMask } from "use-mask-input";
-import { createOrder } from "@/services/requests";
+import { createOrder } from "@/services/order";
 import { toast } from "react-toastify";
 import { CartContext } from "@/contexts/CartProvider";
 import { useRouter } from "next/navigation";

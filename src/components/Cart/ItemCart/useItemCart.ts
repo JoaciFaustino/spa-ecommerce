@@ -1,5 +1,5 @@
 import { CartContext } from "@/contexts/CartProvider";
-import { removeItemCart } from "@/services/requests";
+import { removeItemCart } from "@/services/cart";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 

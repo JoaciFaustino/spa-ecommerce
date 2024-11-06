@@ -1,7 +1,5 @@
 import styles from "../styles/pages/Home.module.scss";
 import Image from "next/image";
-import { getCakeBestSellers } from "../services/requests";
-import { ICake } from "@/@types/Cake";
 import CakeCard from "@/components/CakeCard/CakeCard";
 import imgStrawberryCake from "../../public/images/strawberry-cake.png";
 import { CgArrowTopRight } from "react-icons/cg";
@@ -11,6 +9,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CakeCardSkeleton from "@/components/CakeCard/loading";
 import { formatPriceNumber } from "@/utils/formatPrice";
+import { getAllCakes } from "@/services/cakes";
+import { SORT_BY_API_OPTIONS, TypeKeysSortBy } from "@/@types/SortBy";
 
 export default async function Home() {
   return (
@@ -153,32 +153,32 @@ export default async function Home() {
 }
 
 async function CakesBestSellers() {
-  const cakesBestSellers: ICake[] | undefined = await getCakeBestSellers();
+  const limit = "12";
+  const page = "1";
+  const sortBy: TypeKeysSortBy = "popularity";
 
-  return (
-    <>
-      {!cakesBestSellers && (
-        <h5>Falha ao buscar os bolos! tente novamente mais tarde</h5>
-      )}
+  try {
+    const { cakes } = await getAllCakes({ limit, page, sortBy });
 
-      {cakesBestSellers && cakesBestSellers.length === 0 && (
-        <h5>Nenhum bolo foi cadastrado ainda! Volte mais tarde</h5>
-      )}
+    if (cakes.length === 0) {
+      return <h5>Nenhum bolo foi cadastrado ainda! Volte mais tarde</h5>;
+    }
 
-      {cakesBestSellers && cakesBestSellers.length > 0 && (
-        <>
-          {cakesBestSellers.map((cake) => (
-            <CakeCard
-              key={cake._id}
-              cakeId={cake._id}
-              nameCake={cake.name}
-              typeCake={cake.type}
-              imageCake={cake.imageUrl}
-              priceCake={formatPriceNumber(cake.totalPricing)}
-            />
-          ))}
-        </>
-      )}
-    </>
-  );
+    return (
+      <>
+        {cakes.map((cake) => (
+          <CakeCard
+            key={cake._id}
+            cakeId={cake._id}
+            nameCake={cake.name}
+            typeCake={cake.type}
+            imageCake={cake.imageUrl}
+            priceCake={formatPriceNumber(cake.totalPricing)}
+          />
+        ))}
+      </>
+    );
+  } catch (error) {
+    return <h5>Falha ao buscar os bolos! tente novamente mais tarde</h5>;
+  }
 }

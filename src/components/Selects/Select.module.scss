@@ -70,6 +70,15 @@
   &:hover {
     background-color: var(--secondary-color-hover);
   }
+
+  &::placeholder {
+    color: #fff;
+    opacity: 1;
+  }
+
+  &:focus::placeholder {
+    opacity: 0.7;
+  }
 }
 
 .divInputSelect input::placeholder {

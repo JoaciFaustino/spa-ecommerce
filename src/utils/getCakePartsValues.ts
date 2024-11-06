@@ -1,9 +1,7 @@
-import {
-  getAllCakeTypes,
-  getAllCategories,
-  getAllFillings,
-  getAllFrostings
-} from "@/services/requests";
+import { getAllCakeTypes } from "@/services/CakeTypes";
+import { getAllCategories } from "@/services/categories";
+import { getAllFillings } from "@/services/fillings";
+import { getAllFrostings } from "@/services/frostings";
 
 export const getCakeTypesWithErrorHandling = async (
   limit: number,
