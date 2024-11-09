@@ -21,8 +21,8 @@
     text-decoration: none;
   }
 
-  &:hover {
-    transform: scale(1.005);
+  &:hover .divImg {
+    transform: scale(1.01);
   }
 }
 
@@ -30,6 +30,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1/1;
+  transition: all 0.5s;
   display: flex;
   justify-content: center;
   align-items: center;

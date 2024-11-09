@@ -1,8 +1,27 @@
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { api } from "./api";
 import { IFrosting } from "@/@types/Frosting";
 
-type PaginatedResponse = PaginatedRequest & { frostings: IFrosting[] };
+type PaginatedResponse = BasePaginatedResponse & { frostings: IFrosting[] };
+
+export const getFirstPageFrostingsCached =
+  async (): Promise<PaginatedResponse> => {
+    const page = 1;
+    const limit = 12;
+    const tenHours = 36000;
+
+    try {
+      const response = await fetch(
+        `${api.getUri()}/frostings?page=${page}&limit=${limit}`,
+        { next: { revalidate: tenHours } }
+      );
+
+      const data: PaginatedResponse = await response.json();
+      return data;
+    } catch (error) {
+      throw getErrorRequest(error, "Failed to get the frostings");
+    }
+  };
 
 export const getAllFrostings = async (
   limit?: number,

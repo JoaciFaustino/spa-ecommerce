@@ -1,8 +1,27 @@
 import { IFilling } from "@/@types/Filling";
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { api } from "./api";
 
-type PaginatedResponse = PaginatedRequest & { fillings: IFilling[] };
+type PaginatedResponse = BasePaginatedResponse & { fillings: IFilling[] };
+
+export const getFirstPageFillingsCached =
+  async (): Promise<PaginatedResponse> => {
+    const page = 1;
+    const limit = 12;
+    const tenHours = 36000;
+
+    try {
+      const response = await fetch(
+        `${api.getUri()}/fillings?page=${page}&limit=${limit}`,
+        { next: { revalidate: tenHours } }
+      );
+
+      const data: PaginatedResponse = await response.json();
+      return data;
+    } catch (error: any) {
+      throw getErrorRequest(error, "Failed to get the fillings");
+    }
+  };
 
 export const getAllFillings = async (
   limit?: number,

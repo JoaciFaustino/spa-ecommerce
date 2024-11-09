@@ -1,11 +1,12 @@
 import { ICake } from "@/@types/Cake";
 import { getSession } from "@/lib/session";
 import { api } from "./api";
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
+import { TypeKeysSortBy } from "@/@types/SortBy";
 
-type PaginatedResponse = PaginatedRequest & { cakes: ICake[] };
+type PaginatedResponse = BasePaginatedResponse & { cakes: ICake[] };
 
 export const getCakeById = async (
   cakeId: string
@@ -23,6 +24,27 @@ export const getCakeById = async (
   }
 };
 
+export const getFirstPageCakesCached = async (): Promise<PaginatedResponse> => {
+  const page = 1;
+  const limit = 12;
+  const sortBy: TypeKeysSortBy = "popularity";
+
+  const tenHours = 36000;
+
+  try {
+    const response = await fetch(
+      `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`,
+      { next: { revalidate: tenHours } }
+    );
+
+    const data: PaginatedResponse = await response.json();
+
+    return data;
+  } catch (error: any) {
+    throw getErrorRequest(error, "Ocorreu um erro");
+  }
+};
+
 export const getAllCakes = async ({
   type,
   size,
@@ -30,7 +52,7 @@ export const getAllCakes = async ({
   filling,
   frosting,
   search,
-  limit = "20",
+  limit = "12",
   page = "1",
   sortBy
 }: CakeQueryParams): Promise<PaginatedResponse> => {

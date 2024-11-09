@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CustomError } from "./customError";
 
-export type PaginatedRequest = {
+export type BasePaginatedResponse = {
   maxPages: number;
   prevUrl: null | string;
   nextUrl: null | string;

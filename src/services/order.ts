@@ -6,9 +6,9 @@ import {
 } from "@/@types/Order";
 import { getSession } from "@/lib/session";
 import { api } from "./api";
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 
-type PaginatedResponse = PaginatedRequest & { orders: IOrder[] };
+type PaginatedResponse = BasePaginatedResponse & { orders: IOrder[] };
 
 export const createOrder = async (
   cartId: string,

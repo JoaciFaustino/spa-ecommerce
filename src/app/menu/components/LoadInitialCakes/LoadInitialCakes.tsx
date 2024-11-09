@@ -4,10 +4,11 @@ import LoadNextCakes from "../LoadNextCakes/LoadNextCakes";
 import CakeCard from "@/components/CakeCard/CakeCard";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import { sortByApiOptions } from "@/@types/SortBy";
-import { getAllCakes } from "@/services/cakes";
+import { getAllCakes, getFirstPageCakesCached } from "@/services/cakes";
 import styles from "./LoadInitialCakes.module.scss";
 import Button from "./Button";
 import { CustomError } from "@/utils/customError";
+import { ICake } from "@/@types/Cake";
 
 const SORT_BY_API_OPTIONS: sortByApiOptions = {
   popularidade: "popularity",
@@ -24,24 +25,35 @@ const splitQueryParam = (queryParam: undefined | string | string[]) => {
   return typeof queryParam === "string" ? queryParam.split(",") : queryParam;
 };
 
-async function LoadInitialCakes({
-  sortBy,
-  page,
-  type,
-  category,
-  size,
-  filling,
-  frosting,
-  search
-}: CakeQueryParams) {
-  const sortByLastValue: string | undefined = Array.isArray(sortBy)
+type Props = { searchParams: CakeQueryParams };
+
+async function LoadInitialCakes({ searchParams }: Props) {
+  const { sortBy, category, filling, frosting, search, size, type } =
+    searchParams;
+
+  const sortByLastValue = Array.isArray(sortBy)
     ? sortBy[sortBy.length - 1]
     : sortBy;
 
   try {
+    const shouldGetCachedCakes =
+      (!sortBy || sortBy === "popularidade") &&
+      !category &&
+      !filling &&
+      !frosting &&
+      !search &&
+      !size &&
+      !type;
+
+    if (shouldGetCachedCakes) {
+      const { cakes, nextUrl } = await getFirstPageCakesCached();
+
+      return <CakeList cakes={cakes} nextUrl={nextUrl} />;
+    }
+
     const { cakes, nextUrl } = await getAllCakes({
-      limit: "20",
-      page,
+      limit: "12",
+      page: "1",
       search,
       type: splitQueryParam(type),
       category: splitQueryParam(category),
@@ -51,39 +63,46 @@ async function LoadInitialCakes({
       sortBy: SORT_BY_API_OPTIONS[sortByLastValue || ""] ?? undefined
     });
 
-    return (
-      <>
-        {cakes.map((cake) => (
-          <CakeCard
-            key={cake._id}
-            cakeId={cake._id}
-            nameCake={cake.name}
-            typeCake={cake.type}
-            imageCake={cake.imageUrl}
-            priceCake={formatPriceNumber(cake.totalPricing)}
-          />
-        ))}
-        <LoadNextCakes nextUrl={nextUrl || undefined} />
-      </>
-    );
+    return <CakeList cakes={cakes} nextUrl={nextUrl} />;
   } catch (error: any) {
-    if (error instanceof CustomError && error.status === 404) {
-      return (
-        <div className={styles.errorDiv}>
-          <h5>Nenhum resultado encontrado!</h5>
-        </div>
-      );
-    }
+    const statusCode = error instanceof CustomError ? error.status : 500;
 
     return (
       <div className={styles.errorDiv}>
         <h5>
-          Ocorreu um erro no servidor! por favor tente novamente mais tarde
+          {statusCode === 404
+            ? "Nenhum resultado encontrado!"
+            : "Ocorreu um erro no servidor! por favor tente novamente mais tarde"}
         </h5>
-        <Button />
+
+        {statusCode !== 404 && <Button />}
       </div>
     );
   }
+}
+
+type CakeListProps = {
+  cakes: ICake[];
+  nextUrl: string | null;
+};
+
+function CakeList({ cakes, nextUrl }: CakeListProps) {
+  return (
+    <>
+      {cakes.map((cake) => (
+        <CakeCard
+          key={cake._id}
+          cakeId={cake._id}
+          nameCake={cake.name}
+          typeCake={cake.type}
+          imageCake={cake.imageUrl}
+          priceCake={formatPriceNumber(cake.totalPricing)}
+        />
+      ))}
+
+      <LoadNextCakes nextUrl={nextUrl || undefined} />
+    </>
+  );
 }
 
 export default LoadInitialCakes;

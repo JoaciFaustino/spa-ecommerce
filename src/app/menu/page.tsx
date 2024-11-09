@@ -21,10 +21,11 @@ async function Menu({ searchParams }: { searchParams: CakeQueryParams }) {
       <Suspense fallback={<FiltersBarSkeleton />}>
         <FiltersBar />
       </Suspense>
+
       <div className={styles.menuCakes}>
         <div className={`${styles.wrapper} wrapper grid`}>
           <Suspense key={key} fallback={<CakeSkeletons />}>
-            <LoadInitialCakes {...searchParams} />
+            <LoadInitialCakes searchParams={searchParams} />
           </Suspense>
         </div>
       </div>

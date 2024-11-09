@@ -1,8 +1,27 @@
 import { ICategory } from "@/@types/Category";
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { api } from "./api";
 
-type PaginatedResponse = PaginatedRequest & { categories: ICategory[] };
+type PaginatedResponse = BasePaginatedResponse & { categories: ICategory[] };
+
+export const getFirstPageCategoriesCached =
+  async (): Promise<PaginatedResponse> => {
+    const page = 1;
+    const limit = 12;
+    const tenHours = 36000;
+
+    try {
+      const response = await fetch(
+        `${api.getUri()}/categories?page=${page}&limit=${limit}`,
+        { next: { revalidate: tenHours } }
+      );
+
+      const data: PaginatedResponse = await response.json();
+      return data;
+    } catch (error) {
+      throw getErrorRequest(error, "Failed to get categories");
+    }
+  };
 
 export const getAllCategories = async (
   limit?: number,

@@ -1,8 +1,28 @@
 import { ICakeType } from "@/@types/CakeType";
 import { api } from "./api";
-import { getErrorRequest, PaginatedRequest } from "@/utils/requestUtils";
+import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 
-type PaginatedResponse = PaginatedRequest & { cakeTypes: ICakeType[] };
+type PaginatedResponse = BasePaginatedResponse & { cakeTypes: ICakeType[] };
+
+export const getFirstPageCakeTypesCached =
+  async (): Promise<PaginatedResponse> => {
+    const page = 1;
+    const limit = 12;
+    const tenHours = 36000;
+
+    try {
+      const response = await fetch(
+        `${api.getUri()}/cakeTypes?page=${page}&limit=${limit}`,
+        { next: { revalidate: tenHours } }
+      );
+
+      const data: PaginatedResponse = await response.json();
+
+      return data;
+    } catch (error: any) {
+      throw getErrorRequest(error, "Failed to get cake types");
+    }
+  };
 
 export const getAllCakeTypes = async (
   limit?: number,

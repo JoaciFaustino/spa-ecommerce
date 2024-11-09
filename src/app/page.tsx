@@ -9,8 +9,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CakeCardSkeleton from "@/components/CakeCard/loading";
 import { formatPriceNumber } from "@/utils/formatPrice";
-import { getAllCakes } from "@/services/cakes";
-import { SORT_BY_API_OPTIONS, TypeKeysSortBy } from "@/@types/SortBy";
+import { getFirstPageCakesCached } from "@/services/cakes";
 
 export default async function Home() {
   return (
@@ -153,12 +152,8 @@ export default async function Home() {
 }
 
 async function CakesBestSellers() {
-  const limit = "12";
-  const page = "1";
-  const sortBy: TypeKeysSortBy = "popularity";
-
   try {
-    const { cakes } = await getAllCakes({ limit, page, sortBy });
+    const { cakes } = await getFirstPageCakesCached();
 
     if (cakes.length === 0) {
       return <h5>Nenhum bolo foi cadastrado ainda! Volte mais tarde</h5>;
