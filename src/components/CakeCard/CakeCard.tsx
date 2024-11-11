@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./CakeCard.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   cakeId: string;
@@ -15,13 +15,16 @@ type Props = {
 
 function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
   const infoCardRef = useRef<HTMLDivElement | null>(null);
+  const [infosOpen, setInfosOpen] = useState(false);
 
   const handleFocus = () => {
-    infoCardRef.current?.classList.add(styles.infoOpen);
+    setInfosOpen(true);
   };
 
   const handleBlur = () => {
-    infoCardRef.current?.classList.remove(styles.infoOpen);
+    setTimeout(() => setInfosOpen(false), 200);
+
+    infoCardRef.current?.classList.add(styles.infoClosed);
   };
 
   return (
@@ -43,21 +46,22 @@ function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
         <h4 className={styles.price}>{priceCake}</h4>
       </div>
 
-      <div className={styles.info} ref={infoCardRef}>
-        <h4>{nameCake}</h4>
-        {/* <p className="textBig">{nameCake}</p> */}
+      {infosOpen && (
+        <div className={`${styles.info}`} ref={infoCardRef}>
+          <h4>{nameCake}</h4>
 
-        <Link href={`/cake/${cakeId}`}>
-          <div className={styles.btnCart}>
-            <CgShoppingCart
-              style={{
-                color: "var(--primary-color)",
-                fontSize: "1.5rem"
-              }}
-            />
-          </div>
-        </Link>
-      </div>
+          <Link href={`/cake/${cakeId}`}>
+            <div className={styles.btnCart}>
+              <CgShoppingCart
+                style={{
+                  color: "var(--primary-color)",
+                  fontSize: "1.5rem"
+                }}
+              />
+            </div>
+          </Link>
+        </div>
+      )}
     </button>
   );
 }
