@@ -38,12 +38,12 @@ async function LoadInitialCakes({ searchParams }: Props) {
   try {
     const shouldGetCachedCakes =
       (!sortBy || sortBy === "popularidade") &&
-      !category &&
-      !filling &&
-      !frosting &&
-      !search &&
-      !size &&
-      !type;
+      (!category || category.length === 0) &&
+      (!filling || filling.length === 0) &&
+      (!frosting || frosting.length === 0) &&
+      (!search || search.length === 0) &&
+      (!size || size.length === 0) &&
+      (!type || type.length === 0);
 
     if (shouldGetCachedCakes) {
       const { cakes, nextUrl } = await getFirstPageCakesCached();
