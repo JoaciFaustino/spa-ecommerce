@@ -3,7 +3,8 @@ import Image from "next/image";
 import styles from "./CakeCard.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
+import SpinnerLoader from "../SpinnerLoader/SpinnerLoader";
 
 type Props = {
   cakeId: string;
@@ -16,6 +17,7 @@ type Props = {
 function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
   const infoCardRef = useRef<HTMLDivElement | null>(null);
   const [infosOpen, setInfosOpen] = useState(false);
+  const [redirectIsLoading, setRedirectIsLoading] = useState(false);
 
   const handleFocus = () => {
     setInfosOpen(true);
@@ -25,6 +27,14 @@ function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
     setTimeout(() => setInfosOpen(false), 200);
 
     infoCardRef.current?.classList.add(styles.infoClosed);
+  };
+
+  const handleClickLink = (
+    e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    setRedirectIsLoading(true);
   };
 
   return (
@@ -50,14 +60,21 @@ function CakeCard({ cakeId, nameCake, imageCake, priceCake }: Props) {
         <div className={`${styles.info}`} ref={infoCardRef}>
           <h4>{nameCake}</h4>
 
-          <Link href={`/cake/${cakeId}`}>
+          <Link href={`/cake/${cakeId}`} onMouseDown={handleClickLink}>
             <div className={styles.btnCart}>
-              <CgShoppingCart
-                style={{
-                  color: "var(--primary-color)",
-                  fontSize: "1.5rem"
-                }}
-              />
+              {!redirectIsLoading && (
+                <CgShoppingCart
+                  style={{ color: "var(--primary-color)", fontSize: "1.5rem" }}
+                />
+              )}
+
+              {redirectIsLoading && (
+                <SpinnerLoader
+                  unitSize="rem"
+                  size={1.5}
+                  color="var(--primary-color)"
+                />
+              )}
             </div>
           </Link>
         </div>
