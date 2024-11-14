@@ -1,21 +1,23 @@
 "use server";
 import "server-only";
-import { AuthResponse, FieldsFormLogin, FieldsFormSignUp } from "@/@types/Auth";
+import { AuthResponse } from "@/@types/Auth";
 import { api } from "@/services/api";
 import { createSession, deleteSession, getSession } from "@/lib/session";
 import { User } from "@/@types/User";
+import axios from "axios";
 
-export async function login(fields: FieldsFormLogin): Promise<AuthResponse> {
+export type LoginAction = typeof login;
+export type SignUpAction = typeof signUp;
+
+export async function login(
+  email: string,
+  password: string
+): Promise<AuthResponse> {
   try {
-    const { email, password } = fields;
-
-    const { data } = await api.post<{
-      user: User;
-      token: string;
-    }>("/auth/login", {
-      email: email.value.trim(),
-      password: password.value.trim()
-    });
+    const { data } = await api.post<{ user: User; token: string }>(
+      "/auth/login",
+      { email: email.trim(), password: password.trim() }
+    );
 
     if (!data.token || !data.user) {
       return { error: "Ocorreu um erro, por favor tente novamente" };
@@ -23,12 +25,17 @@ export async function login(fields: FieldsFormLogin): Promise<AuthResponse> {
 
     createSession(data.token);
 
-    return {
-      user: data.user,
-      token: data.token
-    };
+    return { user: data.user, token: data.token };
   } catch (error: any) {
-    const { status } = error.response;
+    const defaultError = {
+      error: "Ocorreu um erro, por favor tente novamente"
+    };
+
+    if (!axios.isAxiosError(error)) {
+      return defaultError;
+    }
+
+    const status = error.response?.status;
 
     switch (status) {
       case 401:
@@ -44,25 +51,29 @@ export async function login(fields: FieldsFormLogin): Promise<AuthResponse> {
         };
 
       default:
-        return { error: "Ocorreu um erro por favor tente novamente" };
+        return defaultError;
     }
   }
 }
 
-export async function signUp(fields: FieldsFormSignUp): Promise<AuthResponse> {
+export async function signUp(
+  name: string,
+  username: string,
+  email: string,
+  password: string,
+  confirmPassword: string
+): Promise<AuthResponse> {
   try {
-    const { name, confirmPassword, email, password, username } = fields;
-
-    const { data } = await api.post<{
-      user: User;
-      token: string;
-    }>("/auth/signup", {
-      name: name.value.trim(),
-      username: username.value.trim(),
-      email: email.value.trim(),
-      password: password.value.trim(),
-      confirmPassword: confirmPassword.value.trim()
-    });
+    const { data } = await api.post<{ user: User; token: string }>(
+      "/auth/signup",
+      {
+        name: name.trim(),
+        username: username.trim(),
+        email: email.trim(),
+        password: password.trim(),
+        confirmPassword: confirmPassword.trim()
+      }
+    );
 
     if (!data.token || !data.user) {
       return { error: "Ocorreu um erro, por favor tente novamente" };
@@ -75,7 +86,16 @@ export async function signUp(fields: FieldsFormSignUp): Promise<AuthResponse> {
       token: data.token
     };
   } catch (error: any) {
-    const { status, data } = error.response;
+    const defaultError = {
+      error: "Ocorreu um erro, por favor tente novamente"
+    };
+
+    if (!axios.isAxiosError(error)) {
+      return defaultError;
+    }
+
+    const status = error.response?.status;
+    const data = error.response?.data;
 
     switch (status) {
       case 400:
@@ -100,7 +120,7 @@ export async function signUp(fields: FieldsFormSignUp): Promise<AuthResponse> {
         };
 
       default:
-        return { error: "Ocorreu um erro, por favor tente novamente" };
+        return defaultError;
     }
   }
 }

@@ -1,16 +1,17 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-export const useInput = () => {
+export const useInput = (defaultInputType: string) => {
   const [passwordIsShowed, setPasswordIsShowed] = useState(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [normalizedType, setNormalizedType] = useState(defaultInputType);
 
   const showPassword = () => {
+    if (defaultInputType !== "password") {
+      return;
+    }
+
     setPasswordIsShowed(!passwordIsShowed);
-
-    if (!inputRef.current) return;
-
-    inputRef.current.type = passwordIsShowed ? "password" : "text";
+    setNormalizedType(passwordIsShowed ? "password" : "text");
   };
 
-  return { inputRef, showPassword, passwordIsShowed };
+  return { normalizedType, showPassword, passwordIsShowed };
 };

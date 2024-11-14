@@ -2,40 +2,24 @@
 import styles from "../AuthForms.module.scss";
 import Link from "next/link";
 import Input from "../Input/Input";
-import { AuthResponse, FieldsFormLogin } from "@/@types/Auth";
-import { useAuthForm } from "@/hooks/useAuthForm";
+import { AuthResponse } from "@/@types/Auth";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
-import { useSearchParams } from "next/navigation";
-import { parseAsString, useQueryState } from "nuqs";
-
-const DEFAULT_FIELDS: FieldsFormLogin = {
-  email: { value: "", isValid: false, wasBlur: false },
-  password: { value: "", isValid: false, wasBlur: false }
-};
+import { useLoginForm } from "./useLoginForm";
+import { LoginAction } from "@/actions/auth";
 
 type Props = {
-  loginAction: (fields: FieldsFormLogin) => Promise<AuthResponse>;
+  loginAction: LoginAction;
 };
 
 function LoginForm({ loginAction }: Props) {
-  const [redirect] = useQueryState(
-    "redirect",
-    parseAsString.withOptions({ clearOnDefault: true })
-  );
-
   const {
+    errors,
     handleSubmit,
-    handleBlur,
-    handleChange,
-    email,
-    password,
-    reqIsPending,
-    allFieldsIsValid
-  } = useAuthForm<FieldsFormLogin>(
-    DEFAULT_FIELDS,
-    loginAction,
-    redirect || "/"
-  );
+    register,
+    submitIsDisabled,
+    isSubmitting,
+    isLogged
+  } = useLoginForm(loginAction);
 
   return (
     <div className={styles.divForm}>
@@ -46,35 +30,30 @@ function LoginForm({ loginAction }: Props) {
 
       <form onSubmit={handleSubmit}>
         <Input
-          name="email"
+          {...register("email", { required: true })}
           label="email"
-          type="text"
-          fieldStates={email}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          autoFocus={true}
-          messageError="Digite um email válido!"
+          type="email"
+          error={errors.email?.message}
+          autoFocus
         />
 
         <Input
-          name="password"
+          {...register("password", { required: true })}
           label="Senha"
           type="password"
-          fieldStates={password}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          messageError="A senha precisa ter no mínimo 8 caracteres"
+          error={errors.password?.message}
         />
 
         <button
           type="submit"
           className={styles.btnSubmit}
-          disabled={!allFieldsIsValid || reqIsPending}
+          disabled={submitIsDisabled}
         >
-          {reqIsPending && (
+          {isSubmitting || isLogged ? (
             <SpinnerLoader color="#fff" size={1} unitSize="rem" />
+          ) : (
+            "Login"
           )}
-          {!reqIsPending && "Login"}
         </button>
 
         <p className={`${styles.textSignUp} textBig`}>

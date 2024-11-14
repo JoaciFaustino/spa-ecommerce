@@ -1,82 +1,60 @@
 "use client";
-import { ChangeEvent, FocusEvent, useRef, useState } from "react";
 import styles from "./Input.module.scss";
-import { Field } from "@/@types/Auth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { forwardRef, InputHTMLAttributes } from "react";
 import { useInput } from "./useInput";
 
 type Props = {
-  name: string;
   label: string;
   type: string;
-  messageError: string;
-  fieldStates: Field;
-  handleBlur: (e: FocusEvent<HTMLInputElement, Element>) => void;
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  autoFocus?: boolean;
-};
+  error?: string;
+} & InputHTMLAttributes<HTMLInputElement>;
 
-function Input({
-  name,
-  label,
-  type = "text",
-  messageError,
-  fieldStates,
-  handleBlur,
-  handleChange,
-  autoFocus = false
-}: Props) {
-  const { inputRef, showPassword, passwordIsShowed } = useInput();
+const Input = forwardRef<HTMLInputElement, Props>(
+  ({ label, type = "text", error, name, placeholder, ...props }, ref) => {
+    const { showPassword, passwordIsShowed, normalizedType } = useInput(type);
 
-  return (
-    <div className={styles.inputGroup}>
-      <label htmlFor={name}>{label}</label>
-      <div className={styles.divInput}>
-        <input
-          autoFocus={autoFocus}
-          ref={inputRef}
-          type={inputRef.current?.type || type}
-          id={name}
-          name={name}
-          value={fieldStates.value}
-          placeholder={label}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          className={
-            !fieldStates.isValid && fieldStates.wasBlur
-              ? styles.inputInvalid
-              : ""
-          }
-        />
+    return (
+      <div className={styles.inputGroup}>
+        <label htmlFor={name}>{label}</label>
+        <div className={styles.divInput}>
+          <input
+            ref={ref}
+            type={normalizedType}
+            id={name}
+            name={name}
+            placeholder={placeholder || label}
+            className={!!error ? styles.inputInvalid : ""}
+            {...props}
+          />
 
-        {type === "password" && (
-          <button
-            className={styles.btnEye}
-            type="button"
-            onClick={showPassword}
-          >
-            {!passwordIsShowed && (
-              <FaRegEye
-                className={styles.iconEye}
-                style={{ fontSize: "1rem", color: "var(--primary-color)" }}
-              />
-            )}
+          {type === "password" && (
+            <button
+              className={styles.btnEye}
+              type="button"
+              onClick={showPassword}
+            >
+              {!passwordIsShowed && (
+                <FaRegEye
+                  className={styles.iconEye}
+                  style={{ fontSize: "1rem", color: "var(--primary-color)" }}
+                />
+              )}
 
-            {passwordIsShowed && (
-              <FaRegEyeSlash
-                className={styles.iconEye}
-                style={{ fontSize: "1rem", color: "var(--primary-color)" }}
-              />
-            )}
-          </button>
-        )}
+              {passwordIsShowed && (
+                <FaRegEyeSlash
+                  className={styles.iconEye}
+                  style={{ fontSize: "1rem", color: "var(--primary-color)" }}
+                />
+              )}
+            </button>
+          )}
+        </div>
+
+        {!!error && <span className={styles.errorMessage}>{error}</span>}
       </div>
-
-      {!fieldStates.isValid && fieldStates.wasBlur && (
-        <span className={styles.errorMessage}>{messageError}</span>
-      )}
-    </div>
-  );
-}
+    );
+  }
+);
 
 export default Input;

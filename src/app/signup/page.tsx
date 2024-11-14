@@ -5,9 +5,7 @@ import { auth, signUp } from "@/actions/auth";
 import { redirect } from "next/navigation";
 
 type Props = {
-  searchParams: {
-    redirect?: string | string[];
-  };
+  searchParams: { redirect?: string | string[] };
 };
 
 async function SignUp({ searchParams }: Props) {
