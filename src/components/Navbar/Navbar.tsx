@@ -11,8 +11,6 @@ function Navbar({ className }: PropsNavbar) {
       <ul>
         <LinkBtn url="/" linkName="Home" />
         <LinkBtn url="/menu?sortBy=popularidade" linkName="Menu" />
-        <LinkBtn url="/personalizados" linkName="Personalizados" />
-        <LinkBtn url="/contatos" linkName="Contatos" />
       </ul>
     </nav>
   );
