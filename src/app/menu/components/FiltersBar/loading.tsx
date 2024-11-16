@@ -1,6 +1,7 @@
 import styles from "./FiltersBar.module.scss";
 import FilterSelectsSkeleton from "../FilterSelects/loading";
 import SearchInput from "@/components/SearchInput/SearchInput";
+import { Suspense } from "react";
 
 async function FiltersBarSkeleton() {
   return (
@@ -8,7 +9,9 @@ async function FiltersBarSkeleton() {
       <div className={`${styles.wrapper} wrapper`}>
         <div className={styles.divSearchAndSortBy}>
           <div className={styles.divSelectLoading}>
-            <SearchInput placeholder="Pesquisar por nome..." />
+            <Suspense>
+              <SearchInput placeholder="Pesquisar por nome..." />
+            </Suspense>
           </div>
 
           <div className={styles.divSelectLoading}>

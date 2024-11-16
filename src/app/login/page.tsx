@@ -3,6 +3,7 @@ import { auth, login } from "@/actions/auth";
 import styles from "../../styles/pages/Auth.module.scss";
 import LoginForm from "@/components/AuthForms/LoginForm/LoginForm";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 type Props = {
   searchParams: {
@@ -23,7 +24,9 @@ async function Login({ searchParams }: Props) {
 
   return (
     <div className={styles.divAuth}>
-      <LoginForm loginAction={login} />
+      <Suspense>
+        <LoginForm loginAction={login} />
+      </Suspense>
     </div>
   );
 }

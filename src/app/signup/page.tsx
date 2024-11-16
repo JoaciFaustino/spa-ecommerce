@@ -3,6 +3,7 @@ import SignUpForm from "@/components/AuthForms/SignUpForm/SignUpForm";
 import styles from "../../styles/pages/Auth.module.scss";
 import { auth, signUp } from "@/actions/auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 type Props = {
   searchParams: { redirect?: string | string[] };
@@ -21,7 +22,9 @@ async function SignUp({ searchParams }: Props) {
 
   return (
     <div className={styles.divAuth}>
-      <SignUpForm signUpAction={signUp} />
+      <Suspense>
+        <SignUpForm signUpAction={signUp} />
+      </Suspense>
     </div>
   );
 }
