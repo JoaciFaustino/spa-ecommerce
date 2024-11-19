@@ -3,7 +3,9 @@ import { forwardRef, InputHTMLAttributes } from "react";
 import styles from "./OrderForm.module.scss";
 import { useOrderForm } from "./useOrderForm";
 
-function OrderForm({ cartId }: { cartId: string }) {
+type Props = { cartId: string; setOrderAsDone: () => void };
+
+function OrderForm({ cartId, setOrderAsDone }: Props) {
   const {
     register,
     typeOfReceipt,
@@ -11,7 +13,7 @@ function OrderForm({ cartId }: { cartId: string }) {
     submitIsDisabled,
     registerWithMask,
     handleSubmit
-  } = useOrderForm(cartId);
+  } = useOrderForm(cartId, setOrderAsDone);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>

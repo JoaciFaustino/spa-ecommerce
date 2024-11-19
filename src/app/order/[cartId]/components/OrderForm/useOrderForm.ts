@@ -61,9 +61,8 @@ const defaultDeliveryAdress: DeliveryAddress = {
   adicionalInfo: ""
 };
 
-export const useOrderForm = (cartId: string) => {
+export const useOrderForm = (cartId: string, setOrderAsDone: () => void) => {
   const { user } = useContext(UserContext);
-  const { changeCartItems } = useContext(CartContext);
   const {
     register,
     handleSubmit,
@@ -136,7 +135,7 @@ export const useOrderForm = (cartId: string) => {
         observations
       );
 
-      changeCartItems([]);
+      setOrderAsDone();
 
       toast.success("Pedido finalizado, agradecemos a sua compra!");
       router.push("/menu?sortBy=popularidade");
