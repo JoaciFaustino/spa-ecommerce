@@ -92,11 +92,12 @@ function CakeList({ cakes, nextUrl }: CakeListProps) {
       {cakes.map((cake) => (
         <CakeCard
           key={cake._id}
-          cakeId={cake._id}
-          nameCake={cake.name}
-          typeCake={cake.type}
-          imageCake={cake.imageUrl}
-          priceCake={formatPriceNumber(cake.totalPricing)}
+          id={cake._id}
+          name={cake.name}
+          imageUrl={cake.imageUrl}
+          price={formatPriceNumber(cake.totalPricing)}
+          categories={cake.categories}
+          customizableParts={cake.customizableParts}
         />
       ))}
 
