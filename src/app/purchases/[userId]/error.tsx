@@ -1,5 +1,4 @@
 "use client";
-
 import PageError from "@/app/error";
 
 function PurchasesErrorPage() {
