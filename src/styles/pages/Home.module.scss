@@ -196,7 +196,9 @@
     width: 100%;
     overflow: auto;
     position: relative;
-    padding-top: 10px;
+    padding-top: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-3) var(--gray-1);
 
     .divTopics {
       width: 77.5rem;
@@ -221,8 +223,26 @@
         padding: var(--padding-4) 0;
         padding-right: var(--padding-8);
         flex: 1;
+        cursor: default;
+
+        &:hover .dotTopic {
+          transform: scale(1.2);
+        }
+
+        &:hover h4 {
+          transition: 0.5s;
+          transform: scale(1.005);
+          // color: var(--primary-color);
+        }
+
+        &:hover p {
+          transition: 0.5s;
+          color: var(--color-text-title);
+          transform: scale(1.005);
+        }
 
         .dotTopic {
+          transition: 0.5s;
           width: 20px;
           position: absolute;
           height: 20px;
