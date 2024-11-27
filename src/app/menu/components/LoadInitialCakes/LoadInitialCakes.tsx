@@ -6,9 +6,9 @@ import { CakeQueryParams } from "@/@types/QueryParams";
 import { sortByApiOptions } from "@/@types/SortBy";
 import { getAllCakes, getFirstPageCakesCached } from "@/services/cakes";
 import styles from "./LoadInitialCakes.module.scss";
-import Button from "./Button";
 import { CustomError } from "@/utils/customError";
 import { ICake } from "@/@types/Cake";
+import RefreshPageButton from "@/components/RefreshPageButton/RefreshPageButton";
 
 const SORT_BY_API_OPTIONS: sortByApiOptions = {
   popularidade: "popularity",
@@ -75,7 +75,7 @@ async function LoadInitialCakes({ searchParams }: Props) {
             : "Ocorreu um erro no servidor! por favor tente novamente mais tarde"}
         </h5>
 
-        {statusCode !== 404 && <Button />}
+        {statusCode !== 404 && <RefreshPageButton />}
       </div>
     );
   }

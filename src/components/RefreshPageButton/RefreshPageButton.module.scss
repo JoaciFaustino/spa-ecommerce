@@ -1,0 +1,29 @@
+.btn {
+  border: none;
+  border-radius: 99px;
+  color: #fff;
+  background-color: var(--secondary-color);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: var(--padding-2);
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+.reloaded {
+  svg {
+    animation: rotate 1s linear infinite;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

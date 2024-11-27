@@ -1,10 +1,10 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import styles from "./LoadInitialCakes.module.scss";
+import styles from "./RefreshPageButton.module.scss";
 import { TbRefresh } from "react-icons/tb";
 import { useRef, useState } from "react";
 
-function Button() {
+function RefreshPageButton() {
   const [isClicked, setIsClicked] = useState(false);
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
@@ -36,4 +36,4 @@ function Button() {
   );
 }
 
-export default Button;
+export default RefreshPageButton;
