@@ -3,6 +3,7 @@ import { User } from "@/@types/User";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 import { CartContext } from "./CartProvider";
+import { usePathname } from "next/navigation";
 
 type UserContext = {
   user: User | undefined;
@@ -27,6 +28,7 @@ function UserProvider({
   const [user, setUser] = useState<User | undefined>(undefined);
   const { changeCartId, changeCartItems } = useContext(CartContext);
   const router = useRouter();
+  const pathname = usePathname();
 
   const getUserLogged = async (): Promise<User | undefined> => {
     const user: User | undefined = await getUserLoggedAction();
@@ -51,9 +53,9 @@ function UserProvider({
       changeCartId(undefined);
       changeCartItems([]);
 
-      router.push("/login");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     } catch (error) {
-      router.push("/login");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
   };

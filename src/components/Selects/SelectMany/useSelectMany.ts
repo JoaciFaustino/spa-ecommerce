@@ -135,6 +135,7 @@ export const useSelectMany = (
     handleChangeCheckbox,
     openOptions,
     optionsSelecteds,
+    deselectOption,
     inputValue,
     handleChangeSearch,
     filteredOptions,

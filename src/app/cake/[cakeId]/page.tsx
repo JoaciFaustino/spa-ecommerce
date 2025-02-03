@@ -68,7 +68,7 @@ async function CakePage({ params: { cakeId } }: Props) {
     );
   } catch (error: any) {
     if (error instanceof CustomError && error.status === 401) {
-      redirect("/login");
+      redirect(`/login?redirect=${encodeURIComponent(`/cake/${cakeId}`)}`);
     }
 
     if (error instanceof CustomError && error.status === 404) {

@@ -2,7 +2,7 @@
 import { ICake } from "@/@types/Cake";
 import styles from "./CustomizeCakeForm.module.scss";
 import { useEffect, useMemo, useState } from "react";
-import FillingsInputs from "../FillingsInputs/FillingsInputs";
+
 import { useCakeForm } from "./useCakeForm";
 import { useCustomizableParts } from "./useCustomizableParts";
 import { RiErrorWarningLine } from "react-icons/ri";
@@ -13,8 +13,10 @@ import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 import SelectInfiniteScoll from "@/components/Selects/SelectInfiniteScroll/SelectInfiniteScroll";
 import {
   getCakeTypesWithErrorHandling,
+  getFillingsWithErrorHandling,
   getFrostingsWithErrorHandling
 } from "@/utils/getCakePartsValues";
+import FillingsInputs from "@/components/FillingsInputs/FillingsInputs";
 
 type Props = {
   typeOptions?: string[];
@@ -124,11 +126,19 @@ function CustomizeCakeForm({
       <FillingsInputs
         fillingsSelecteds={fillingsSelecteds}
         sizeSelected={sizeSelected}
-        setFillings={setValue<"fillings">}
+        setFillings={(newFillings) => {
+          setValue("fillings", newFillings);
+        }}
         selectInitialValue={fillingsOptionsNames[0]}
         fillingsOptions={fillingsOptionsNames}
         errorMessage={errors.fillings?.message}
         isCustomizable={isCustomizableFillings}
+        initialPage={2}
+        onLoadMoreOptions={async (page, limit) => {
+          const res = await getFillingsWithErrorHandling(limit, page);
+
+          return res.map(({ name }) => name);
+        }}
       />
 
       <div

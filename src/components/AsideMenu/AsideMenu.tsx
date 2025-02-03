@@ -3,8 +3,6 @@ import styles from "./AsideMenu.module.scss";
 import { CgClose } from "react-icons/cg";
 import { useAsideMenu } from "./useAsideMenu";
 import Navbar from "../Navbar/Navbar";
-import UserInfo from "../UserInfo/UserInfo";
-import { useRef } from "react";
 
 type Props = {
   handleCloseAsideMenu: () => void;

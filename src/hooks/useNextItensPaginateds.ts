@@ -10,9 +10,10 @@ type getNewItensResponse<T, K extends string> = BasePaginatedResponse &
 export const useNextItensPaginateds = <T, K extends string>(
   nextUrl: string | undefined,
   key: K,
-  getNewItens: (url: string) => Promise<getNewItensResponse<T, K>>
+  getNewItens: (url: string) => Promise<getNewItensResponse<T, K>>,
+  firstItens: T[] = []
 ) => {
-  const [itens, setItens] = useState<T[]>([]);
+  const [itens, setItens] = useState<T[]>(firstItens);
   const [nextUrlState, setNextUrlState] = useState<string | undefined>(nextUrl);
 
   const [isPending, startTransition] = useTransition();
@@ -25,6 +26,36 @@ export const useNextItensPaginateds = <T, K extends string>(
   );
 
   useEffect(() => setNextUrlState(nextUrl), [nextUrl]);
+
+  const changeItens = (newItens: T[]) => {
+    startTransition(() => {
+      setItens([...newItens]);
+    });
+  };
+
+  const addItem = (newItem: T) => {
+    startTransition(() => {
+      setItens((prev) => [...prev, newItem]);
+    });
+  };
+
+  const updateItem = <KeyId extends keyof T>(
+    keyId: KeyId,
+    id: string,
+    updatedItem: T
+  ) => {
+    startTransition(() => {
+      setItens((prev) =>
+        prev.map((item) => (item[keyId] === id ? updatedItem : item))
+      );
+    });
+  };
+
+  const deleteItem = (keyId: keyof T, id: string) => {
+    startTransition(() => {
+      setItens((prev) => prev.filter((item) => item[keyId] !== id));
+    });
+  };
 
   function getNewCakes() {
     if (isPending || !nextUrlState) {
@@ -54,5 +85,13 @@ export const useNextItensPaginateds = <T, K extends string>(
     });
   }
 
-  return { finalPageInspectorRef, itens, isPending };
+  return {
+    finalPageInspectorRef,
+    itens,
+    isPending,
+    changeItens,
+    deleteItem,
+    updateItem,
+    addItem
+  };
 };

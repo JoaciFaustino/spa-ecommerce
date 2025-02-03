@@ -1,0 +1,129 @@
+.form {
+  z-index: 1;
+  padding: 5px; //só por que o overflow: scroll do modal deixa bugado e esconde o outline e o box shadow dos inputs e selects
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-2);
+
+  h4 {
+    text-align: center;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    border: none;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    color: #fff;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: var(--padding-2);
+  border-radius: 5px;
+  border: none;
+  background-color: var(--gray-1);
+
+  &:focus {
+    outline: solid var(--primary-color) 2px;
+  }
+
+  label {
+    display: block;
+  }
+}
+
+.inputInvalid {
+  background-color: var(--color-warning-2);
+
+  &:focus {
+    outline: solid 2px var(--color-warning-1);
+  }
+}
+
+.messageError {
+  color: var(--color-warning-1);
+}
+
+.divRadioCheckbox {
+  display: flex;
+  align-items: center;
+  column-gap: var(--padding-2);
+  flex-wrap: wrap;
+}
+
+.divRadioCheckbox .divInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  label {
+    color: var(--color-text-paragraph);
+    cursor: pointer;
+    padding-left: var(--padding-2);
+  }
+
+  input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--secondary-color);
+  }
+
+  input[type="radio"] {
+    cursor: pointer;
+    appearance: none;
+
+    box-sizing: border-box;
+    height: 1rem;
+    aspect-ratio: 1/1;
+
+    background-color: transparent;
+    border: 2px solid var(--gray-1);
+    padding: 2px;
+    border-radius: 100%;
+  }
+
+  input[type="radio"]:checked,
+  input[type="checkbox"]:checked {
+    border-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input[type="radio"]:checked::after {
+    content: "";
+
+    width: calc(100%);
+    height: calc(100%);
+
+    border-radius: 100%;
+    background-color: var(--secondary-color);
+  }
+}
+
+.divPricesPerSize {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.divInputPrices {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--padding-2);
+  flex-wrap: wrap;
+}
+
+.disabled {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}

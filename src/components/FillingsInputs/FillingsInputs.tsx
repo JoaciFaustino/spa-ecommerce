@@ -1,29 +1,38 @@
 import { Size } from "@/@types/Cake";
-import { SetValuesFillingsFunction, useFillings } from "./useFillings";
+import { useFillings } from "./useFillings";
 import styles from "./FillingsInputs.module.scss";
 import { BsPlusLg, BsTrash } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import SelectInfiniteScoll from "@/components/Selects/SelectInfiniteScroll/SelectInfiniteScroll";
-import { getFillingsWithErrorHandling } from "@/utils/getCakePartsValues";
 
 type Props = {
+  label?: string;
   isCustomizable: boolean;
   fillingsSelecteds: string[];
   sizeSelected: Size;
-  setFillings: SetValuesFillingsFunction;
+  setFillings: (newFillings: string[]) => void;
   selectInitialValue: string;
   fillingsOptions: string[];
   errorMessage?: string;
+  initialPage: number;
+  onLoadMoreOptions: (
+    page: number,
+    limit: number,
+    search?: string
+  ) => Promise<string[]> | string[];
 };
 
 function FillingsInputs({
+  label,
   fillingsSelecteds,
   sizeSelected,
   setFillings,
   selectInitialValue,
   fillingsOptions,
   errorMessage,
-  isCustomizable
+  isCustomizable,
+  initialPage,
+  onLoadMoreOptions
 }: Props) {
   const {
     addLayerFilling,
@@ -46,7 +55,7 @@ function FillingsInputs({
         !isCustomizable ? styles.disabled : ""
       }`}
     >
-      <label>Recheios</label>
+      <label>{label || "Recheios"}</label>
 
       <div className={styles.divSelects}>
         {fillingsOptions.length === 0 && (
@@ -66,13 +75,9 @@ function FillingsInputs({
                 initialOptions={fillingsOptions}
                 onChangeOption={selectHandlerFillingValue(index)}
                 defaultValue={filling}
-                initialPage={2}
+                initialPage={initialPage}
                 limit={12}
-                onLoadMoreOptions={async (page, limit) => {
-                  const res = await getFillingsWithErrorHandling(limit, page);
-
-                  return res.map(({ name }) => name);
-                }}
+                onLoadMoreOptions={onLoadMoreOptions}
               />
 
               <button
@@ -98,7 +103,9 @@ function FillingsInputs({
           />
           Adicionar camada
         </button>
-        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {errorMessage && (
+          <p className={`text ${styles.errorMessage}`}>{errorMessage}</p>
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,6 @@
 import styles from "../AuthForms.module.scss";
 import Link from "next/link";
 import Input from "../Input/Input";
-import { AuthResponse } from "@/@types/Auth";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 import { useLoginForm } from "./useLoginForm";
 import { LoginAction } from "@/actions/auth";

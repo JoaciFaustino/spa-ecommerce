@@ -29,12 +29,25 @@ export const useSelect = (
 
     setOptionsWithId(createOptions(options));
 
+    if (isRequired && !defaultValue) {
+      setSelectedOption(optionsWithId[0]?.name);
+
+      if (onChangeOption) {
+        onChangeOption(optionsWithId[0]?.name);
+      }
+    }
+
     if (isRequired && !selectedOption) {
-      setSelectedOption(
+      const normalizedDefaultOption =
         defaultValue && options.includes(defaultValue)
           ? defaultValue
-          : optionsWithId[0].name
-      );
+          : optionsWithId[0].name;
+
+      setSelectedOption(normalizedDefaultOption);
+
+      if (onChangeOption) {
+        onChangeOption(normalizedDefaultOption);
+      }
 
       return;
     }

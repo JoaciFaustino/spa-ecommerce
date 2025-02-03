@@ -7,3 +7,5 @@ export const formatPriceNumber = (price: number): string => {
 
   return real.format(price);
 };
+
+export const priceRegex = /R\$\s([0-9]{1,3})(?:,([0-9]{2}))?/;

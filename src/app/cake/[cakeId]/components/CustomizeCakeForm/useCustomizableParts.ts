@@ -1,5 +1,5 @@
 import { CustomizablesParts } from "@/@types/Cake";
-import { capitalizeFirstLetter } from "@/utils/formatStrings";
+import { capitalize } from "@/utils/formatStrings";
 
 const formatMessageCustomizableParts = (
   isCustomizableCakeType: boolean,
@@ -22,7 +22,7 @@ const formatMessageCustomizableParts = (
     return partsStrings[0] + " desse bolo não é personalizável";
   }
 
-  return capitalizeFirstLetter(
+  return capitalize(
     partsStrings.slice(0, -1).join(", ") +
       " e " +
       partsStrings.slice(-1) +

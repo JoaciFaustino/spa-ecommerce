@@ -1,13 +1,6 @@
 "use client";
 import { PersonalizedCake } from "@/@types/Cart";
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState
-} from "react";
+import { createContext, useState } from "react";
 
 type CartContext = {
   cartId?: string;

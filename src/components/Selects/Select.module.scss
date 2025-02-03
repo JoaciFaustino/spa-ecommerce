@@ -130,7 +130,7 @@
   right: 0;
   top: calc(100% + var(--padding-2));
   border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgba(#000000, 0.2);
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.4);
   background-color: rgba(#fff, 0.7);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
@@ -143,6 +143,12 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gray-3) var(--gray-1);
+}
+
+.select.selectTags {
+  .divOptions {
+    top: calc(var(--padding-10));
+  }
 }
 
 .divOptions::-webkit-scrollbar {
@@ -193,6 +199,58 @@
   p {
     cursor: pointer;
     color: var(--color-text-title);
+  }
+}
+
+.divTags {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--padding-2);
+  flex-wrap: wrap;
+}
+
+.btnOpenTagsOptions,
+.tag {
+  white-space: nowrap;
+  padding: 0.2rem var(--padding-3);
+  border: none;
+  border-radius: 99px;
+  transition: 0.3s;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--padding-1);
+}
+
+.btnOpenTagsOptions {
+  background-color: var(--secondary-color);
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+.tag {
+  animation: fadeIn 0.5s;
+  background-color: var(--gray-1);
+  color: var(--color-text-title);
+
+  svg {
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: rgba(#000000, 0.2);
+    }
   }
 }
 

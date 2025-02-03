@@ -5,7 +5,7 @@ import { CgShoppingCart } from "react-icons/cg";
 import Link from "next/link";
 import { Fragment, MouseEvent, useMemo, useRef, useState } from "react";
 import { CustomizablesParts } from "@/@types/Cake";
-import { capitalizeFirstLetter } from "@/utils/formatStrings";
+import { capitalize } from "@/utils/formatStrings";
 
 const translateCustomizableParts: {
   [key in CustomizablesParts]: string;
@@ -28,17 +28,13 @@ const generatePhrase = (
   }
 
   if (translatedParts.length === 1) {
-    return capitalizeFirstLetter(
-      `${translatedParts[0]} deste bolo é personalizável.`
-    );
+    return capitalize(`${translatedParts[0]} deste bolo é personalizável.`);
   }
 
   const joinedParts =
     translatedParts.slice(0, -1).join(", ") + " e " + translatedParts.slice(-1);
 
-  return capitalizeFirstLetter(
-    `${joinedParts} deste bolo são personalizáveis.`
-  );
+  return capitalize(`${joinedParts} deste bolo são personalizáveis.`);
 };
 
 type Props = {

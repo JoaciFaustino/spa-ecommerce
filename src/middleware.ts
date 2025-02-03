@@ -9,7 +9,15 @@ const authenticatedRoutes: string[] = [
   "/order/:path*",
   "/purchases/:path*"
 ];
-const adminRoutes: string[] = [];
+const adminRoutes: string[] = [
+  "/dashboard",
+  "/dashboard/cake-types",
+  "/dashboard/cakes",
+  "/dashboard/categories",
+  "/dashboard/fillings",
+  "/dashboard/frostings",
+  "/dashboard/orders"
+];
 //note: you can't put that arrays in the config.matcher, so you need put
 //directly new routes in that arrays and in the config.matcher.
 //More info: https://nextjs.org/docs/messages/invalid-page-config
@@ -40,5 +48,16 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/cake/:path*", "/order/:path*", "/purchases/:path*"]
+  matcher: [
+    "/cake/:path*",
+    "/order/:path*",
+    "/purchases/:path*",
+    "/dashboard",
+    "/dashboard/cake-types",
+    "/dashboard/cakes",
+    "/dashboard/categories",
+    "/dashboard/fillings",
+    "/dashboard/frostings",
+    "/dashboard/orders"
+  ]
 };

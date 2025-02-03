@@ -1,0 +1,59 @@
+.dropzone {
+  width: 100%;
+  border: 2px dashed var(--gray-3);
+  background-color: var(--gray-1);
+  border-radius: 5px;
+  padding: var(--padding-2);
+  transition: all 0.3s;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    background-color: var(--gray-1-hover);
+  }
+}
+
+.dropzone.dragActive {
+  border: 2px dashed var(--primary-color);
+  background-color: var(--gray-1-hover);
+}
+
+.image {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: dashed 2px rgba(0, 0, 0, 0.2);
+}
+
+.newImage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--padding-2);
+
+  p {
+    max-width: calc(100% - (var(--padding-2) + 1.5rem));
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    .info {
+      text-wrap: nowrap;
+      color: var(--secondary-color);
+    }
+  }
+
+  svg {
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--gray-3);
+
+    &:hover {
+      color: var(--gray-3-hover);
+    }
+  }
+}
+
+.messageError {
+  color: var(--color-warning-1);
+}

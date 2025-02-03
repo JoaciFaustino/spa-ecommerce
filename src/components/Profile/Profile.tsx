@@ -33,7 +33,7 @@ function Profile({ user }: { user: User }) {
             </Link>
 
             {user?.role === "admin" && (
-              <Link href={`/admin-dashboard/${user?._id}`}>
+              <Link href={`/dashboard/cakes`}>
                 <li className="text">Admin Dashboard</li>
               </Link>
             )}

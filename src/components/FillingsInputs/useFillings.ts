@@ -1,23 +1,11 @@
 import { Size } from "@/@types/Cake";
 import { MAX_LAYER_OF_FILLINGS } from "@/@types/Filling";
-import { useEffect, useState } from "react";
-
-export type SetValuesFillingsFunction = (
-  name: "fillings",
-  value: string[],
-  options?:
-    | Partial<{
-        shouldValidate: boolean;
-        shouldDirty: boolean;
-        shouldTouch: boolean;
-      }>
-    | undefined
-) => void;
+import { useEffect } from "react";
 
 export const useFillings = (
   fillingsSelecteds: string[],
   sizeSelected: Size,
-  setFillings: SetValuesFillingsFunction,
+  setFillings: (newFillings: string[]) => void,
   selectInitialValue: string
 ) => {
   const maxLayersOfFillings: number = MAX_LAYER_OF_FILLINGS[sizeSelected];
@@ -37,7 +25,7 @@ export const useFillings = (
       fillingsChangeds.push(fillingsSelecteds[i]);
     }
 
-    setFillings("fillings", fillingsChangeds);
+    setFillings(fillingsChangeds);
   };
 
   const selectHandlerFillingValue = (indexToModify: number) => {
@@ -50,7 +38,7 @@ export const useFillings = (
         index === indexToModify ? newValue : prevValue
       );
 
-      setFillings("fillings", newFillings);
+      setFillings(newFillings);
     };
   };
 
@@ -59,7 +47,7 @@ export const useFillings = (
       (_, index) => index !== indexToRemove
     );
 
-    setFillings("fillings", newFillings);
+    setFillings(newFillings);
   };
 
   const addLayerFilling = () => {
@@ -69,7 +57,7 @@ export const useFillings = (
 
     const newFillings = [...fillingsSelecteds, selectInitialValue];
 
-    setFillings("fillings", newFillings);
+    setFillings(newFillings);
   };
 
   return {

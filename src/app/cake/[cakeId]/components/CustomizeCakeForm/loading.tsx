@@ -1,7 +1,7 @@
 import SelectSkeleton from "@/components/Selects/loading";
 import styles from "./CustomizeCakeForm.module.scss";
 import { CgShoppingCart } from "react-icons/cg";
-import FillingsInputsSkeleton from "../FillingsInputs/loading";
+import FillingsInputsSkeleton from "@/components/FillingsInputs/loading";
 
 function CustomizeCakeFormSkeleton() {
   return (

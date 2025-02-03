@@ -3,10 +3,10 @@ import { IFrosting } from "./Frosting";
 
 export const CUSTOMIZABLE_PARTS_ENUM = [
   //tem que ajeitar isso para o nome certo, tem q ajeitar todos os documents no banco de dados
-  "filing",
+  "type",
   "frosting",
-  "size",
-  "type"
+  "filing",
+  "size"
 ] as const;
 
 export type CustomizablesParts = (typeof CUSTOMIZABLE_PARTS_ENUM)[number];
@@ -42,3 +42,23 @@ export interface ICake {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ICakeResponseApi {}
+
+export interface ICakeWritteOperations {
+  name: string;
+  type: string;
+  categories?: string[];
+  frosting?: string;
+  fillings?: string[];
+  size: Size;
+  sizesPossibles: Size[];
+  pricePerSize: PricePerSize;
+  customizableParts?: CustomizablesParts[];
+}
+
+export type ICakeCreateBody = ICakeWritteOperations;
+
+export type ICakeUpdateBody = Partial<
+  Omit<ICakeWritteOperations, "frosting"> & { frosting?: string | null }
+>;

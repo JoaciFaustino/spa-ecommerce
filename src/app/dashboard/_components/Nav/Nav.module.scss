@@ -1,0 +1,42 @@
+@import "@/styles/variables.scss";
+
+.nav {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--padding-2);
+}
+
+.link {
+  grid-column: 1fr;
+  text-align: center;
+  color: var(--color-text-title);
+  background-color: var(--gray-1);
+  padding: var(--padding-2) var(--padding-4);
+  cursor: pointer;
+  outline: none;
+  border-radius: 3px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--gray-1-hover);
+  }
+}
+
+.actived {
+  color: #fff;
+  background-color: var(--secondary-color);
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+@media (max-width: $sm) {
+  .nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

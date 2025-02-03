@@ -1,10 +1,6 @@
 import { Size } from "./Cake";
 
-type MaxLayerOfFillings = {
-  [size in Size]: number;
-};
-
-export const MAX_LAYER_OF_FILLINGS: MaxLayerOfFillings = {
+export const MAX_LAYER_OF_FILLINGS: Record<Size, number> = {
   pequeno: 1,
   medio: 2,
   grande: 3,

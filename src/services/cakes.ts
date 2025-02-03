@@ -1,4 +1,4 @@
-import { ICake } from "@/@types/Cake";
+import { ICake, ICakeCreateBody, ICakeUpdateBody } from "@/@types/Cake";
 import { getSession } from "@/lib/session";
 import { api } from "./api";
 import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
@@ -86,6 +86,73 @@ export const getAllCakesCompleteUrl = async (
 
     return data;
   } catch (error: any) {
+    throw getErrorRequest(error, "Ocorreu um erro");
+  }
+};
+
+export const createCake = async (
+  imageFile: File,
+  cake: ICakeCreateBody
+): Promise<ICake> => {
+  try {
+    const session = await getSession();
+
+    const formData = new FormData();
+    formData.append("cake", JSON.stringify(cake));
+
+    if (imageFile) {
+      formData.append("imageCake", imageFile);
+    }
+
+    const { data } = await api.post<{ message: string; cake: ICake }>(
+      `/cakes/create/`,
+      formData,
+      { headers: { Authorization: session } }
+    );
+
+    return data.cake;
+  } catch (error: any) {
+    throw getErrorRequest(error, "Failed to create the cake");
+  }
+};
+
+export const updateCake = async (
+  cakeId: string,
+  imageFile: File | null,
+  cake: ICakeUpdateBody
+): Promise<ICake> => {
+  try {
+    const session = await getSession();
+
+    const formData = new FormData();
+    formData.append("cake", JSON.stringify(cake));
+
+    if (imageFile) {
+      formData.append("imageCake", imageFile);
+    }
+
+    const { data } = await api.patch<{ message: string; cake: ICake }>(
+      `/cakes/update/${cakeId}`,
+      formData,
+      { headers: { Authorization: session } }
+    );
+
+    return data.cake;
+  } catch (error: any) {
+    throw getErrorRequest(error, "Failed to update the cake");
+  }
+};
+
+export const deleteCake = async (cakeId: string): Promise<void> => {
+  try {
+    const session = await getSession();
+
+    await api.delete<{ message: string }>(`/cakes/delete/${cakeId}`, {
+      headers: { Authorization: session }
+    });
+  } catch (error: any) {
+    console.log(error);
+
     throw getErrorRequest(error, "Ocorreu um erro");
   }
 };

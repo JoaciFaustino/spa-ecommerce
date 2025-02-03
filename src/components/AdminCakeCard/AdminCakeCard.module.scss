@@ -1,0 +1,143 @@
+@import "@/styles/variables.scss";
+
+.card {
+  display: flex;
+  gap: var(--padding-4);
+  padding: var(--padding-4);
+  box-shadow: 0 0 5px 0 rgba(#000, 0.2);
+  border-radius: 10px;
+}
+
+.imgSkeleton {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.textContent {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  overflow-x: auto;
+
+  h4 {
+    border-radius: 5px;
+    line-height: 2rem;
+    max-height: 4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.divCategories {
+  position: relative;
+  padding: var(--padding-1) 0;
+  flex: 1;
+  max-width: 100%;
+  display: flex;
+  gap: var(--padding-2);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-3) var(--gray-1);
+}
+
+.divCategories::-webkit-scrollbar {
+  height: var(--padding-3);
+}
+
+.divCategories::-webkit-scrollbar-track {
+  background: var(--gray-1);
+}
+
+.divCategories::-webkit-scrollbar-thumb {
+  background: var(--gray-2);
+}
+
+.divCategories::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-3);
+}
+
+.category {
+  white-space: nowrap;
+  padding: var(--padding-1) var(--padding-3);
+  border-radius: 99px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  transition: 0.3s;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--secondary-color-hover);
+  }
+}
+
+.text {
+  color: var(--color-text-title);
+
+  span {
+    color: var(--color-text-paragraph);
+    text-overflow: ellipsis;
+  }
+}
+
+.moreDetails {
+  cursor: pointer;
+  color: var(--color-text-paragraph);
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+
+  svg {
+    transition: all 0.2s;
+  }
+
+  .rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--padding-2);
+}
+
+.divIcons {
+  display: flex;
+  gap: var(--padding-2);
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.iconSkeleton {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 2px;
+}
+
+@media (max-width: $sm) {
+  .card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .textContent {
+    width: 100%;
+    align-items: center;
+  }
+
+  .text,
+  .textContent h4 {
+    text-align: center;
+  }
+}
