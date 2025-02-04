@@ -25,8 +25,6 @@ export const useSearchAndCreateBar = () => {
 
       router.refresh();
     } catch (error) {
-      console.log(error); //remover isso e também do update quando terminar todos os testes
-
       toast.error("Erro ao criar bolo");
       return;
     }

@@ -78,10 +78,7 @@ export const useUpdateAndDeleteCake = (
 
       setModalIsActived(false);
     } catch (error) {
-      console.log(error);
-
       toast.error("Erro ao editar bolo");
-      return;
     }
   };
 

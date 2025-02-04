@@ -6,12 +6,12 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { parseAsString, useQueryState } from "nuqs";
 
 function SearchInput({ placeholder }: { placeholder: string }) {
-  const [value, setValue] = useState("");
-  const debouncedValue = useDebounce(value, 800);
-  const [_, setSearchParam] = useQueryState(
+  const [searchParam, setSearchParam] = useQueryState(
     "search",
     parseAsString.withOptions({ clearOnDefault: true, shallow: false })
   );
+  const [value, setValue] = useState(searchParam || "");
+  const debouncedValue = useDebounce(value, 800);
 
   useEffect(() => {
     setSearchParam(debouncedValue || null);
