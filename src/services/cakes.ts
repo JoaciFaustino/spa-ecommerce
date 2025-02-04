@@ -5,6 +5,8 @@ import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
 import { TypeKeysSortBy } from "@/@types/SortBy";
+import { CachedRequestsRevalidateTags } from "@/@types/CachedRequestsRevalidateTags";
+import { revalidateTag } from "@/actions/revalidateTags";
 
 type PaginatedResponse = BasePaginatedResponse & { cakes: ICake[] };
 
@@ -29,12 +31,12 @@ export const getFirstPageCakesCached = async (): Promise<PaginatedResponse> => {
   const limit = 12;
   const sortBy: TypeKeysSortBy = "popularity";
 
-  const tenHours = 36000;
+  const cakeRevalidateTag: CachedRequestsRevalidateTags = "first-cakes-page";
 
   try {
     const response = await fetch(
       `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`,
-      { next: { revalidate: tenHours } }
+      { next: { tags: [cakeRevalidateTag] } }
     );
 
     const data: PaginatedResponse = await response.json();
@@ -110,6 +112,8 @@ export const createCake = async (
       { headers: { Authorization: session } }
     );
 
+    await revalidateTag("first-cakes-page");
+
     return data.cake;
   } catch (error: any) {
     throw getErrorRequest(error, "Failed to create the cake");
@@ -137,6 +141,8 @@ export const updateCake = async (
       { headers: { Authorization: session } }
     );
 
+    await revalidateTag("first-cakes-page");
+
     return data.cake;
   } catch (error: any) {
     throw getErrorRequest(error, "Failed to update the cake");
@@ -150,9 +156,9 @@ export const deleteCake = async (cakeId: string): Promise<void> => {
     await api.delete<{ message: string }>(`/cakes/delete/${cakeId}`, {
       headers: { Authorization: session }
     });
-  } catch (error: any) {
-    console.log(error);
 
+    await revalidateTag("first-cakes-page");
+  } catch (error: any) {
     throw getErrorRequest(error, "Ocorreu um erro");
   }
 };

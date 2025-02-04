@@ -1,7 +1,6 @@
 import { CustomError } from "@/utils/customError";
 import styles from "@/styles/pages/Dashboard.module.scss";
 import RefreshPageButton from "@/components/RefreshPageButton/RefreshPageButton";
-import { ICake } from "@/@types/Cake";
 import LoadNextCakes from "../LoadNextCakes/LoadNextCakes";
 import { getInitialCakes } from "@/utils/getInitialCakes";
 // import AdminCakeCard from "@/components/AdminCakeCard/AdminCakeCard";
@@ -14,7 +13,7 @@ async function LoadInitialCakes({ searchParams }: Props) {
   try {
     const { cakes, nextUrl } = await getInitialCakes(searchParams);
 
-    return <CakeList cakes={cakes} nextUrl={nextUrl} />;
+    return <LoadNextCakes firstCakes={cakes} nextUrl={nextUrl || undefined} />;
   } catch (error: any) {
     const statusCode = error instanceof CustomError ? error.status : 500;
 
@@ -32,21 +31,21 @@ async function LoadInitialCakes({ searchParams }: Props) {
   }
 }
 
-type CakeListProps = {
-  cakes: ICake[];
-  nextUrl: string | null;
-};
+// type CakeListProps = {
+//   cakes: ICake[];
+//   nextUrl: string | null;
+// };
 
-function CakeList({ cakes, nextUrl }: CakeListProps) {
-  return (
-    <>
-      {/* {cakes.map((cake) => (
-        <AdminCakeCard key={cake._id} cake={cake} />
-      ))} */}
+// function CakeList({ cakes, nextUrl }: CakeListProps) {
+//   return (
+//     <>
+//        {cakes.map((cake) => (
+//         <AdminCakeCard key={cake._id} cake={cake} />
+//       ))}
 
-      <LoadNextCakes firstCakes={cakes} nextUrl={nextUrl || undefined} />
-    </>
-  );
-}
+//       <LoadNextCakes firstCakes={cakes} nextUrl={nextUrl || undefined} />
+//     </>
+//   );
+// }
 
 export default LoadInitialCakes;

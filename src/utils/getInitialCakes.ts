@@ -26,7 +26,7 @@ export const getInitialCakes = async (searchParams: CakeQueryParams) => {
     : sortBy;
 
   try {
-    const shouldGetCachedCakes =
+    const shouldGetCachedCakes: boolean =
       (!sortBy || sortBy === "popularidade") &&
       (!category || category.length === 0) &&
       (!filling || filling.length === 0) &&
@@ -35,11 +35,11 @@ export const getInitialCakes = async (searchParams: CakeQueryParams) => {
       (!size || size.length === 0) &&
       (!type || type.length === 0);
 
-    //DEIXAR SEM CACHE POR ENQUANTO, NÃO ESQUEÇA DE COLOCAR DE NOVO
-    // if (shouldGetCachedCakes) {
-    //   const { cakes, nextUrl } = await getFirstPageCakesCached();
-    //   return { cakes, nextUrl };
-    // }
+    if (shouldGetCachedCakes) {
+      const { cakes, nextUrl } = await getFirstPageCakesCached();
+
+      return { cakes, nextUrl };
+    }
 
     const { cakes, nextUrl } = await getAllCakes({
       limit: "12",
