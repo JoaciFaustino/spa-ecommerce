@@ -1,4 +1,8 @@
 "use client";
+import { ICakeType } from "@/@types/CakeType";
+import { ICategory } from "@/@types/Category";
+import { IFilling } from "@/@types/Filling";
+import { IFrosting } from "@/@types/Frosting";
 import { createContext, Dispatch, SetStateAction, useState } from "react";
 
 type CakePartsContext = {
@@ -26,10 +30,10 @@ export const CakePartsContext = createContext({} as CakePartsContext);
 type CakePartsProviderProps = {
   children: React.ReactNode;
 
-  firstCakeTypes?: string[];
-  firstCategories?: string[];
-  firstFillings?: string[];
-  firstFrostings?: string[];
+  firstCakeTypes?: ICakeType[];
+  firstCategories?: ICategory[];
+  firstFillings?: IFilling[];
+  firstFrostings?: IFrosting[];
 };
 
 function CakePartsProvider({
@@ -39,10 +43,18 @@ function CakePartsProvider({
   firstFillings = [],
   firstFrostings = []
 }: CakePartsProviderProps) {
-  const [cakeTypes, setCakeTypes] = useState<string[]>(firstCakeTypes);
-  const [categories, setCategories] = useState<string[]>(firstCategories);
-  const [fillings, setFillings] = useState<string[]>(firstFillings);
-  const [frostings, setFrostings] = useState<string[]>(firstFrostings);
+  const [cakeTypes, setCakeTypes] = useState<string[]>(
+    firstCakeTypes.map(({ type }) => type)
+  );
+  const [categories, setCategories] = useState<string[]>(
+    firstCategories.map(({ category }) => category)
+  );
+  const [fillings, setFillings] = useState<string[]>(
+    firstFillings.map(({ name }) => name)
+  );
+  const [frostings, setFrostings] = useState<string[]>(
+    firstFrostings.map(({ name }) => name)
+  );
 
   const [cakeTypesPage, setCakeTypesPage] = useState(2);
   const [categoriesPage, setCategoriesPage] = useState(2);
@@ -60,7 +72,6 @@ function CakePartsProvider({
         setCategories,
         setFillings,
         setFrostings,
-
         cakeTypesPage,
         categoriesPage,
         fillingsPage,

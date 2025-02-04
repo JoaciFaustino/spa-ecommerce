@@ -22,21 +22,16 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
       getFrostingsWithErrorHandling(limit, page)
     ]);
 
-    const cakeTypesStrings = cakeTypes.map(({ type }) => type);
-    const categoriesStrings = categories.map(({ category }) => category);
-    const fillingsStrings = fillings.map(({ name }) => name);
-    const frostingsStrings = frostings.map(({ name }) => name);
-
     return (
       <section className={styles.mainSection}>
         <div className={`${styles.wrapper} wrapper`}>
           <Nav />
 
           <CakePartsProvider
-            firstCakeTypes={cakeTypesStrings}
-            firstCategories={categoriesStrings}
-            firstFillings={fillingsStrings}
-            firstFrostings={frostingsStrings}
+            firstCakeTypes={cakeTypes}
+            firstCategories={categories}
+            firstFillings={fillings}
+            firstFrostings={frostings}
           >
             {children}
           </CakePartsProvider>
