@@ -4,9 +4,14 @@ import { api } from "./api";
 import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { CakeQueryParams } from "@/@types/QueryParams";
 import axios from "axios";
-import { TypeKeysSortBy } from "@/@types/SortBy";
-import { CachedRequestsRevalidateTags } from "@/@types/CachedRequestsRevalidateTags";
+import {
+  SortBy,
+  SortByApiOptionsTranslate,
+  sortByApiOptionsTranslate
+} from "@/@types/SortBy";
+import { CachedRequestsRevalidateTag } from "@/@types/CachedRequestsRevalidateTags";
 import { revalidateTag } from "@/actions/revalidateTags";
+import { getLastValue } from "@/utils/queryParams";
 
 type PaginatedResponse = BasePaginatedResponse & { cakes: ICake[] };
 
@@ -26,27 +31,6 @@ export const getCakeById = async (
   }
 };
 
-export const getFirstPageCakesCached = async (): Promise<PaginatedResponse> => {
-  const page = 1;
-  const limit = 12;
-  const sortBy: TypeKeysSortBy = "popularity";
-
-  const cakeRevalidateTag: CachedRequestsRevalidateTags = "first-cakes-page";
-
-  try {
-    const response = await fetch(
-      `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`,
-      { next: { tags: [cakeRevalidateTag] } }
-    );
-
-    const data: PaginatedResponse = await response.json();
-
-    return data;
-  } catch (error: any) {
-    throw getErrorRequest(error, "Ocorreu um erro");
-  }
-};
-
 export const getAllCakes = async ({
   type,
   size,
@@ -56,9 +40,38 @@ export const getAllCakes = async ({
   search,
   limit = "12",
   page = "1",
-  sortBy
+  sortBy = "popularidade"
 }: CakeQueryParams): Promise<PaginatedResponse> => {
+  const sortByLastValue = getLastValue(sortBy) || "popularidade";
+
+  const sortByApiOption: SortBy =
+    sortByApiOptionsTranslate[sortByLastValue as SortByApiOptionsTranslate] ??
+    "popularity";
+
+  const shouldGetCachedCakes: boolean =
+    sortByApiOption === "popularity" &&
+    limit === "12" &&
+    page === "1" &&
+    (!category || category.length === 0) &&
+    (!filling || filling.length === 0) &&
+    (!frosting || frosting.length === 0) &&
+    (!search || search.length === 0) &&
+    (!size || size.length === 0) &&
+    (!type || type.length === 0);
+
   try {
+    if (shouldGetCachedCakes) {
+      const cakeRevalidateTag: CachedRequestsRevalidateTag = "first-cakes-page";
+
+      const response = await fetch(
+        `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`,
+        { next: { tags: [cakeRevalidateTag] } }
+      );
+
+      const data: PaginatedResponse = await response.json();
+      return data;
+    }
+
     const { data } = await api.get<PaginatedResponse>("/cakes", {
       params: {
         type,
@@ -150,9 +163,9 @@ export const updateCake = async (
 };
 
 export const deleteCake = async (cakeId: string): Promise<void> => {
-  try {
-    const session = await getSession();
+  const session = await getSession();
 
+  try {
     await api.delete<{ message: string }>(`/cakes/delete/${cakeId}`, {
       headers: { Authorization: session }
     });

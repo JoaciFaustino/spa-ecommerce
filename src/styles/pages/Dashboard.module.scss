@@ -1,3 +1,5 @@
+@import "@/styles/variables.scss";
+
 .mainSection {
   display: flex;
   justify-content: center;
@@ -29,9 +31,23 @@
   }
 }
 
-.cakesList {
+.list {
   display: flex;
   flex-direction: column;
   gap: var(--padding-4);
   padding-top: var(--padding-4);
+}
+
+.cakePartsList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--padding-4);
+  padding-top: var(--padding-4);
+}
+
+@media (max-width: $sm) {
+  .cakePartsList {
+    grid-template-columns: 1fr;
+  }
 }

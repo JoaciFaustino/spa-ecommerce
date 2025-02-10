@@ -12,6 +12,7 @@ import ImageDropzone from "./components/ImageDropzone/ImageDropzone";
 import { useCakePartsSharedOptions } from "./useCakePartsSharedOptions";
 import { translateCustomizableParts } from "@/utils/translateCustomizableParts";
 import { SubmitData } from "@/@types/UpdateOrCreateCakeForm";
+import FormInput from "../FormInput/FormInput";
 
 type Props = {
   defaultValues?: Schema & { id: string; imageUrl?: string };
@@ -68,19 +69,12 @@ function CreateOrUpdateCakeForm({
     <form onSubmit={handleSubmit} className={styles.form}>
       <h4>{typeForm === "edit" ? "Editar bolo" : "Criar bolo"}</h4>
 
-      <div className={`${styles.divInput}`}>
-        <label htmlFor="nome">Nome: </label>
-
-        <input
-          {...register("name", { required: true })}
-          className={`${styles.input} ${
-            !!errors.name?.message ? styles.inputInvalid : ""
-          }`}
-          type="text"
-        />
-
-        <MessageError>{errors.name?.message}</MessageError>
-      </div>
+      <FormInput
+        {...register("name", { required: true })}
+        label="Nome"
+        placeholder="Nome"
+        error={errors.name?.message}
+      />
 
       <div className={`${styles.divInput}`}>
         <label>Tipo da massa padrão: </label>

@@ -16,7 +16,7 @@ async function DashboardCakesPage({ searchParams }: Props) {
     <section className={styles.parentPage}>
       <SearchAndCreateBar />
 
-      <div className={styles.cakesList}>
+      <div className={styles.list}>
         <Suspense key={key} fallback={<ListSkeleton />}>
           <LoadInitialCakes searchParams={searchParams} />
         </Suspense>

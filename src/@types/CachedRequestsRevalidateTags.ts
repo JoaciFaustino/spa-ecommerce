@@ -7,5 +7,5 @@ export const cachedRequestsRevalidateTags = [
   "first-orders-page"
 ] as const;
 
-export type CachedRequestsRevalidateTags =
+export type CachedRequestsRevalidateTag =
   (typeof cachedRequestsRevalidateTags)[number];

@@ -6,7 +6,7 @@ import { CakeQueryParams } from "@/@types/QueryParams";
 import styles from "./LoadInitialCakes.module.scss";
 import { CustomError } from "@/utils/customError";
 import RefreshPageButton from "@/components/RefreshPageButton/RefreshPageButton";
-import { getInitialCakes } from "@/utils/getInitialCakes";
+import { getInitialCakes } from "@/utils/getInitialCakesAndCakeParts";
 
 type Props = { searchParams: CakeQueryParams };
 

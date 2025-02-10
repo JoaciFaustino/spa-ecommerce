@@ -33,7 +33,6 @@ export const useSearchAndCreateBar = () => {
   return {
     createNewCake,
     modalIsActived,
-    openModal: () => setModalIsActived(true),
-    closeModal: () => setModalIsActived(false)
+    openAndCloseModal: (isOpen: boolean) => setModalIsActived(isOpen)
   };
 };
