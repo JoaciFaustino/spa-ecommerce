@@ -1,4 +1,4 @@
 export interface ICakeType {
-  _id?: string;
+  _id: string;
   type: string;
 }

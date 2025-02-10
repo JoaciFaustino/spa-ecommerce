@@ -1,0 +1,14 @@
+@import "@/styles/variables.scss";
+
+.divSpinnerLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: span 2;
+}
+
+@media (max-width: $sm) {
+  .cakePartsList {
+    grid-column: span 2;
+  }
+}

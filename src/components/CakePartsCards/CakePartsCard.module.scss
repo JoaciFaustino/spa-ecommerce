@@ -1,0 +1,32 @@
+.card {
+  grid-column: 1fr;
+  padding: var(--padding-8) var(--padding-4);
+  box-shadow: 0 0 5px 0 rgba(#000, 0.2);
+  border-radius: 10px;
+
+  display: flex;
+  gap: var(--padding-2);
+  justify-content: space-between;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--padding-2);
+}
+
+.divIcons {
+  display: flex;
+  gap: var(--padding-2);
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.iconSkeleton {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 2px;
+}

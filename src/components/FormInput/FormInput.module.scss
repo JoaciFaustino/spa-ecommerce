@@ -1,0 +1,28 @@
+.input {
+  display: block;
+  width: 100%;
+  padding: var(--padding-2);
+  border-radius: 5px;
+  border: none;
+  background-color: var(--gray-1);
+
+  &:focus {
+    outline: solid var(--primary-color) 2px;
+  }
+
+  label {
+    display: block;
+  }
+}
+
+.inputInvalid {
+  background-color: var(--color-warning-2);
+
+  &:focus {
+    outline: solid 2px var(--color-warning-1);
+  }
+}
+
+.messageError {
+  color: var(--color-warning-1);
+}
