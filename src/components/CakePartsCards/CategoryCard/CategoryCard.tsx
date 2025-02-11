@@ -1,42 +1,47 @@
+"use client";
 import styles from "../CakePartsCard.module.scss";
-import ActionButtons from "../_components/ActionButtons/ActionButtons";
+import { ICategory } from "@/@types/Category";
 import Modal from "@/components/Modal/Modal";
-import CreateOrUpdateCakePartForm from "../_components/CreateOrUpdateCakePartForm/CreateOrUpdateCakePartForm";
+import { deleteCategory, updateCategory } from "@/services/categories";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { deleteCakeType, updateCakeType } from "@/services/cakeTypes";
-import { ICakeType } from "@/@types/CakeType";
+import CreateOrUpdateCakePartForm from "../_components/CreateOrUpdateCakePartForm/CreateOrUpdateCakePartForm";
+import ActionButtons from "../_components/ActionButtons/ActionButtons";
 
 type Props = {
-  cakeType: ICakeType;
-  updateCakeTypeItem: (id: string, newCakeType: ICakeType) => void;
-  deleteCakeTypeItem: (id: string) => void;
+  category: ICategory;
+  updateCategoryItem: (id: string, newCategory: ICategory) => void;
+  deleteCategoryItem: (id: string) => void;
 };
 
 function CakeTypeCard({
-  cakeType: { _id: id, type: currentCakeType },
-  updateCakeTypeItem,
-  deleteCakeTypeItem
+  category: { _id: id, category: currentCategory },
+  updateCategoryItem,
+  deleteCategoryItem
 }: Props) {
   const [modalIsActived, setModalIsActived] = useState(false);
   const [requestIsPending, setRequestIsPending] = useState(false);
 
   const updateRequest = async ({
-    name: newType
+    name: newCategoryValue
   }: {
     name: string;
     price: number;
   }) => {
-    if (newType === currentCakeType) {
+    if (newCategoryValue === currentCategory) {
       toast.info("Faça alguma alteração antes de salvar!");
       return;
     }
 
     try {
-      const newCakeType = await updateCakeType(id, { type: newType });
+      const newCategory = await updateCategory(id, {
+        category: newCategoryValue
+      });
+
+      console.log(newCategory);
 
       toast.success("Tipo de massa alterado com sucesso!");
-      updateCakeTypeItem(id, newCakeType);
+      updateCategoryItem(id, newCategory);
       setModalIsActived(false);
     } catch (error) {
       toast.error("Erro ao editar tipo de massa");
@@ -47,13 +52,13 @@ function CakeTypeCard({
     setRequestIsPending(true);
 
     try {
-      await deleteCakeType(id);
+      await deleteCategory(id);
 
-      deleteCakeTypeItem(id);
+      deleteCategoryItem(id);
 
-      toast.success("Tipo de massa apagado com sucesso!");
+      toast.success("Categoria apagado com sucesso!");
     } catch (error) {
-      toast.error("Erro ao apagar esse tipo de massa, tente novamente!");
+      toast.error("Erro ao apagar esse categoria, tente novamente!");
     }
 
     setRequestIsPending(false);
@@ -65,14 +70,14 @@ function CakeTypeCard({
         <Modal onClose={() => setModalIsActived(false)}>
           <CreateOrUpdateCakePartForm
             onUpdateOrCreateCake={updateRequest}
-            title={"Editar tipo de massa"}
-            defaultValues={{ name: currentCakeType }}
+            title={"Editar categoria"}
+            defaultValues={{ name: currentCategory }}
           />
         </Modal>
       )}
 
       <div className={styles.card}>
-        <h5>{currentCakeType}</h5>
+        <h5>{currentCategory}</h5>
 
         <ActionButtons
           openModal={() => setModalIsActived(true)}

@@ -8,7 +8,9 @@ import { revalidateTag } from "@/actions/revalidateTags";
 
 type PaginatedResponse = BasePaginatedResponse & { cakeTypes: ICakeType[] };
 
-export const getAllCakeTypesCompleteUrl = async (url: string) => {
+export const getAllCakeTypesCompleteUrl = async (
+  url: string
+): Promise<PaginatedResponse> => {
   try {
     const { data } = await axios.get<PaginatedResponse>(url);
 
@@ -49,7 +51,9 @@ export const getAllCakeTypes = async (
   }
 };
 
-export const createCakeType = async ({ type }: Omit<ICakeType, "_id">) => {
+export const createCakeType = async ({
+  type
+}: Omit<ICakeType, "_id">): Promise<ICakeType> => {
   const session = await getSession();
 
   try {
@@ -63,14 +67,14 @@ export const createCakeType = async ({ type }: Omit<ICakeType, "_id">) => {
 
     return data.cakeType;
   } catch (error) {
-    throw getErrorRequest(error, "Failed to update cake types");
+    throw getErrorRequest(error, "Failed to create cake type");
   }
 };
 
 export const updateCakeType = async (
   id: string,
   { type }: Omit<ICakeType, "_id">
-) => {
+): Promise<ICakeType> => {
   const session = await getSession();
 
   try {
@@ -84,7 +88,7 @@ export const updateCakeType = async (
 
     return data.cakeType;
   } catch (error) {
-    throw getErrorRequest(error, "Failed to update cake types");
+    throw getErrorRequest(error, "Failed to update cake type");
   }
 };
 
