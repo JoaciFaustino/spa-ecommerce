@@ -9,14 +9,15 @@ const errors = { invalid_type_error, required_error };
 
 const schema = z.object({
   name: z.string(errors).min(1, required_error).trim(),
-  price: z.number(errors).min(0, "Esse preço é muito barato!")
+  price: z.number(errors).min(0.5, "Esse preço é muito barato!")
 });
 
 type Schema = z.infer<typeof schema>;
 
 export const useCakePartsForm = (
   onCreateOrUpdate?: (data: Schema) => Promise<void>,
-  defaultValues?: { name: string; price?: number }
+  defaultValues?: { name: string; price?: number },
+  havePrice: boolean = false
 ) => {
   const {
     register,
@@ -28,7 +29,7 @@ export const useCakePartsForm = (
     resolver: zodResolver(schema),
     defaultValues: {
       name: defaultValues?.name || "",
-      price: defaultValues?.price || 0
+      price: havePrice ? (defaultValues?.price || 0) : 999 //prettier-ignore
     }
   });
 
@@ -40,7 +41,7 @@ export const useCakePartsForm = (
 
   const onSubmit: SubmitHandler<Schema> = async (data) => {
     if (onCreateOrUpdate) {
-      await onCreateOrUpdate(data);
+      await onCreateOrUpdate({ ...data, price: havePrice ? data.price : 0 });
     }
   };
 

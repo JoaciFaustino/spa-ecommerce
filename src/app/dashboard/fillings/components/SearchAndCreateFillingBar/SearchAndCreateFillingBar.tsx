@@ -4,27 +4,29 @@ import SearchAndCreateBar from "@/app/dashboard/_components/SearchAndCreateBar/S
 import CreateOrUpdateCakePartForm from "@/components/CakePartsCards/_components/CreateOrUpdateCakePartForm/CreateOrUpdateCakePartForm";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { createCategory } from "@/services/categories";
+import { createFilling } from "@/services/fillings";
 
-function SearchAndCreateCategoriesBar() {
+function SearchAndCreateFillingBar() {
   const [modalIsActived, setModalIsActived] = useState(false);
+
   const router = useRouter();
 
-  const createCategoryRequest = async ({
-    name: category
+  const createFillingRequest = async ({
+    name,
+    price
   }: {
     name: string;
     price: number;
   }) => {
     try {
-      await createCategory({ category });
+      await createFilling({ name, price });
 
-      toast.success("Categoria criada com sucesso!");
+      toast.success("Recheio criado com sucesso!");
       setModalIsActived(false);
 
       router.refresh();
     } catch (error) {
-      toast.error("Erro ao criar categoria");
+      toast.error("Erro ao criar recheio");
       return;
     }
   };
@@ -35,12 +37,13 @@ function SearchAndCreateCategoriesBar() {
       openAndCloseModal={(isOpen) => setModalIsActived(isOpen)}
       createFormComponent={
         <CreateOrUpdateCakePartForm
-          title="Criar categoria"
-          onUpdateOrCreateCakePart={createCategoryRequest}
+          havePrice
+          title="Criar recheio"
+          onUpdateOrCreateCakePart={createFillingRequest}
         />
       }
     />
   );
 }
 
-export default SearchAndCreateCategoriesBar;
+export default SearchAndCreateFillingBar;

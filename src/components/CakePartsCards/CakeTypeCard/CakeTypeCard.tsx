@@ -64,7 +64,7 @@ function CakeTypeCard({
       {modalIsActived && (
         <Modal onClose={() => setModalIsActived(false)}>
           <CreateOrUpdateCakePartForm
-            onUpdateOrCreateCake={updateRequest}
+            onUpdateOrCreateCakePart={updateRequest}
             title={"Editar tipo de massa"}
             defaultValues={{ name: currentCakeType }}
           />

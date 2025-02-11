@@ -1,5 +1,4 @@
 "use client";
-import styles from "./PriceInput.module.scss";
 import { CurrencyInput } from "react-currency-mask";
 import {
   Control,
@@ -8,6 +7,7 @@ import {
   Path,
   PathValue
 } from "react-hook-form";
+import FormInput from "../FormInput/FormInput";
 
 type PriceInputProps<T extends FieldValues> = {
   label: string;
@@ -25,36 +25,35 @@ function PriceInput<T extends FieldValues>({
   defaultPrice
 }: PriceInputProps<T>) {
   return (
-    <div className={`${styles.divPriceInput}`}>
-      <label className={"text"} htmlFor={name}>
-        {label}:
-      </label>
+    // <div className={`${styles.divPriceInput}`}>
+    //   <label className={"text"} htmlFor={name}>
+    //     {label}:
+    //   </label>
 
-      <Controller
-        control={control}
-        name={name}
-        rules={{ required: true }}
-        defaultValue={defaultPrice}
-        render={({ field: { onChange, ...rest } }) => (
-          <CurrencyInput
-            {...rest}
-            onChangeValue={(_, value) => onChange(value)}
-            defaultValue={0}
-            max={999.99}
-            InputElement={
-              <input
-                type="text"
-                className={`${styles.input} ${
-                  !!error ? styles.inputInvalid : ""
-                }`}
-                id={name}
-                placeholder="R$ 0,00"
-              />
-            }
-          />
-        )}
-      />
-    </div>
+    <Controller
+      control={control}
+      name={name}
+      rules={{ required: true }}
+      defaultValue={defaultPrice}
+      render={({ field: { onChange, ...rest } }) => (
+        <CurrencyInput
+          {...rest}
+          onChangeValue={(_, value) => onChange(value)}
+          defaultValue={0}
+          max={999.99}
+          InputElement={
+            <FormInput
+              type="text"
+              label={label}
+              error={error}
+              id={name}
+              placeholder="R$ 0,00"
+            />
+          }
+        />
+      )}
+    />
+    // </div>
   );
 }
 

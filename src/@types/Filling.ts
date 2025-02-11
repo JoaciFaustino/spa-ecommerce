@@ -8,7 +8,7 @@ export const MAX_LAYER_OF_FILLINGS: Record<Size, number> = {
 };
 
 export interface IFilling {
-  _id?: string;
+  _id: string;
   name: string;
   price: number;
 }

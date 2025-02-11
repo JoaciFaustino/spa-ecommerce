@@ -2,8 +2,23 @@ import { IFilling } from "@/@types/Filling";
 import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { api } from "./api";
 import { CachedRequestsRevalidateTag } from "@/@types/CachedRequestsRevalidateTags";
+import axios from "axios";
+import { getSession } from "@/lib/session";
+import { revalidateTag } from "@/actions/revalidateTags";
 
 type PaginatedResponse = BasePaginatedResponse & { fillings: IFilling[] };
+
+export const getAllFillingsCompleteUrl = async (
+  url: string
+): Promise<PaginatedResponse> => {
+  try {
+    const { data } = await axios.get<PaginatedResponse>(url);
+
+    return data;
+  } catch (error: any) {
+    throw getErrorRequest(error, "Failed to get fillings");
+  }
+};
 
 export const getAllFillings = async (
   limit?: number,
@@ -33,5 +48,61 @@ export const getAllFillings = async (
     return data;
   } catch (error: any) {
     throw getErrorRequest(error, "Failed to get the fillings");
+  }
+};
+
+export const createFilling = async ({
+  name,
+  price
+}: Omit<IFilling, "_id">): Promise<IFilling> => {
+  const session = await getSession();
+
+  try {
+    const { data } = await api.post<{ message: string; filling: IFilling }>(
+      `/fillings/create/`,
+      { name, price },
+      { headers: { Authorization: session } }
+    );
+
+    await revalidateTag("first-fillings-page");
+
+    return data.filling;
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to create the filling");
+  }
+};
+
+export const updateFilling = async (
+  id: string,
+  { name, price }: Partial<Omit<IFilling, "_id">>
+): Promise<IFilling> => {
+  const session = await getSession();
+
+  try {
+    const { data } = await api.patch<{ message: string; filling: IFilling }>(
+      `/fillings/update/${id}`,
+      { name, price },
+      { headers: { Authorization: session } }
+    );
+
+    await revalidateTag("first-fillings-page");
+
+    return data.filling;
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to update the filling");
+  }
+};
+
+export const deleteFilling = async (id: string): Promise<void> => {
+  const session = await getSession();
+
+  try {
+    await api.delete(`/fillings/delete/${id}`, {
+      headers: { Authorization: session }
+    });
+
+    await revalidateTag("first-fillings-page");
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to delete the filling");
   }
 };

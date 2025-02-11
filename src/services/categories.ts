@@ -65,8 +65,6 @@ export const createCategory = async ({
 
     await revalidateTag("first-categories-page");
 
-    console.log(data);
-
     return data.category;
   } catch (error) {
     throw getErrorRequest(error, "Failed to create category");

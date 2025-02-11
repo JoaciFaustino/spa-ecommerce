@@ -20,12 +20,12 @@ function SearchAndCreateCakeTypesBar() {
     try {
       const cakeType = await createCakeType({ type });
 
-      toast.success("Bolo criado com sucesso!");
+      toast.success("Tipo de massa criado com sucesso!");
       setModalIsActived(false);
 
       router.refresh();
     } catch (error) {
-      toast.error("Erro ao criar bolo");
+      toast.error("Erro ao criar tipo de massa");
       return;
     }
   };
@@ -37,7 +37,7 @@ function SearchAndCreateCakeTypesBar() {
       createFormComponent={
         <CreateOrUpdateCakePartForm
           title="Criar Tipo da massa"
-          onUpdateOrCreateCake={createCakeTypeRequest}
+          onUpdateOrCreateCakePart={createCakeTypeRequest}
         />
       }
     />

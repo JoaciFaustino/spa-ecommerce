@@ -7,7 +7,7 @@ import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
 type Props = {
   title: string;
   havePrice?: boolean;
-  onUpdateOrCreateCake: (data: {
+  onUpdateOrCreateCakePart: (data: {
     name: string;
     price: number;
   }) => Promise<void>;
@@ -17,7 +17,7 @@ type Props = {
 function CreateOrUpdateCakePartForm({
   title,
   defaultValues,
-  onUpdateOrCreateCake,
+  onUpdateOrCreateCakePart,
   havePrice = false
 }: Props) {
   const {
@@ -27,7 +27,7 @@ function CreateOrUpdateCakePartForm({
     register,
     control,
     submitIsDisabled
-  } = useCakePartsForm(onUpdateOrCreateCake, defaultValues);
+  } = useCakePartsForm(onUpdateOrCreateCakePart, defaultValues, havePrice);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
