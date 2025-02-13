@@ -2,8 +2,23 @@ import { getErrorRequest, BasePaginatedResponse } from "@/utils/requestUtils";
 import { api } from "./api";
 import { IFrosting } from "@/@types/Frosting";
 import { CachedRequestsRevalidateTag } from "@/@types/CachedRequestsRevalidateTags";
+import axios from "axios";
+import { getSession } from "@/lib/session";
+import { revalidateTag } from "@/actions/revalidateTags";
 
 type PaginatedResponse = BasePaginatedResponse & { frostings: IFrosting[] };
+
+export const getAllFrostingsCompleteUrl = async (
+  url: string
+): Promise<PaginatedResponse> => {
+  try {
+    const { data } = await axios.get<PaginatedResponse>(url);
+
+    return data;
+  } catch (error: any) {
+    throw getErrorRequest(error, "Failed to get frostings");
+  }
+};
 
 export const getAllFrostings = async (
   limit?: number,
@@ -33,5 +48,61 @@ export const getAllFrostings = async (
     return data;
   } catch (error) {
     throw getErrorRequest(error, "Failed to get the frostings");
+  }
+};
+
+export const createFrosting = async ({
+  name,
+  price
+}: Omit<IFrosting, "_id">): Promise<IFrosting> => {
+  const session = await getSession();
+
+  try {
+    const { data } = await api.post<{ message: string; frosting: IFrosting }>(
+      `/frostings/create/`,
+      { name, price },
+      { headers: { Authorization: session } }
+    );
+
+    await revalidateTag("first-frostings-page");
+
+    return data.frosting;
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to create the frosting");
+  }
+};
+
+export const updateFrosting = async (
+  id: string,
+  { name, price }: Partial<Omit<IFrosting, "_id">>
+): Promise<IFrosting> => {
+  const session = await getSession();
+
+  try {
+    const { data } = await api.patch<{ message: string; frosting: IFrosting }>(
+      `/frostings/update/${id}`,
+      { name, price },
+      { headers: { Authorization: session } }
+    );
+
+    await revalidateTag("first-frostings-page");
+
+    return data.frosting;
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to update the frosting");
+  }
+};
+
+export const deleteFrosting = async (id: string): Promise<void> => {
+  const session = await getSession();
+
+  try {
+    await api.delete(`/frostings/delete/${id}`, {
+      headers: { Authorization: session }
+    });
+
+    await revalidateTag("first-frostings-page");
+  } catch (error) {
+    throw getErrorRequest(error, "Failed to delete the frosting");
   }
 };
