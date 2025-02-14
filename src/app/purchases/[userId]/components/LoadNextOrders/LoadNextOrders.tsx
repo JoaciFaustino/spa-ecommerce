@@ -1,50 +1,25 @@
 "use client";
 import styles from "@/styles/pages/Purchases.module.scss";
 import { IOrder } from "@/@types/Order";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getAllUserOrdersFullUrl } from "@/services/order";
-import { CustomError } from "@/utils/customError";
-import { useEffect, useState, useTransition } from "react";
-import OrderCard from "@/components/OrderCard/OrderCard";
 import SpinnerLoader from "@/components/SpinnerLoader/SpinnerLoader";
+import OrderCard from "@/components/OrderCards/OrderCard/OrderCard";
+import { useNextItensPaginateds } from "@/hooks/useNextItensPaginateds";
 
 type Props = {
   nextUrl: string | null;
 };
 
 function LoadNextOrders({ nextUrl }: Props) {
-  const [orders, setOrders] = useState<IOrder[]>([]);
-  const [nextUrlState, setNextUrlState] = useState<string | null>(nextUrl);
-
-  const [isPending, startTransition] = useTransition();
-
-  const loadMoreDisabled = isPending || !nextUrlState;
-  const { finalPageInspectorRef } = useInfiniteScroll(
-    getNewOrders,
-    "200px",
-    loadMoreDisabled
+  const {
+    itens: orders,
+    isPending,
+    finalPageInspectorRef
+  } = useNextItensPaginateds<IOrder, "orders">(
+    nextUrl || undefined,
+    "orders",
+    getAllUserOrdersFullUrl
   );
-
-  useEffect(() => setNextUrlState(nextUrl), [nextUrl]);
-
-  function getNewOrders() {
-    if (loadMoreDisabled) {
-      return;
-    }
-
-    startTransition(async () => {
-      try {
-        const { nextUrl, orders } = await getAllUserOrdersFullUrl(nextUrlState);
-
-        setOrders(orders);
-        setNextUrlState(nextUrl);
-      } catch (error) {
-        if (error instanceof CustomError && error.status === 404) {
-          setNextUrlState(null);
-        }
-      }
-    });
-  }
 
   return (
     <>

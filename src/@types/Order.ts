@@ -22,7 +22,7 @@ export interface ContactDetails {
 }
 
 export interface IOrder {
-  _id?: string;
+  _id: string;
   userId: string;
 
   cakes: PersonalizedCake[];

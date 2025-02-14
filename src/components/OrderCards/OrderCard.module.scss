@@ -1,3 +1,5 @@
+@import "@/styles/variables.scss";
+
 .orderCard {
   box-shadow: 0 0 10px 0 rgba(#000000, 0.3);
   border-radius: 10px;
@@ -27,19 +29,27 @@
 
 .orderInfo {
   display: flex;
+  gap: var(--padding-4);
+  flex-wrap: wrap;
+}
+
+.infoCol {
+  flex: 1;
+  display: flex;
   align-items: flex-start;
   flex-direction: column;
+}
 
-  p {
-    color: var(--color-text-title);
+.text {
+  text-wrap: nowrap;
+  color: var(--color-text-title);
 
-    span {
-      color: var(--color-text-paragraph);
-    }
+  span {
+    color: var(--color-text-paragraph);
   }
 }
 
-.orderInfo.loading p span {
+.infoCol.loading p span {
   user-select: none;
   overflow: hidden;
   filter: blur(3px);
@@ -55,3 +65,10 @@
     transform: translateY(0);
   }
 }
+
+// @media (max-width: $sm) {
+//   .orderInfo {
+//     flex-direction: column;
+//     gap: var(--padding-2);
+//   }
+// }

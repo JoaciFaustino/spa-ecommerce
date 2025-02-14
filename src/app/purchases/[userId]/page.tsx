@@ -2,11 +2,11 @@ import { auth } from "@/actions/auth";
 import { getAllUserOrders } from "@/services/order";
 import PurchasesErrorPage from "./error";
 import styles from "@/styles/pages/Purchases.module.scss";
-import OrderCard from "@/components/OrderCard/OrderCard";
 import LoadNextOrders from "./components/LoadNextOrders/LoadNextOrders";
 import ScrollTop from "@/components/ScrollTop/ScrollTop";
 import Link from "next/link";
 import { BsCartX } from "react-icons/bs";
+import OrderCard from "@/components/OrderCards/OrderCard/OrderCard";
 
 type Props = {
   params: { userId: string };
