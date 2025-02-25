@@ -6,9 +6,9 @@ type Props = {
 function OrderHeader({ orderId, loading }: Props) {
   return (
     <header>
-      <p className={`text ${loading ? "loading" : ""}`}>
+      <p className={`text`}>
         Id do pedido <br />
-        <span>{orderId}</span>
+        <span className={`${loading ? "loading" : ""}`}>{orderId}</span>
       </p>
     </header>
   );

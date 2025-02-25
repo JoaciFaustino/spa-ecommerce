@@ -1,0 +1,38 @@
+@import "@/styles/variables.scss";
+
+.filtersBar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: var(--padding-4);
+  flex-wrap: wrap;
+}
+
+.sortByAndFilter {
+  display: flex;
+  gap: var(--padding-4);
+}
+
+.searchInput {
+  width: 12rem;
+}
+
+@media (max-width: $lg) {
+  .filtersBar {
+    gap: var(--padding-1);
+  }
+
+  .sortByAndFilter,
+  .searchInput {
+    width: 100%;
+  }
+}
+
+@media (max-width: $sm) {
+  .filtersBar,
+  .sortByAndFilter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

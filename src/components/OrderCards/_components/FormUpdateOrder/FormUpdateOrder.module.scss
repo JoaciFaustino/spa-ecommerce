@@ -1,0 +1,21 @@
+.form {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding-2);
+
+  button[type="submit"] {
+    border: none;
+    color: #fff;
+    background-color: var(--secondary-color);
+    transition: 0.3s;
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
+}
+
+.messageError {
+  color: var(--color-warning-1);
+}

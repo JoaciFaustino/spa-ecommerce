@@ -9,7 +9,10 @@ type Props = {
 
 const Text = ({ label, value, color, loading = false }: Props) => (
   <p className={`text ${styles.text} ${loading ? styles.loading : ""}`}>
-    {label}: <span style={{ color }}>{value}</span>
+    {label}:{" "}
+    <span className={`${loading ? styles.textLoading : ""}`} style={{ color }}>
+      {value}
+    </span>
   </p>
 );
 

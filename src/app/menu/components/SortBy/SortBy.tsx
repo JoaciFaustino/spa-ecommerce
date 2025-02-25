@@ -14,12 +14,17 @@ function SortBy() {
 
   useEffect(() => getDefaultParam(), []);
 
-  const handleOptionSelected = (newValue: string | undefined) =>
+  const handleOptionSelected = (newValue: string | undefined) => {
+    if (newValue && sortByOptions.includes(newValue)) {
+      return;
+    }
+
     setSortBy(newValue || sortBy);
+  };
 
   const getDefaultParam = () => {
     const queryParamIncludesInSortByOptions =
-      sortBy && sortByOptions.includes(sortBy);
+      !!sortBy && sortByOptions.includes(sortBy);
 
     if (queryParamIncludesInSortByOptions) {
       setSortBy(sortBy);

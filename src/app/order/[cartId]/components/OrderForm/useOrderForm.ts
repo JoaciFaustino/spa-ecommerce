@@ -8,7 +8,6 @@ import { z } from "zod";
 import { useHookFormMask } from "use-mask-input";
 import { createOrder } from "@/services/order";
 import { toast } from "react-toastify";
-import { CartContext } from "@/contexts/CartProvider";
 import { useRouter } from "next/navigation";
 
 const messagesError = {

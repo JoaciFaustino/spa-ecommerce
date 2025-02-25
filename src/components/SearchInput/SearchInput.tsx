@@ -20,6 +20,7 @@ function SearchInput({ placeholder }: { placeholder: string }) {
   return (
     <div className={styles.divSearch}>
       <input
+        id="search-input"
         type="text"
         name="search"
         value={value}

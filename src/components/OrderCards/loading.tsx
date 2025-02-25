@@ -2,8 +2,15 @@ import OrderProductsListSkeleton from "@/components/OrderProductsList/loading";
 import styles from "./OrderCard.module.scss";
 import Text from "./_components/Text/Text";
 import OrderHeader from "./_components/OrderHeader/OrderHeader";
+import ContactDetails from "./_components/ContactDetails/ContactDetails";
+import DeliveryAddress from "./_components/DeliveryAdress/DeliveryAdress";
+import OrderInfo from "./_components/OrderInfo/OrderInfo";
 
-function OrderCardSkeleton() {
+type Props = {
+  type?: "admin" | "user";
+};
+
+function OrderCardSkeleton({ type = "user" }: Props) {
   return (
     <div className={`${styles.orderCard}`}>
       <OrderHeader orderId="999999999999999999999999" loading />
@@ -11,17 +18,36 @@ function OrderCardSkeleton() {
       <div className={styles.cardContent}>
         <OrderProductsListSkeleton />
 
-        <div className={`${styles.infoCol} ${styles.loading}`}>
-          <h4>Informações do pedido</h4>
+        <div className={styles.orderInfo}>
+          {type === "admin" && (
+            <>
+              <ContactDetails
+                contactDetails={{
+                  email: "reidosuco@xxxxx.xx",
+                  name: "nego alves",
+                  phoneNumber: "(99) 99999-9999"
+                }}
+                isSkeleton
+              />
 
-          <Text label="Tipo de recebimento" value="xxxxxxxx" loading />
-          <Text
-            label="Estado do pedido"
-            value="xxxxxxxx"
-            color="#00ff00"
-            loading
+              <DeliveryAddress
+                deliveryAddress={{
+                  neighborhood: "Takaga No",
+                  number: "999",
+                  street: "Sitio Tronco",
+                  adicionalInfo: "Perto da rua do chibanco"
+                }}
+                isSkeleton
+              />
+            </>
+          )}
+
+          <OrderInfo
+            state="done"
+            typeOfReceipt="delivery"
+            dateAndTimeDelivery={new Date("2001-09-11T08:46:00Z")}
+            isSkeleton
           />
-          <Text label="Data de entrega" value="88/88/8888 às 88:88" loading />
         </div>
       </div>
     </div>

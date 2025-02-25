@@ -1,0 +1,51 @@
+.inputWrapper {
+  width: 100%;
+}
+
+.datePicker {
+  font-family: inherit;
+  text-align: start;
+  padding: var(--padding-2) var(--padding-4);
+  width: 100%;
+  border: none;
+  transition: 0s;
+  border-radius: 5px;
+  background-color: var(--gray-1);
+  color: var(--color-text-title);
+  cursor: pointer;
+
+  &:focus {
+    outline: var(--primary-color) solid 2px;
+  }
+}
+
+.calendar {
+  border: none;
+  font-family: inherit;
+  box-shadow: 0 0 10px 0 rgba(#000000, 0.3);
+}
+
+.day,
+.time {
+  transition: 0.3s;
+}
+
+.day {
+  background-color: transparent;
+  margin: var(--padding-1);
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(#000000, 0.2) !important;
+  }
+}
+
+.daySelected,
+.timeSelected {
+  background-color: var(--secondary-color) !important;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: var(--secondary-color-hover) !important;
+  }
+}

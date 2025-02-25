@@ -8,6 +8,26 @@ export const ORDER_STATE_OPTIONS = ["pending", "preparing", "done"] as const;
 
 export type OrderState = (typeof ORDER_STATE_OPTIONS)[number];
 
+export const ORDER_STATE_TRANSLATE = [
+  "pendente",
+  "preparando",
+  "pronto"
+] as const;
+
+export type OrderStateTranlate = (typeof ORDER_STATE_TRANSLATE)[number];
+
+export const orderStateTranlate: Record<OrderState, OrderStateTranlate> = {
+  pending: "pendente",
+  preparing: "preparando",
+  done: "pronto"
+};
+
+export const orderStateRetranslate: Record<OrderStateTranlate, OrderState> = {
+  pendente: "pending",
+  preparando: "preparing",
+  pronto: "done"
+};
+
 export interface DeliveryAddress {
   street: string;
   number: string; //vai ser string por que existem casas (pelo menos no Brasil) com número com esse formato "A123", "B123"
@@ -34,4 +54,7 @@ export interface IOrder {
   dateAndTimeDelivery?: Date;
   totalPricing: number;
   state: OrderState;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }

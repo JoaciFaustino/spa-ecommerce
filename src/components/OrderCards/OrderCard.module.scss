@@ -49,10 +49,27 @@
   }
 }
 
-.infoCol.loading p span {
+.textLoading {
   user-select: none;
   overflow: hidden;
   filter: blur(3px);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--padding-2);
+  width: 100%;
+
+  button {
+    border: none;
+    color: #fff;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+
+    &:hover {
+      background-color: var(--secondary-color-hover);
+    }
+  }
 }
 
 @keyframes fadeIn {

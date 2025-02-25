@@ -7,6 +7,7 @@ import ScrollTop from "@/components/ScrollTop/ScrollTop";
 import Link from "next/link";
 import { BsCartX } from "react-icons/bs";
 import OrderCard from "@/components/OrderCards/OrderCard/OrderCard";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: { userId: string };
@@ -15,8 +16,12 @@ type Props = {
 async function PurchasesPage({ params: { userId } }: Props) {
   const payload = await auth();
 
-  if (userId !== payload.userId) {
+  if (!payload.userId) {
     return <PurchasesErrorPage />;
+  }
+
+  if (userId !== payload.userId) {
+    redirect("/purchases/" + userId);
   }
 
   try {

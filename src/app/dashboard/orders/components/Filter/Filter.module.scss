@@ -1,0 +1,12 @@
+@import "@/styles/variables.scss";
+
+.filter {
+  width: 12rem;
+  flex: 1;
+}
+
+@media (max-width: $sm) {
+  .filter {
+    width: 100%;
+  }
+}
