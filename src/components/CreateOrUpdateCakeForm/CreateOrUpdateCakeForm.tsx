@@ -230,28 +230,30 @@ function CreateOrUpdateCakeForm({
         </MessageError>
       </div>
 
-      <div className={styles.divPricesPerSize}>
-        <label>Preço por tamanho (sem contar cobertura e recheio): </label>
+      {sizesPossiblesArray.length > 0 && (
+        <div className={styles.divPricesPerSize}>
+          <label>Preço por tamanho (sem contar cobertura e recheio): </label>
 
-        <div className={styles.divInputPrices}>
-          {sizesPossiblesArray.map((size) => (
-            <PriceInput
-              key={size}
-              size={size}
-              control={control}
-              error={errors.pricePerSize?.[size]?.message}
-            />
-          ))}
+          <div className={styles.divInputPrices}>
+            {sizesPossiblesArray.map((size) => (
+              <PriceInput
+                key={size}
+                size={size}
+                control={control}
+                error={errors.pricePerSize?.[size]?.message}
+              />
+            ))}
+          </div>
+
+          <MessageError>
+            {errors.pricePerSize?.pequeno?.message ||
+              errors.pricePerSize?.medio?.message ||
+              errors.pricePerSize?.grande?.message ||
+              errors.pricePerSize?.["extra-grande"]?.message ||
+              errors.pricePerSize?.message}
+          </MessageError>
         </div>
-
-        <MessageError>
-          {errors.pricePerSize?.pequeno?.message ||
-            errors.pricePerSize?.medio?.message ||
-            errors.pricePerSize?.grande?.message ||
-            errors.pricePerSize?.["extra-grande"]?.message ||
-            errors.pricePerSize?.message}
-        </MessageError>
-      </div>
+      )}
 
       <ImageDropzone
         file={imageFile}
