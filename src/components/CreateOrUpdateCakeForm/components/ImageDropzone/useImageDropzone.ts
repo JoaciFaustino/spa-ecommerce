@@ -5,7 +5,12 @@ import { toast } from "react-toastify";
 
 const errorCodes = [...Object.values(ErrorCode), "unknown-error"] as const;
 
-const fileTypesCompleteString = ["image/png", "image/jpeg", "image/pjpeg"];
+const fileTypesCompleteString = [
+  "image/png",
+  "image/jpeg",
+  "image/pjpeg",
+  "image/webp"
+];
 
 type MessagesError = {
   [key in ErrorCode | "unknown-error"]: string;

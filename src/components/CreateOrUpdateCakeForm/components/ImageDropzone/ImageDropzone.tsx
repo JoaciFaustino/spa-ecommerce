@@ -1,4 +1,4 @@
-import Dropzone, { ErrorCode } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import styles from "./ImageDropzone.module.scss";
 import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import { formatFileSize } from "@/utils/formatFileSize";
 import { CgClose } from "react-icons/cg";
 import { useImageDropzone } from "./useImageDropzone";
 
-const fileTypes = [".jpeg", ".png", ".pjpeg"];
+const fileTypes = [".jpeg", ".png", ".pjpeg", ".webp"];
 
 const fiveMb = 1024 * 1024 * 5;
 
