@@ -71,6 +71,7 @@ function CreateOrUpdateCakeForm({
 
       <FormInput
         {...register("name", { required: true })}
+        autoFocus
         label="Nome"
         placeholder="Nome"
         error={errors.name?.message}
@@ -121,7 +122,7 @@ function CreateOrUpdateCakeForm({
         sizeSelected={sizeSelected}
         setFillings={(newFillings) => {
           setValue("fillings", newFillings);
-          trigger();
+          trigger("fillings");
         }}
         selectInitialValue={defaultValues?.fillings[0] || fillingsOptions[0]}
         errorMessage={errors.fillings?.message}

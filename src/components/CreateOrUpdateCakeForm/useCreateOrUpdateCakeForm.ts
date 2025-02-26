@@ -22,14 +22,14 @@ export const useCreateOrUpdateCakeForm = (
 ) => {
   const typeForm = defaultValues?.id ? "edit" : "create";
 
-  const defaultValuesHookForm: Schema = useMemo(
+  const defaultValuesHookForm: Partial<Schema> = useMemo(
     () => ({
       name: defaultValues?.name || "",
       type: defaultValues?.type || cakeTypesOptions[0],
       categories: defaultValues?.categories || [],
       frosting: defaultValues?.frosting || null,
       fillings: defaultValues?.fillings || [],
-      size: defaultValues?.size || "medio",
+      size: defaultValues?.size,
       sizesPossibles: defaultValues?.sizesPossibles || {
         pequeno: false,
         medio: false,
@@ -55,7 +55,7 @@ export const useCreateOrUpdateCakeForm = (
   const {
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting, isValid, touchedFields },
     setValue,
     register,
     trigger,
@@ -81,7 +81,12 @@ export const useCreateOrUpdateCakeForm = (
   const sizeIsCustomizable = customizablePartsSelecteds.size;
 
   const [storedSizesPossibles, setStoredSizesPossibles] = useState(
-    defaultValuesHookForm.sizesPossibles
+    defaultValuesHookForm.sizesPossibles || {
+      pequeno: false,
+      medio: false,
+      grande: false,
+      "extra-grande": false
+    }
   );
 
   const [isMounted, setIsMounted] = useState(false);
@@ -101,7 +106,10 @@ export const useCreateOrUpdateCakeForm = (
   }, [sizeSelected]);
 
   useEffect(() => {
-    trigger("size");
+    if (touchedFields.size) {
+      trigger("size");
+    }
+
     trigger("fillings");
     trigger("pricePerSize.pequeno");
     trigger("pricePerSize.medio");
