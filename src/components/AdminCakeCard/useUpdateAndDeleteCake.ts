@@ -57,7 +57,10 @@ export const useUpdateAndDeleteCake = (
 
     const partsToUpdate = getJustUpdatedFields(currentCake, data);
 
-    if (Object.values(partsToUpdate).every((value) => value === undefined)) {
+    if (
+      Object.values(partsToUpdate).every((value) => value === undefined) &&
+      !fileImage
+    ) {
       toast.info("Faça alguma alteração antes de salvar!");
 
       return;
