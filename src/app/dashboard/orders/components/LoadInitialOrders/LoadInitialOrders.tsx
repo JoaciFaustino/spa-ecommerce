@@ -59,26 +59,30 @@ async function LoadInitialOrders({ filters, sortBy, search }: Props) {
       search: searchLastValue
     });
 
-    return (
-      <>
-        <LoadNextOrders firstOrders={orders} nextUrl={nextUrl} />
-      </>
-    );
+    if (orders.length === 0) {
+      return <Error statusCode={404} />;
+    }
+
+    return <LoadNextOrders firstOrders={orders} nextUrl={nextUrl} />;
   } catch (error: any) {
     const statusCode = error instanceof CustomError ? error.status : 500;
 
-    return (
-      <div className={styles.errorDiv}>
-        <h5>
-          {statusCode === 404
-            ? "Nenhum resultado encontrado!"
-            : "Ocorreu um erro no servidor! por favor tente novamente mais tarde"}
-        </h5>
-
-        {statusCode !== 404 && <RefreshPageButton />}
-      </div>
-    );
+    return <Error statusCode={statusCode} />;
   }
+}
+
+function Error({ statusCode }: { statusCode: number }) {
+  return (
+    <div className={styles.errorDiv}>
+      <h5>
+        {statusCode === 404
+          ? "Nenhum resultado encontrado!"
+          : "Ocorreu um erro no servidor! por favor tente novamente mais tarde"}
+      </h5>
+
+      {statusCode !== 404 && <RefreshPageButton />}
+    </div>
+  );
 }
 
 export default LoadInitialOrders;
