@@ -28,10 +28,12 @@ const getSizesPossiblesString = (sizesPossibles: Size[]): string => {
 
 const getPricePerSizesString = (pricePerSize: PricePerSize) => {
   const currencies = sizesOrder
-    .map((size) =>
-      pricePerSize[size] ? formatPriceNumber(pricePerSize[size]) : undefined
-    )
-    .filter((size) => typeof size !== "undefined");
+    .map((size) => {
+      const price = pricePerSize?.[size];
+
+      return price !== undefined && price > 0 ? formatPriceNumber(price) : "";
+    })
+    .filter((size) => size !== "");
 
   return (
     getStringItensListed(currencies, "; ") +

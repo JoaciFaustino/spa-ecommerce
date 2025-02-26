@@ -46,9 +46,11 @@ const sizesWithPriceInvalid = ({
     (size) => sizesPossibles[size]
   );
 
-  const sizesWithPriceInvalid = sizesPossiblesArray.filter(
-    (size) => pricePerSize[size] === undefined || pricePerSize[size] < minPrice
-  );
+  const sizesWithPriceInvalid = sizesPossiblesArray.filter((size) => {
+    const price = pricePerSize?.[size];
+
+    return price === undefined || price < minPrice;
+  });
 
   return sizesWithPriceInvalid;
 };
