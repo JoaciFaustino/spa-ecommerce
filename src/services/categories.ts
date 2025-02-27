@@ -25,7 +25,7 @@ export const getAllCategories = async (
   page?: number,
   search?: string
 ): Promise<PaginatedResponse> => {
-  const shouldGetCachedResponse = limit === 12 && page === 1 && !search;
+  const shouldGetCachedResponse = limit === 24 && page === 1 && !search;
 
   try {
     const revalidateTag: CachedRequestsRevalidateTag = "first-categories-page";
@@ -104,7 +104,6 @@ export const deleteCategory = async (id: string): Promise<void> => {
     });
 
     await revalidateTag("first-categories-page");
-    //teste tudo q tem q ser testado pq vc fez 200 milhões de copia e cola
   } catch (error) {
     throw getErrorRequest(error, "Failed to delete category");
   }

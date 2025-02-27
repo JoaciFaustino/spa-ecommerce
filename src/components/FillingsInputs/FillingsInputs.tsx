@@ -76,7 +76,7 @@ function FillingsInputs({
                 onChangeOption={selectHandlerFillingValue(index)}
                 defaultValue={filling}
                 initialPage={initialPage}
-                limit={12}
+                limit={24}
                 onLoadMoreOptions={onLoadMoreOptions}
               />
 

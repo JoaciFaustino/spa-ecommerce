@@ -154,7 +154,7 @@ export default async function Home() {
 async function CakesBestSellers() {
   try {
     const { cakes } = await getAllCakes({
-      limit: "12",
+      limit: "24",
       page: "1"
     });
 

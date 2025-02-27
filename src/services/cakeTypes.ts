@@ -21,11 +21,11 @@ export const getAllCakeTypesCompleteUrl = async (
 };
 
 export const getAllCakeTypes = async (
-  limit: number = 12,
+  limit: number = 24,
   page: number = 1,
   search?: string
 ): Promise<PaginatedResponse> => {
-  const shouldGetCachedResponse = limit === 12 && page === 1 && !search;
+  const shouldGetCachedResponse = limit === 24 && page === 1 && !search;
 
   try {
     const revalidateTag: CachedRequestsRevalidateTag = "first-cake-types-page";

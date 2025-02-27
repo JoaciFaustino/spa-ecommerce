@@ -25,7 +25,7 @@ export const getAllFillings = async (
   page?: number,
   search?: string
 ): Promise<PaginatedResponse> => {
-  const shouldGetCachedResponse = limit === 12 && page === 1 && !search;
+  const shouldGetCachedResponse = limit === 24 && page === 1 && !search;
 
   const revalidateTag: CachedRequestsRevalidateTag = "first-fillings-page";
 

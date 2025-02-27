@@ -10,7 +10,7 @@ import {
 } from "@/utils/getCakePartsValues";
 
 const page = 1;
-const limit = 12;
+const limit = 24;
 
 async function DashboardCakesLayout({
   children

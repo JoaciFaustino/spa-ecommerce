@@ -36,7 +36,7 @@ const generateHandler = (setOptionsSelecteds: SetQueryParamsFunction) => {
 
 const paginatedSelectProps = {
   initialPage: 2,
-  limit: 12,
+  limit: 24,
   searchDebounceTime: 500,
   usePaginationFunctionOnSearch: true
 };

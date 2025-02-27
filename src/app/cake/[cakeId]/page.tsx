@@ -16,7 +16,7 @@ type Props = {
   params: { cakeId: string };
 };
 
-const limit = 12;
+const limit = 24;
 const page = 1;
 
 async function CakePage({ params: { cakeId } }: Props) {

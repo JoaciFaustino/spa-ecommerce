@@ -85,7 +85,7 @@ function CreateOrUpdateCakeForm({
           onChangeOption={(newValue) => {
             setValue("type", newValue || typeSelected);
           }}
-          limit={12}
+          limit={24}
           initialPage={cakeTypesPage}
           isRequired
           onLoadMoreOptions={getMoreCakeTypesOptions}
@@ -108,7 +108,7 @@ function CreateOrUpdateCakeForm({
           onChangeOption={(newValue) => {
             setValue("frosting", newValue || null);
           }}
-          limit={12}
+          limit={24}
           initialPage={frostingsPage}
           onLoadMoreOptions={getMoreFrostingOptions}
         />
@@ -137,7 +137,7 @@ function CreateOrUpdateCakeForm({
         <SelectManyTagsInfiniteScroll
           initialOptions={categoriesOptions}
           initialPage={categoriesPage}
-          limit={12}
+          limit={24}
           onLoadMoreOptions={getMoreCategoriesOptions}
           newSelectedsOptions={categoriesSelecteds}
           noOneOptionSelectedsMessage="Nenhuma categoria selecionada ainda."

@@ -38,7 +38,7 @@ export const getAllCakes = async ({
   filling,
   frosting,
   search,
-  limit = "12",
+  limit = "24",
   page = "1",
   sortBy = "popularidade"
 }: CakeQueryParams): Promise<PaginatedResponse> => {
@@ -50,7 +50,7 @@ export const getAllCakes = async ({
 
   const shouldGetCachedCakes: boolean =
     sortByApiOption === "popularity" &&
-    limit === "12" &&
+    limit === "24" &&
     page === "1" &&
     (!category || category.length === 0) &&
     (!filling || filling.length === 0) &&

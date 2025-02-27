@@ -25,7 +25,7 @@ async function PurchasesPage({ params: { userId } }: Props) {
   }
 
   try {
-    const limit = 6;
+    const limit = 24;
     const page = 1;
 
     const { nextUrl, orders } = await getAllUserOrders(limit, page, userId);

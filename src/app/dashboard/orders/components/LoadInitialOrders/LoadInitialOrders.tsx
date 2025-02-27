@@ -53,7 +53,7 @@ async function LoadInitialOrders({ filters, sortBy, search }: Props) {
   try {
     const { orders, nextUrl } = await getAllOrders({
       page: 1,
-      limit: 6,
+      limit: 24,
       filters: filtersApiOptions || [],
       sortBy: sortByApiOption,
       search: searchLastValue

@@ -6,7 +6,7 @@ import { getLastValue, splitQueryParam } from "./queryParams";
 import { getAllFrostings } from "@/services/frostings";
 import { getAllFillings } from "@/services/fillings";
 
-const limit = 12;
+const limit = 24;
 const page = 1;
 
 export const getInitialCakes = async (searchParams: CakeQueryParams) => {
@@ -15,7 +15,7 @@ export const getInitialCakes = async (searchParams: CakeQueryParams) => {
 
   try {
     const { cakes, nextUrl } = await getAllCakes({
-      limit: "12",
+      limit: "24",
       page: "1",
       search,
       type: splitQueryParam(type),

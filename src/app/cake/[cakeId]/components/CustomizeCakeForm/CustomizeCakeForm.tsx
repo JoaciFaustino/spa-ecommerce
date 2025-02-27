@@ -25,7 +25,7 @@ type Props = {
   defaultCake: ICake;
 };
 
-const paginatedSelectProps = { initialPage: 2, limit: 12 };
+const paginatedSelectProps = { initialPage: 2, limit: 24 };
 
 function CustomizeCakeForm({
   typeOptions = [],
