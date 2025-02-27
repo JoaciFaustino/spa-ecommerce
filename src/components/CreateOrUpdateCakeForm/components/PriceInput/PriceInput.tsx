@@ -12,15 +12,21 @@ type PriceInputProps = {
   control: Control<Schema>;
 };
 
-function PriceInput({ size, control, error }: PriceInputProps) {
-  const dependentFields = SIZES_POSSIBLES_ENUM.reduce(
-    (acm: `pricePerSize.${Size}`[], sizePossible) => {
-      const field = `pricePerSize.${size}` as `pricePerSize.${Size}`;
+type PricePerSizeFieldName = `pricePerSize.${Size}`;
 
-      return sizePossible !== size ? [...acm, field] : [...acm];
-    },
-    []
-  );
+const dependentFields: PricePerSizeFieldName[] = SIZES_POSSIBLES_ENUM.map(
+  (size): PricePerSizeFieldName => `pricePerSize.${size}`
+);
+
+function PriceInput({ size, control, error }: PriceInputProps) {
+  // const dependentFields = SIZES_POSSIBLES_ENUM.reduce(
+  //   (acm: `pricePerSize.${Size}`[], sizePossible) => {
+  //     const field = `pricePerSize.${size}` as `pricePerSize.${Size}`;
+
+  //     return sizePossible !== size ? [...acm, field] : [...acm];
+  //   },
+  //   []
+  // );
 
   return (
     <div className={`${styles.divPricePerSize}`} key={size}>

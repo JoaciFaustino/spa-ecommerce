@@ -1,6 +1,10 @@
 "use client";
 import styles from "./CreateOrUpdateCakeForm.module.scss";
-import { CUSTOMIZABLE_PARTS_ENUM, SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
+import {
+  CUSTOMIZABLE_PARTS_ENUM,
+  Size,
+  SIZES_POSSIBLES_ENUM
+} from "@/@types/Cake";
 import FillingsInputs from "@/components/FillingsInputs/FillingsInputs";
 import SelectInfiniteScoll from "@/components/Selects/SelectInfiniteScroll/SelectInfiniteScroll";
 import PriceInput from "./components/PriceInput/PriceInput";
@@ -21,6 +25,16 @@ type Props = {
     data: SubmitData
   ) => Promise<void> | void;
 };
+
+const pricesPerSizeFieldNames: `pricePerSize.${Size}`[] =
+  SIZES_POSSIBLES_ENUM.map(
+    (size): `pricePerSize.${Size}` => `pricePerSize.${size}`
+  );
+
+const sizesPossiblesFieldNames: `sizesPossibles.${Size}`[] =
+  SIZES_POSSIBLES_ENUM.map(
+    (size): `sizesPossibles.${Size}` => `sizesPossibles.${size}`
+  );
 
 function CreateOrUpdateCakeForm({
   defaultValues,
@@ -202,7 +216,12 @@ function CreateOrUpdateCakeForm({
               <input
                 {...register(`sizesPossibles.${size}`, {
                   required: true,
-                  deps: ["size", `pricePerSize.${size}`, "fillings"]
+                  deps: [
+                    "size",
+                    "fillings",
+                    ...pricesPerSizeFieldNames,
+                    ...sizesPossiblesFieldNames
+                  ]
                 })}
                 type="checkbox"
                 id={`sizesPossibles.${size}`}
