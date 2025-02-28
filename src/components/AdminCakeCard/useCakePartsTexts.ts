@@ -94,7 +94,7 @@ export const useCakePartsTexts = (
           ? { ...acm, [part]: true }
           : { ...acm, [part]: false };
       },
-      { type: false, size: false, filing: false, frosting: false }
+      { type: false, size: false, fillings: false, frosting: false }
     );
   }, [customizableParts]);
 

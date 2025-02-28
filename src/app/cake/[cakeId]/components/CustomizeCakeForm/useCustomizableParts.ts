@@ -40,7 +40,7 @@ export const useCustomizableParts = (
   const isCustomizableCakeType: boolean =
     typeOptions.length > 0 && customizableParts.includes("type");
   const isCustomizableFillings: boolean =
-    fillingsOptions.length > 0 && customizableParts.includes("filing");
+    fillingsOptions.length > 0 && customizableParts.includes("fillings");
   const isCustomizableFrosting: boolean =
     frostingOptions.length > 0 && customizableParts.includes("frosting");
   const isCustomizableSize: boolean =

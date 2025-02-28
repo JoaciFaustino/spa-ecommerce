@@ -13,7 +13,7 @@ export const translateCustomizableParts: Record<
   CustomizablesParts,
   CustomizablePartsPtBr
 > = {
-  filing: "recheios",
+  fillings: "recheios",
   type: "tipo da massa",
   frosting: "cobertura",
   size: "tamanho"

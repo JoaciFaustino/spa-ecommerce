@@ -5,7 +5,7 @@ export const CUSTOMIZABLE_PARTS_ENUM = [
   //tem que ajeitar isso para o nome certo, tem q ajeitar todos os documents no banco de dados
   "type",
   "frosting",
-  "filing",
+  "fillings",
   "size"
 ] as const;
 

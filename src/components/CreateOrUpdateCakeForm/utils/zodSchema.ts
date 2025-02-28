@@ -25,7 +25,7 @@ const getSizesExceedingFillingLimit = ({
   fillings,
   customizableParts
 }: AlternativeSchemaType): Size[] => {
-  if (customizableParts.filing && customizableParts.size) {
+  if (customizableParts.fillings && customizableParts.size) {
     return [];
   }
 
@@ -87,7 +87,7 @@ export const schemaCakeForm = z
     customizableParts: z.object({
       type: z.boolean().optional().default(false),
       size: z.boolean().optional().default(false),
-      filing: z.boolean().optional().default(false),
+      fillings: z.boolean().optional().default(false),
       frosting: z.boolean().optional().default(false)
     })
   })

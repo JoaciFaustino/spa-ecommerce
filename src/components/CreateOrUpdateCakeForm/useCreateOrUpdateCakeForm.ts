@@ -45,7 +45,7 @@ export const useCreateOrUpdateCakeForm = (
       customizableParts: defaultValues?.customizableParts || {
         type: false,
         size: false,
-        filing: false,
+        fillings: false,
         frosting: false
       }
     }),

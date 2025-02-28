@@ -11,7 +11,7 @@ const translateCustomizableParts: {
   [key in CustomizablesParts]: string;
 } = {
   type: "o tipo da massa",
-  filing: "o recheio",
+  fillings: "o recheio",
   frosting: "as coberturas",
   size: "o tamanho"
 };
