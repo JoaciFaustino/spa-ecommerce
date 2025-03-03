@@ -63,7 +63,10 @@ export const createCategory = async ({
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-categories-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-categories-page")
+    ]);
 
     return data.category;
   } catch (error) {
@@ -87,7 +90,10 @@ export const updateCategory = async (
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-categories-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-categories-page")
+    ]);
 
     return data.category;
   } catch (error) {
@@ -103,7 +109,10 @@ export const deleteCategory = async (id: string): Promise<void> => {
       headers: { Authorization: session }
     });
 
-    await revalidateTag("first-categories-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-categories-page")
+    ]);
   } catch (error) {
     throw getErrorRequest(error, "Failed to delete category");
   }

@@ -2,7 +2,6 @@ import { IFilling } from "./Filling";
 import { IFrosting } from "./Frosting";
 
 export const CUSTOMIZABLE_PARTS_ENUM = [
-  //tem que ajeitar isso para o nome certo, tem q ajeitar todos os documents no banco de dados
   "type",
   "frosting",
   "fillings",

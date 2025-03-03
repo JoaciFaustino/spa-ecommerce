@@ -64,7 +64,10 @@ export const createFilling = async ({
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-fillings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-fillings-page")
+    ]);
 
     return data.filling;
   } catch (error) {
@@ -85,7 +88,10 @@ export const updateFilling = async (
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-fillings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-fillings-page")
+    ]);
 
     return data.filling;
   } catch (error) {
@@ -101,7 +107,10 @@ export const deleteFilling = async (id: string): Promise<void> => {
       headers: { Authorization: session }
     });
 
-    await revalidateTag("first-fillings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-fillings-page")
+    ]);
   } catch (error) {
     throw getErrorRequest(error, "Failed to delete the filling");
   }

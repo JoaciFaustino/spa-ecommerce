@@ -64,7 +64,10 @@ export const createFrosting = async ({
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-frostings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-frostings-page")
+    ]);
 
     return data.frosting;
   } catch (error) {
@@ -85,7 +88,10 @@ export const updateFrosting = async (
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-frostings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-frostings-page")
+    ]);
 
     return data.frosting;
   } catch (error) {
@@ -101,7 +107,10 @@ export const deleteFrosting = async (id: string): Promise<void> => {
       headers: { Authorization: session }
     });
 
-    await revalidateTag("first-frostings-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-frostings-page")
+    ]);
   } catch (error) {
     throw getErrorRequest(error, "Failed to delete the frosting");
   }

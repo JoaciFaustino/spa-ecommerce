@@ -63,7 +63,10 @@ export const createCakeType = async ({
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-cake-types-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-cake-types-page")
+    ]);
 
     return data.cakeType;
   } catch (error) {
@@ -84,7 +87,10 @@ export const updateCakeType = async (
       { headers: { Authorization: session } }
     );
 
-    await revalidateTag("first-cake-types-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-cake-types-page")
+    ]);
 
     return data.cakeType;
   } catch (error) {
@@ -100,7 +106,10 @@ export const deleteCakeType = async (id: string): Promise<void> => {
       headers: { Authorization: session }
     });
 
-    await revalidateTag("first-cake-types-page");
+    await Promise.all([
+      revalidateTag("first-cakes-page"),
+      revalidateTag("first-cake-types-page")
+    ]);
 
     return;
   } catch (error) {
