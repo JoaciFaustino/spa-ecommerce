@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import CakePartsCardSkeleton from "@/components/CakePartsCards/loading";
 import LoadInitialFillings from "./components/LoadInitialFillings/LoadInitialFillings";
 import SearchAndCreateFillingBar from "./components/SearchAndCreateFillingBar/SearchAndCreateFillingBar";
+import Note from "../_components/Note/Note";
 
 type Props = {
   searchParams: { search?: string };
@@ -14,6 +15,11 @@ async function DashboardFillings({ searchParams }: Props) {
 
   return (
     <section className={styles.parentPage}>
+      <Note>
+        Ao apagar um recheio, você vai apagá-lo também de todos os bolos que o
+        possuem!
+      </Note>
+
       <SearchAndCreateFillingBar />
 
       <div className={styles.cakePartsList}>

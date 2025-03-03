@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import CakePartsCardSkeleton from "@/components/CakePartsCards/loading";
 import LoadInitialFrostings from "./components/LoadInitialFrostings/LoadInitialFrostings";
 import SearchAndCreateFrostingBar from "./components/SearchAndCreateFrostingBar/SearchAndCreateFrostingBar";
+import Note from "../_components/Note/Note";
 
 type Props = {
   searchParams: { search?: string };
@@ -14,6 +15,11 @@ async function DashboardFrostings({ searchParams }: Props) {
 
   return (
     <section className={styles.parentPage}>
+      <Note>
+        Ao apagar uma cobertura, você vai apagá-la também de todos os bolos que
+        a possuem!
+      </Note>
+
       <SearchAndCreateFrostingBar />
 
       <div className={styles.cakePartsList}>

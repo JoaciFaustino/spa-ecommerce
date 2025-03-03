@@ -1,0 +1,10 @@
+.note {
+  width: 100%;
+  border-radius: 10px;
+  padding: var(--padding-4);
+  background-color: var(--pastel-yellow);
+  margin-bottom: var(--padding-4);
+  display: flex;
+  align-items: center;
+  gap: var(--padding-2);
+}
