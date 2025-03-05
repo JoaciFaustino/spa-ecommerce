@@ -16,10 +16,8 @@ function SortBy() {
 
   const handleOptionSelected = (newValue: string | undefined) => {
     if (newValue && sortByOptions.includes(newValue)) {
-      return;
+      setSortBy(newValue || sortBy);
     }
-
-    setSortBy(newValue || sortBy);
   };
 
   const getDefaultParam = () => {
