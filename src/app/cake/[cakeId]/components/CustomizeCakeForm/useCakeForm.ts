@@ -157,18 +157,18 @@ export const useCakeForm = (
     size,
     frosting
   }: Schema) => {
-    try {
-      if (!cartId || submitIsDisabled) {
-        toast.error("Falha ao adicionar item ao carrinho!");
-        return;
-      }
+    if (!cartId || submitIsDisabled) {
+      toast.error("Falha ao adicionar item ao carrinho!");
+      return;
+    }
 
+    try {
       const itemCart: PersonalizedCake = await addItemToCart(
         cartId,
         cakeId,
         quantity,
         type,
-        frosting === "" ? undefined : frosting,
+        !frosting || frosting === "" ? null : frosting,
         fillings,
         size
       );

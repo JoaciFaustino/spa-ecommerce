@@ -9,7 +9,7 @@ export const addItemToCart = async (
   cakeId: string,
   quantity: number,
   type?: string,
-  frosting?: string,
+  frosting: string | null = null,
   fillings?: string[],
   size?: Size
 ): Promise<PersonalizedCake> => {
