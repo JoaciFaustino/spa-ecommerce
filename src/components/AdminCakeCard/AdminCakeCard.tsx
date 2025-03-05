@@ -67,7 +67,9 @@ function AdminCakeCard({ cake, onUpdateCake, onDeleteCake }: Props) {
         </Modal>
       )}
 
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${requestIsPending ? styles.disabled : ""}`}
+      >
         <Image
           src={cake.imageUrl}
           alt={cake.name + " image"}

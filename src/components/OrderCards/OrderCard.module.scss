@@ -72,6 +72,12 @@
   }
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

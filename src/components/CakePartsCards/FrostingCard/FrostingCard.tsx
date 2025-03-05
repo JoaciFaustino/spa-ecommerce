@@ -61,8 +61,6 @@ function FrostingCard({
     } catch (error) {
       toast.error("Erro ao apagar esse cobertura, tente novamente!");
     }
-
-    setRequestIsPending(false);
   };
 
   return (
@@ -78,7 +76,9 @@ function FrostingCard({
         </Modal>
       )}
 
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${requestIsPending ? styles.disabled : ""}`}
+      >
         <div>
           <h5>{currentName}</h5>
 

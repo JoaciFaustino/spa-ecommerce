@@ -55,8 +55,6 @@ function CakeTypeCard({
     } catch (error) {
       toast.error("Erro ao apagar esse tipo de massa, tente novamente!");
     }
-
-    setRequestIsPending(false);
   };
 
   return (
@@ -71,7 +69,9 @@ function CakeTypeCard({
         </Modal>
       )}
 
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${requestIsPending ? styles.disabled : ""}`}
+      >
         <h5>{currentCakeType}</h5>
 
         <ActionButtons

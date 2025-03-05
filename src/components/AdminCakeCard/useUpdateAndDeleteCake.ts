@@ -2,6 +2,7 @@ import { ICake, ICakeUpdateBody, SIZES_POSSIBLES_ENUM } from "@/@types/Cake";
 import { SubmitData } from "@/@types/UpdateOrCreateCakeForm";
 import { deleteCake, updateCake } from "@/services/cakes";
 import { areStringArraysEqual } from "@/utils/arrayUtils";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -44,6 +45,7 @@ export const useUpdateAndDeleteCake = (
 ) => {
   const [modalIsActived, setModalIsActived] = useState(false);
   const [requestIsPending, setRequestIsPending] = useState(false);
+  const router = useRouter();
 
   const updateCakeRequest = async (
     fileImage: File | null,
@@ -79,6 +81,7 @@ export const useUpdateAndDeleteCake = (
         onUpdateCake(newCake);
       }
 
+      router.refresh();
       setModalIsActived(false);
     } catch (error) {
       toast.error("Erro ao editar bolo");
@@ -95,12 +98,11 @@ export const useUpdateAndDeleteCake = (
         onDeleteCake(cake._id);
       }
 
+      router.refresh();
       toast.success("Bolo apagado com sucesso!");
     } catch (error) {
       toast.error("Erro ao apagar esse bolo, tente novamente!");
     }
-
-    setRequestIsPending(false);
   };
 
   return {

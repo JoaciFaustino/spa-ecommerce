@@ -61,8 +61,6 @@ function FillingCard({
     } catch (error) {
       toast.error("Erro ao apagar esse recheio, tente novamente!");
     }
-
-    setRequestIsPending(false);
   };
 
   return (
@@ -78,7 +76,9 @@ function FillingCard({
         </Modal>
       )}
 
-      <div className={styles.card}>
+      <div
+        className={`${styles.card} ${requestIsPending ? styles.disabled : ""}`}
+      >
         <div>
           <h5>{currentName}</h5>
 

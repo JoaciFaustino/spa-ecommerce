@@ -73,7 +73,6 @@ function AdminOrderCard({
 
       deleteOrderItem(_id);
 
-      setRequestIsPending(false);
       toast.success("Marcado como entregue com sucesso!");
     } catch (error) {
       toast.error("Erro ao marcar como entregue");
@@ -92,7 +91,11 @@ function AdminOrderCard({
         </Modal>
       )}
 
-      <div className={styles.orderCard}>
+      <div
+        className={`${styles.orderCard} ${
+          requestIsPending ? styles.disabled : ""
+        }`}
+      >
         <OrderHeader orderId={_id} />
 
         <div className={styles.cardContent}>

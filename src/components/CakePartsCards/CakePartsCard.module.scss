@@ -30,6 +30,12 @@
   }
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .iconSkeleton {
   width: 1.5rem;
   height: 1.5rem;
