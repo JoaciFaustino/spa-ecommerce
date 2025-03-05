@@ -33,7 +33,7 @@ function Header({ userInfoComponent }: { userInfoComponent: React.ReactNode }) {
 
         <div className={styles.divLogo}>
           <Link href="/">
-            <Image src={logo} width={60} height={30} alt="logo" />
+            <Image src={logo} width={30} height={30} alt="logo" />
           </Link>
         </div>
 
