@@ -64,7 +64,7 @@ export const getAllCakes = async ({
       const cakeRevalidateTag: CachedRequestsRevalidateTag = "first-cakes-page";
 
       const response = await fetch(
-        `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortBy}`,
+        `${api.getUri()}/cakes?page=${page}&limit=${limit}&sortBy=${sortByApiOption}`,
         { next: { tags: [cakeRevalidateTag] } }
       );
 
@@ -81,7 +81,7 @@ export const getAllCakes = async ({
         frosting,
         limit,
         page,
-        sortBy,
+        sortBy: sortByApiOption,
         search
       },
       paramsSerializer: { indexes: false }
