@@ -11,7 +11,7 @@ export const getCartById = async (id: string): Promise<Cart | undefined> => {
       return;
     }
 
-    const { data } = await api.get<{ cart: Cart }>(`/cart/${id}`, {
+    const { data } = await api.get<{ cart: Cart }>(`/carts/${id}`, {
       headers: { Authorization: session }
     });
 

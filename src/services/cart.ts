@@ -16,8 +16,8 @@ export const addItemToCart = async (
   try {
     const session = await getSession();
 
-    const { data } = await api.patch<{ addedCake: PersonalizedCake }>(
-      `/cart/add-cake/${cartId}`,
+    const { data } = await api.post<{ addedCake: PersonalizedCake }>(
+      `/carts/${cartId}/items`,
       {
         cartId,
         cakeId,
@@ -43,9 +43,8 @@ export const removeItemCart = async (
   try {
     const session = await getSession();
 
-    await api.patch<{ message: string }>(
-      `/cart/remove-cake/${cartId}/${itemCartId}`,
-      {},
+    await api.delete<{ message: string }>(
+      `/carts/${cartId}/items/${itemCartId}`,
       { headers: { Authorization: session } }
     );
   } catch (error: any) {
@@ -57,11 +56,9 @@ export const clearCart = async (cartId: string) => {
   try {
     const session = await getSession();
 
-    await api.patch<{ message: string }>(
-      `/cart/clear/${cartId}`,
-      {},
-      { headers: { Authorization: session } }
-    );
+    await api.delete<{ message: string }>(`/carts/${cartId}/items`, {
+      headers: { Authorization: session }
+    });
   } catch (error: any) {
     throw getErrorRequest(error, "failed to clear cart");
   }

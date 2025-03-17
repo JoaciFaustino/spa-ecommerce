@@ -59,7 +59,7 @@ export const createFilling = async ({
 
   try {
     const { data } = await api.post<{ message: string; filling: IFilling }>(
-      `/fillings/create/`,
+      `/fillings/`,
       { name, price },
       { headers: { Authorization: session } }
     );
@@ -83,7 +83,7 @@ export const updateFilling = async (
 
   try {
     const { data } = await api.patch<{ message: string; filling: IFilling }>(
-      `/fillings/update/${id}`,
+      `/fillings/${id}`,
       { name, price },
       { headers: { Authorization: session } }
     );
@@ -103,7 +103,7 @@ export const deleteFilling = async (id: string): Promise<void> => {
   const session = await getSession();
 
   try {
-    await api.delete(`/fillings/delete/${id}`, {
+    await api.delete(`/fillings/${id}`, {
       headers: { Authorization: session }
     });
 

@@ -19,6 +19,8 @@ export const getCakeById = async (
   cakeId: string
 ): Promise<ICake | undefined> => {
   try {
+    await revalidateTag("first-cakes-page");
+
     const session = await getSession();
 
     const { data } = await api.get<{ cake: ICake }>(`/cakes/${cakeId}`, {
@@ -120,7 +122,7 @@ export const createCake = async (
     }
 
     const { data } = await api.post<{ message: string; cake: ICake }>(
-      `/cakes/create/`,
+      `/cakes/`,
       formData,
       { headers: { Authorization: session } }
     );
@@ -149,7 +151,7 @@ export const updateCake = async (
     }
 
     const { data } = await api.patch<{ message: string; cake: ICake }>(
-      `/cakes/update/${cakeId}`,
+      `/cakes/${cakeId}`,
       formData,
       { headers: { Authorization: session } }
     );
@@ -166,7 +168,7 @@ export const deleteCake = async (cakeId: string): Promise<void> => {
   const session = await getSession();
 
   try {
-    await api.delete<{ message: string }>(`/cakes/delete/${cakeId}`, {
+    await api.delete<{ message: string }>(`/cakes/${cakeId}`, {
       headers: { Authorization: session }
     });
 

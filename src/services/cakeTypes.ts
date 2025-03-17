@@ -32,7 +32,7 @@ export const getAllCakeTypes = async (
 
     if (shouldGetCachedResponse) {
       const response = await fetch(
-        `${api.getUri()}/cakeTypes?page=${page}&limit=${limit}`,
+        `${api.getUri()}/cake-types?page=${page}&limit=${limit}`,
         { next: { tags: [revalidateTag] } }
       );
 
@@ -40,7 +40,7 @@ export const getAllCakeTypes = async (
       return data;
     }
 
-    const { data } = await api.get<PaginatedResponse>("/cakeTypes", {
+    const { data } = await api.get<PaginatedResponse>("/cake-types", {
       params: { limit, page, search },
       paramsSerializer: { indexes: false }
     });
@@ -58,7 +58,7 @@ export const createCakeType = async ({
 
   try {
     const { data } = await api.post<{ message: string; cakeType: ICakeType }>(
-      `/cakeTypes/create/`,
+      `/cake-types/`,
       { type },
       { headers: { Authorization: session } }
     );
@@ -82,7 +82,7 @@ export const updateCakeType = async (
 
   try {
     const { data } = await api.patch<{ message: string; cakeType: ICakeType }>(
-      `/cakeTypes/update/${id}`,
+      `/cake-types/${id}`,
       { type },
       { headers: { Authorization: session } }
     );
@@ -102,7 +102,7 @@ export const deleteCakeType = async (id: string): Promise<void> => {
   const session = await getSession();
 
   try {
-    await api.delete<{ message: string }>(`/cakeTypes/delete/${id}`, {
+    await api.delete<{ message: string }>(`/cake-types/${id}`, {
       headers: { Authorization: session }
     });
 

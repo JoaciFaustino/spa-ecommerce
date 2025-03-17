@@ -59,7 +59,7 @@ export const createFrosting = async ({
 
   try {
     const { data } = await api.post<{ message: string; frosting: IFrosting }>(
-      `/frostings/create/`,
+      `/frostings/`,
       { name, price },
       { headers: { Authorization: session } }
     );
@@ -83,7 +83,7 @@ export const updateFrosting = async (
 
   try {
     const { data } = await api.patch<{ message: string; frosting: IFrosting }>(
-      `/frostings/update/${id}`,
+      `/frostings/${id}`,
       { name, price },
       { headers: { Authorization: session } }
     );
@@ -103,7 +103,7 @@ export const deleteFrosting = async (id: string): Promise<void> => {
   const session = await getSession();
 
   try {
-    await api.delete(`/frostings/delete/${id}`, {
+    await api.delete(`/frostings/${id}`, {
       headers: { Authorization: session }
     });
 

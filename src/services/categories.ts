@@ -58,7 +58,7 @@ export const createCategory = async ({
 
   try {
     const { data } = await api.post<{ message: string; category: ICategory }>(
-      `/categories/create`,
+      `/categories`,
       { category },
       { headers: { Authorization: session } }
     );
@@ -85,7 +85,7 @@ export const updateCategory = async (
       message: string;
       category: ICategory;
     }>(
-      `/categories/update/${id}`,
+      `/categories/${id}`,
       { category },
       { headers: { Authorization: session } }
     );
@@ -105,7 +105,7 @@ export const deleteCategory = async (id: string): Promise<void> => {
   const session = await getSession();
 
   try {
-    await api.delete(`/categories/delete/${id}`, {
+    await api.delete(`/categories/${id}`, {
       headers: { Authorization: session }
     });
 

@@ -52,7 +52,7 @@ export const createOrder = async (
     const session = await getSession();
 
     const { data } = await api.post<{ order: IOrder }>(
-      "/orders/create",
+      "/orders/",
       {
         cartId,
         typeOfReceipt,
@@ -114,7 +114,7 @@ export const updateOrder = async (
     const session = await getSession();
 
     const { data } = await api.patch<{ message: string; order: IOrder }>(
-      `/orders/update/${id}`,
+      `/orders/${id}`,
       { state, dateAndTimeDelivery: dateAndTimeDelivery?.toISOString() },
       { headers: { Authorization: session } }
     );
@@ -129,7 +129,7 @@ export const deleteOrder = async (id: string): Promise<void> => {
   try {
     const session = await getSession();
 
-    await api.delete(`/orders/delete/${id}`, {
+    await api.delete(`/orders/${id}`, {
       headers: { Authorization: session }
     });
   } catch (error) {
