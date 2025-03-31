@@ -19,15 +19,6 @@ const dependentFields: PricePerSizeFieldName[] = SIZES_POSSIBLES_ENUM.map(
 );
 
 function PriceInput({ size, control, error }: PriceInputProps) {
-  // const dependentFields = SIZES_POSSIBLES_ENUM.reduce(
-  //   (acm: `pricePerSize.${Size}`[], sizePossible) => {
-  //     const field = `pricePerSize.${size}` as `pricePerSize.${Size}`;
-
-  //     return sizePossible !== size ? [...acm, field] : [...acm];
-  //   },
-  //   []
-  // );
-
   return (
     <div className={`${styles.divPricePerSize}`} key={size}>
       <label className={"text"} htmlFor={`pricePerSize.${size}`}>

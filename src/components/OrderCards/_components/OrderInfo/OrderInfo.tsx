@@ -24,7 +24,7 @@ type Props = {
   dateAndTimeDelivery?: Date;
   createdAt?: Date;
   state: OrderState;
-  isSkeleton?: boolean; //tem que fazer o skeleton disso pra não ter que carregar toda essa logica em um skeleton
+  isSkeleton?: boolean; 
 };
 
 function OrderInfo({

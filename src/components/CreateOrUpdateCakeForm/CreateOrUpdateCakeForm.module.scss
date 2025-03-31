@@ -1,6 +1,6 @@
 .form {
   z-index: 1;
-  padding: 5px; //só por que o overflow: scroll do modal deixa bugado e esconde o outline e o box shadow dos inputs e selects
+  padding: 5px;
   display: flex;
   flex-direction: column;
   gap: var(--padding-2);

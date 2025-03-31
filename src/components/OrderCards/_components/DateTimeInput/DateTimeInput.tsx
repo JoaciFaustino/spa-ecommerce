@@ -52,8 +52,6 @@ function DateTimeInput({
       maxDate={maxDate}
       disabledKeyboardNavigation
       shouldCloseOnSelect={false}
-      // autoFocus
-      // startOpen
       isWeekDisabled
       showTimeSelect
     />

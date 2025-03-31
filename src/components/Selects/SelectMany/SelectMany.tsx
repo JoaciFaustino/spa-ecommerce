@@ -55,7 +55,7 @@ function SelectMany({
   const finalOptionsEventIsDisabled = !onEndOfOptionsReached || !optionsIsOpen;
   const { finalPageInspectorRef } = useInfiniteScroll(
     onEndOfOptionsReached,
-    undefined, //, "100px"
+    undefined,
     finalOptionsEventIsDisabled
   );
 

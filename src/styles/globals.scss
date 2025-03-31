@@ -38,10 +38,6 @@
   --color-text-paragraph: #585858;
   --color-text-placeholder: #575757;
 
-  // --color-text-title-hover: #000000;
-  // --color-text-paragraph-hover: #252525;
-  // --color-text-placeholder-hover: #3a3a3a;
-
   --color-warning-1: #d0342c;
   --color-warning-2: #ffb7b7;
 
@@ -64,7 +60,6 @@
   --padding-15: 3.75rem;
   --padding-16: 4rem;
 
-  // responsivity
   --xsm: 320px;
   --sm: 576px;
   --md: 768px;
@@ -205,7 +200,6 @@ a {
   user-select: none;
   cursor: default !important;
   color: transparent !important;
-  // background-color: var(--loading-gray-1);
   animation: 0.5s alternate infinite skeletonBgAnimation !important;
 }
 

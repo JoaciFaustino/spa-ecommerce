@@ -30,7 +30,7 @@ export const orderStateRetranslate: Record<OrderStateTranlate, OrderState> = {
 
 export interface DeliveryAddress {
   street: string;
-  number: string; //vai ser string por que existem casas (pelo menos no Brasil) com número com esse formato "A123", "B123"
+  number: string;
   neighborhood: string;
   adicionalInfo?: string;
 }

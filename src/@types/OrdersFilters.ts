@@ -1,4 +1,3 @@
-//sort by
 export const ORDERS_SORT_BY_API_OPTIONS = [
   "latest",
   "oldest",
@@ -38,7 +37,6 @@ export const ordersSortByTranslate: Record<
     "delivery date: from overdue to future"
 };
 
-//filters
 export const ORDERS_FILTERS_API_OPTIONS = [
   "pending",
   "done",

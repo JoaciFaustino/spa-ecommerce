@@ -25,8 +25,6 @@ function LoadNextCakes({ firstCakes, nextUrl }: Props) {
     firstCakes
   );
 
-  // useEffect(() => changeCakes(firstCakes), []);
-
   const onUpdateCake = (id: string, newCake: ICake) =>
     updateCake("_id", id, newCake);
 

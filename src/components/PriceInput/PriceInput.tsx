@@ -25,11 +25,6 @@ function PriceInput<T extends FieldValues>({
   defaultPrice
 }: PriceInputProps<T>) {
   return (
-    // <div className={`${styles.divPriceInput}`}>
-    //   <label className={"text"} htmlFor={name}>
-    //     {label}:
-    //   </label>
-
     <Controller
       control={control}
       name={name}
@@ -53,7 +48,6 @@ function PriceInput<T extends FieldValues>({
         />
       )}
     />
-    // </div>
   );
 }
 

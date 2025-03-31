@@ -125,46 +125,11 @@ function FormUpdateOrder({
         ? normalizeDate(dateDelivery) || undefined
         : undefined;
 
-    
-
     await onUpdate({
       newDateDelivery: newDateDelivery,
       newState: orderStateRetranslate[state]
     });
   };
-
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // const [state, setState] = useState<OrderStateTranlate>("pendente");
-  // const [dateSelected, setDateSelected] = useState<Date | null>(
-  //   defaultValues.dateDelivery
-  // );
-
-  // const handleChangeState = (newState: string | undefined) => {
-  //   if (newState && orderStates.includes(newState as OrderStateTranlate)) {
-  //     setState(newState as OrderStateTranlate);
-  //   }
-  // };
-
-  // const handleChangeDate = (date: Date | null) => setDateSelected(date);
-
-  // const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   setIsSubmitting(true);
-
-  //   if (!dateSelected || (dateSelected < minDate && dateSelected > maxDate)) {
-  //     toast.error("Essa data não é válida");
-
-  //     return;
-  //   }
-
-  //   if (!orderStates.includes(state)) {
-  //     toast.error("Esse estado não é válido");
-  //   }
-
-  //   setIsSubmitting(false);
-  // };
 
   const submitIsDisabled = !isMounted || !isValid || isSubmitting;
 
